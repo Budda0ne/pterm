@@ -3,27 +3,7 @@ package pterm
 import (
 	"io"
 	"strings"
-
-	"github.com/pterm/pterm/internal"
 )
-
-// NewBulletListFromStrings returns a BulletListPrinter with Text using the NewTreeListItemFromString method.
-func NewBulletListFromStrings(s []string, padding string) BulletListPrinter {
-	var lis []BulletListItem
-	for _, line := range s {
-		lis = append(lis, NewBulletListItemFromString(line, padding))
-	}
-	return *DefaultBulletList.WithItems(lis)
-}
-
-// NewBulletListItemFromString returns a BulletListItem with a Text. The padding is counted in the Text to define the Level of the ListItem.
-func NewBulletListItemFromString(text string, padding string) BulletListItem {
-	s, l := internal.RemoveAndCountPrefix(text, padding)
-	return BulletListItem{
-		Level: l,
-		Text:  s,
-	}
-}
 
 // BulletListItem is able to render a ListItem.
 type BulletListItem struct {
@@ -62,11 +42,6 @@ func (p BulletListItem) WithBullet(bullet string) *BulletListItem {
 func (p BulletListItem) WithBulletStyle(style *Style) *BulletListItem {
 	p.BulletStyle = style
 	return &p
-}
-
-// NewBulletListFromString returns a BulletListPrinter with Text using the NewTreeListItemFromString method, splitting after return (\n).
-func NewBulletListFromString(s string, padding string) BulletListPrinter {
-	return NewBulletListFromStrings(strings.Split(s, "\n"), padding)
 }
 
 // DefaultBulletList contains standards, which can be used to print a BulletListPrinter.
@@ -125,7 +100,7 @@ func (l BulletListPrinter) Render() error {
 
 // Srender renders the list as a string.
 func (l BulletListPrinter) Srender() (string, error) {
-	var ret string
+	var ret strings.Builder
 	for _, item := range l.Items {
 		if item.TextStyle == nil {
 			if l.TextStyle == nil {
@@ -141,11 +116,24 @@ func (l BulletListPrinter) Srender() (string, error) {
 				item.BulletStyle = l.BulletStyle
 			}
 		}
-		if item.Bullet == "" {
-			ret += strings.Repeat(" ", item.Level) + item.BulletStyle.Sprint(l.Bullet) + " " + item.TextStyle.Sprint(item.Text) + "\n"
-		} else {
-			ret += strings.Repeat(" ", item.Level) + item.BulletStyle.Sprint(item.Bullet) + " " + item.TextStyle.Sprint(item.Text) + "\n"
+
+		split := strings.Split(item.Text, "\n")
+		for i, line := range split {
+			ret.WriteString(strings.Repeat(" ", item.Level))
+			if i == 0 {
+				if item.Bullet == "" {
+					ret.WriteString(item.BulletStyle.Sprint(l.Bullet))
+				} else {
+					ret.WriteString(item.BulletStyle.Sprint(item.Bullet))
+				}
+				ret.WriteByte(' ')
+			} else {
+				ret.WriteString(strings.Repeat(" ", len(item.Bullet)))
+				ret.WriteString("  ")
+			}
+			ret.WriteString(item.TextStyle.Sprint(line))
+			ret.WriteByte('\n')
 		}
 	}
-	return ret, nil
+	return ret.String(), nil
 }

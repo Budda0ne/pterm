@@ -23,7 +23,6 @@ func TestTablePrinter_Render(t *testing.T) {
 		{"Callie", "Mckay", "egestas.nunc.sed@est.com"},
 		{"Libby", "Camacho", "aliquet.lobortis@semper.com"},
 	}
-	pterm.DefaultTable.WithHasHeader().WithData(d).Render()
 	// WithLeftAlignment
 	printer := pterm.DefaultTable.WithHasHeader().WithLeftAlignment().WithData(d)
 	content, err := printer.Srender()
@@ -38,6 +37,24 @@ func TestTablePrinter_Render(t *testing.T) {
 	testza.AssertNotNil(t, content)
 }
 
+func TestTablePrinterWithAlternateStyle_Render(t *testing.T) {
+	d := pterm.TableData{
+		{"Firstname", "Lastname", "Email"},
+		{"Paul", "Dean", "nisi.dictum.augue@velitAliquam.co.uk"},
+		{"Callie", "Mckay", "egestas.nunc.sed@est.com"},
+		{"Libby", "Camacho", "aliquet.lobortis@semper.com"},
+	}
+
+	// Define the alternate row style
+	alternateStyle := pterm.NewStyle(pterm.BgDarkGray)
+
+	// Create a printer with the alternate row style
+	printer := pterm.DefaultTable.WithHasHeader().WithAlternateRowStyle(alternateStyle).WithData(d)
+	content, err := printer.Srender()
+	testza.AssertNoError(t, err)
+	testza.AssertNotNil(t, content)
+}
+
 func TestTablePrinterWithRowSeparators_Render(t *testing.T) {
 	d := pterm.TableData{
 		{"Firstname", "Lastname", "Email"},
@@ -45,7 +62,6 @@ func TestTablePrinterWithRowSeparators_Render(t *testing.T) {
 		{"Callie", "Mckay", "egestas.nunc.sed@est.com"},
 		{"Libby", "Camacho", "aliquet.lobortis@semper.com"},
 	}
-	pterm.DefaultTable.WithHasHeader().WithHeaderRowSeparator("=").WithData(d).Render()
 	// WithHeaderSeparator
 	printer := pterm.DefaultTable.WithHasHeader().WithHeaderRowSeparator("=").WithData(d)
 	content, err := printer.Srender()

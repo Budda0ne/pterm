@@ -2,6 +2,7 @@ package pterm
 
 import (
 	"io"
+	"os"
 	"time"
 
 	"github.com/pterm/pterm/internal"
@@ -18,9 +19,11 @@ var DefaultSpinner = SpinnerPrinter{
 	TimerRoundingFactor: time.Second,
 	TimerStyle:          &ThemeDefault.TimerStyle,
 	MessageStyle:        &ThemeDefault.SpinnerTextStyle,
+	InfoPrinter:         &Info,
 	SuccessPrinter:      &Success,
 	FailPrinter:         &Error,
 	WarningPrinter:      &Warning,
+	Writer:              os.Stderr,
 }
 
 // SpinnerPrinter is a loading animation, which can be used if the progress is unknown.
@@ -32,6 +35,7 @@ type SpinnerPrinter struct {
 	Style               *Style
 	Delay               time.Duration
 	MessageStyle        *Style
+	InfoPrinter         TextPrinter
 	SuccessPrinter      TextPrinter
 	FailPrinter         TextPrinter
 	WarningPrinter      TextPrinter
@@ -90,6 +94,12 @@ func (s SpinnerPrinter) WithShowTimer(b ...bool) *SpinnerPrinter {
 	return &s
 }
 
+// WithStartedAt sets the time when the SpinnerPrinter started.
+func (s SpinnerPrinter) WithStartedAt(t time.Time) *SpinnerPrinter {
+	s.startedAt = t
+	return &s
+}
+
 // WithTimerRoundingFactor sets the rounding factor for the timer.
 func (s SpinnerPrinter) WithTimerRoundingFactor(factor time.Duration) *SpinnerPrinter {
 	s.TimerRoundingFactor = factor
@@ -108,21 +118,34 @@ func (p SpinnerPrinter) WithWriter(writer io.Writer) *SpinnerPrinter {
 	return &p
 }
 
+// SetWriter sets the custom Writer.
+func (p *SpinnerPrinter) SetWriter(writer io.Writer) {
+	p.Writer = writer
+}
+
+// ResetTimer resets the timer of the SpinnerPrinter.
+func (s *SpinnerPrinter) ResetTimer() {
+	s.startedAt = time.Now()
+}
+
+// SetStartedAt sets the time when the SpinnerPrinter started.
+func (s *SpinnerPrinter) SetStartedAt(t time.Time) {
+	s.startedAt = t
+}
+
 // UpdateText updates the message of the active SpinnerPrinter.
 // Can be used live.
 func (s *SpinnerPrinter) UpdateText(text string) {
 	s.Text = text
 	if !RawOutput {
-		fClearLine(s.Writer)
 		Fprinto(s.Writer, s.Style.Sprint(s.currentSequence)+" "+s.MessageStyle.Sprint(s.Text))
-	}
-	if RawOutput {
+	} else {
 		Fprintln(s.Writer, s.Text)
 	}
 }
 
 // Start the SpinnerPrinter.
-func (s SpinnerPrinter) Start(text ...interface{}) (*SpinnerPrinter, error) {
+func (s SpinnerPrinter) Start(text ...any) (*SpinnerPrinter, error) {
 	s.IsActive = true
 	s.startedAt = time.Now()
 	activeSpinnerPrinters = append(activeSpinnerPrinters, &s)
@@ -138,7 +161,11 @@ func (s SpinnerPrinter) Start(text ...interface{}) (*SpinnerPrinter, error) {
 	go func() {
 		for s.IsActive {
 			for _, seq := range s.Sequence {
-				if !s.IsActive || RawOutput {
+				if !s.IsActive {
+					continue
+				}
+				if RawOutput {
+					time.Sleep(s.Delay)
 					continue
 				}
 
@@ -158,6 +185,9 @@ func (s SpinnerPrinter) Start(text ...interface{}) (*SpinnerPrinter, error) {
 // Stop terminates the SpinnerPrinter immediately.
 // The SpinnerPrinter will not resolve into anything.
 func (s *SpinnerPrinter) Stop() error {
+	if !s.IsActive {
+		return nil
+	}
 	s.IsActive = false
 	if s.RemoveWhenDone {
 		fClearLine(s.Writer)
@@ -172,8 +202,8 @@ func (s *SpinnerPrinter) Stop() error {
 // This is used for the interface LivePrinter.
 // You most likely want to use Start instead of this in your program.
 func (s *SpinnerPrinter) GenericStart() (*LivePrinter, error) {
-	_, _ = s.Start()
-	lp := LivePrinter(s)
+	p2, _ := s.Start()
+	lp := LivePrinter(p2)
 	return &lp, nil
 }
 
@@ -186,15 +216,30 @@ func (s *SpinnerPrinter) GenericStop() (*LivePrinter, error) {
 	return &lp, nil
 }
 
+// Info displays an info message
+// If no message is given, the text of the SpinnerPrinter will be reused as the default message.
+func (s *SpinnerPrinter) Info(message ...any) {
+	if s.InfoPrinter == nil {
+		s.InfoPrinter = &Info
+	}
+
+	if len(message) == 0 {
+		message = []any{s.Text}
+	}
+	fClearLine(s.Writer)
+	Fprinto(s.Writer, s.InfoPrinter.Sprint(message...))
+	_ = s.Stop()
+}
+
 // Success displays the success printer.
 // If no message is given, the text of the SpinnerPrinter will be reused as the default message.
-func (s *SpinnerPrinter) Success(message ...interface{}) {
+func (s *SpinnerPrinter) Success(message ...any) {
 	if s.SuccessPrinter == nil {
 		s.SuccessPrinter = &Success
 	}
 
 	if len(message) == 0 {
-		message = []interface{}{s.Text}
+		message = []any{s.Text}
 	}
 	fClearLine(s.Writer)
 	Fprinto(s.Writer, s.SuccessPrinter.Sprint(message...))
@@ -203,13 +248,13 @@ func (s *SpinnerPrinter) Success(message ...interface{}) {
 
 // Fail displays the fail printer.
 // If no message is given, the text of the SpinnerPrinter will be reused as the default message.
-func (s *SpinnerPrinter) Fail(message ...interface{}) {
+func (s *SpinnerPrinter) Fail(message ...any) {
 	if s.FailPrinter == nil {
 		s.FailPrinter = &Error
 	}
 
 	if len(message) == 0 {
-		message = []interface{}{s.Text}
+		message = []any{s.Text}
 	}
 	fClearLine(s.Writer)
 	Fprinto(s.Writer, s.FailPrinter.Sprint(message...))
@@ -218,13 +263,13 @@ func (s *SpinnerPrinter) Fail(message ...interface{}) {
 
 // Warning displays the warning printer.
 // If no message is given, the text of the SpinnerPrinter will be reused as the default message.
-func (s *SpinnerPrinter) Warning(message ...interface{}) {
+func (s *SpinnerPrinter) Warning(message ...any) {
 	if s.WarningPrinter == nil {
 		s.WarningPrinter = &Warning
 	}
 
 	if len(message) == 0 {
-		message = []interface{}{s.Text}
+		message = []any{s.Text}
 	}
 	fClearLine(s.Writer)
 	Fprinto(s.Writer, s.WarningPrinter.Sprint(message...))

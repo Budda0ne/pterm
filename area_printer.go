@@ -1,9 +1,10 @@
 package pterm
 
 import (
+	"io"
 	"strings"
 
-	"github.com/atomicgo/cursor"
+	"atomicgo.dev/cursor"
 
 	"github.com/pterm/pterm/internal"
 )
@@ -47,9 +48,14 @@ func (p AreaPrinter) WithCenter(b ...bool) *AreaPrinter {
 	return &p
 }
 
+// SetWriter sets the writer for the AreaPrinter.
+func (p *AreaPrinter) SetWriter(writer io.Writer) {
+
+}
+
 // Update overwrites the content of the AreaPrinter.
 // Can be used live.
-func (p *AreaPrinter) Update(text ...interface{}) {
+func (p *AreaPrinter) Update(text ...any) {
 	if p.area == nil {
 		newArea := cursor.NewArea()
 		p.area = &newArea
@@ -83,7 +89,7 @@ func (p *AreaPrinter) Update(text ...interface{}) {
 }
 
 // Start the AreaPrinter.
-func (p *AreaPrinter) Start(text ...interface{}) (*AreaPrinter, error) {
+func (p *AreaPrinter) Start(text ...any) (*AreaPrinter, error) {
 	p.isActive = true
 	str := Sprint(text...)
 	newArea := cursor.NewArea()
@@ -97,6 +103,9 @@ func (p *AreaPrinter) Start(text ...interface{}) (*AreaPrinter, error) {
 // Stop terminates the AreaPrinter immediately.
 // The AreaPrinter will not resolve into anything.
 func (p *AreaPrinter) Stop() error {
+	if !p.isActive {
+		return nil
+	}
 	p.isActive = false
 	if p.RemoveWhenDone {
 		p.Clear()
@@ -122,8 +131,8 @@ func (p *AreaPrinter) GenericStop() (*LivePrinter, error) {
 	return &lp, nil
 }
 
-// Wrapper function that clears the content of the Area.
-// Moves the cursor to the bottom of the terminal, clears n lines upwards from
+// Clear is a Wrapper function that clears the content of the Area
+// moves the cursor to the bottom of the terminal, clears n lines upwards from
 // the current position and moves the cursor again.
 func (p *AreaPrinter) Clear() {
 	p.area.Clear()

@@ -9,12 +9,13 @@ import (
 
 // GetStringMaxWidth returns the maximum width of a string with multiple lines.
 func GetStringMaxWidth(s string) int {
-	var max int
+	var maxString int
 	ss := strings.Split(s, "\n")
 	for _, s2 := range ss {
-		if runewidth.StringWidth(color.ClearCode(s2)) > max {
-			max = runewidth.StringWidth(color.ClearCode(s2))
+		s2WithoutColor := color.ClearCode(s2)
+		if runewidth.StringWidth(s2WithoutColor) > maxString {
+			maxString = runewidth.StringWidth(s2WithoutColor)
 		}
 	}
-	return max
+	return maxString
 }

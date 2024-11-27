@@ -58,8 +58,7 @@ func (p PanelPrinter) WithBottomPadding(bottomPadding int) *PanelPrinter {
 
 // WithSameColumnWidth returns a new PanelPrinter with specific options.
 func (p PanelPrinter) WithSameColumnWidth(b ...bool) *PanelPrinter {
-	b2 := internal.WithBoolean(b)
-	p.SameColumnWidth = b2
+	p.SameColumnWidth = internal.WithBoolean(b)
 	return &p
 }
 
@@ -76,19 +75,20 @@ func (p PanelPrinter) WithWriter(writer io.Writer) *PanelPrinter {
 }
 
 func (p PanelPrinter) getRawOutput() string {
-	var ret string
+	var ret strings.Builder
 	for _, panel := range p.Panels {
 		for _, panel2 := range panel {
-			ret += panel2.Data + "\n\n"
+			ret.WriteString(panel2.Data)
+			ret.WriteString("\n\n")
 		}
-		ret += "\n"
+		ret.WriteByte('\n')
 	}
-	return ret
+	return ret.String()
 }
 
 // Srender renders the Template as a string.
 func (p PanelPrinter) Srender() (string, error) {
-	var ret string
+	var ret strings.Builder
 
 	if RawOutput {
 		return p.getRawOutput(), nil
@@ -171,20 +171,20 @@ func (p PanelPrinter) Srender() (string, error) {
 						}
 					}
 					letterLine += strings.Repeat(" ", p.Padding)
-					ret += letterLine
+					ret.WriteString(letterLine)
 				}
-				ret += "\n"
+				ret.WriteByte('\n')
 			}
 		}
 	}
 
-	return ret, nil
+	return ret.String(), nil
 }
 
 // Render prints the Template to the terminal.
 func (p PanelPrinter) Render() error {
 	s, _ := p.Srender()
-	Println(s)
+	Fprintln(p.Writer, s)
 
 	return nil
 }
