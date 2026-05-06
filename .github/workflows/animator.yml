@@ -1,6 +1,5 @@
 on:
-  push:
-    branches: [master]
+  workflow_dispatch:
 
 name: Update Animations
 
@@ -13,7 +12,6 @@ concurrency:
 
 jobs:
   animations:
-    if: "!contains(github.event.head_commit.message, 'autoupdate')"
     runs-on: ubuntu-latest
     timeout-minutes: 120
     env:
