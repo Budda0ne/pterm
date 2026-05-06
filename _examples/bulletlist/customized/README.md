@@ -1,6 +1,6 @@
 # bulletlist/customized
 
-![Animation](https://vhs.charm.sh/vhs-2eWtEghPEkDYALoMcOw9Sz.gif)
+![Animation](https://vhs.charm.sh/vhs-6MPrmf3GZmnWEGRRX37bHK.gif)
 
 ```go
 package main

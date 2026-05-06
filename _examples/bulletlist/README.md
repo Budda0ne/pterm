@@ -1,6 +1,6 @@
 ### bulletlist/demo
 
-![Animation](https://vhs.charm.sh/vhs-5VyjQrMRgVzF8GolGYYK7x.gif)
+![Animation](https://vhs.charm.sh/vhs-OpzetpaKxQ4yRzpAHSiI5.gif)
 
 <details>
 
@@ -40,7 +40,7 @@ func main() {
 
 ### bulletlist/customized
 
-![Animation](https://vhs.charm.sh/vhs-2eWtEghPEkDYALoMcOw9Sz.gif)
+![Animation](https://vhs.charm.sh/vhs-6MPrmf3GZmnWEGRRX37bHK.gif)
 
 <details>
 

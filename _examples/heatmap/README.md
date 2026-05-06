@@ -1,6 +1,6 @@
 ### heatmap/demo
 
-![Animation](https://vhs.charm.sh/vhs-5Gg9cnXkTW44HZiZqIKaM1.gif)
+![Animation](https://vhs.charm.sh/vhs-3z0GW9eXD4Q5Dqpa9d7hCd.gif)
 
 <details>
 
@@ -39,7 +39,7 @@ func main() {
 
 ### heatmap/custom_colors
 
-![Animation](https://vhs.charm.sh/vhs-31y7AvLKclklj1MfSXW9wq.gif)
+![Animation](https://vhs.charm.sh/vhs-f1QlokaZY828iOfDUnPS7.gif)
 
 <details>
 
@@ -88,7 +88,7 @@ func main() {
 
 ### heatmap/custom_legend
 
-![Animation](https://vhs.charm.sh/vhs-1R4ftXBA6ji3DRObytiIPh.gif)
+![Animation](https://vhs.charm.sh/vhs-1we9LwHEoQ8K1KSEpaigx4.gif)
 
 <details>
 
@@ -138,7 +138,7 @@ func main() {
 
 ### heatmap/custom_rgb
 
-![Animation](https://vhs.charm.sh/vhs-5gD43rIoUbSLhOoDXOsX4P.gif)
+![Animation](https://vhs.charm.sh/vhs-5K4eVK7S1b0sZZiUO2R2JD.gif)
 
 <details>
 
@@ -194,7 +194,7 @@ func main() {
 
 ### heatmap/no_grid
 
-![Animation](https://vhs.charm.sh/vhs-GCMu734z7KipKZyJkJAKQ.gif)
+![Animation](https://vhs.charm.sh/vhs-6lkwrF7EPJmYKCm9gJJPog.gif)
 
 <details>
 
@@ -236,7 +236,7 @@ func main() {
 
 ### heatmap/separated
 
-![Animation](https://vhs.charm.sh/vhs-7tVQlAJIY38qZzmqnxXWTB.gif)
+![Animation](https://vhs.charm.sh/vhs-45oSPWmnHW2mOeCo3hCccL.gif)
 
 <details>
 
@@ -262,10 +262,6 @@ func main() {
 		XAxis: []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m"},
 		YAxis: []string{"1", "2", "3", "4", "5"},
 	}
-
-	// Print an informational message.
-	pterm.Info.Println("The following table has no rgb (supported by every terminal), no axis data and no legend.")
-	pterm.Println()
 
 	// Create the heatmap with the specified data and options, and render it.
 	pterm.DefaultHeatmap.WithData(data).WithBoxed(false).WithAxisData(headerData).WithLegend(false).Render()

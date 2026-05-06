@@ -1,6 +1,6 @@
 ### interactive_multiselect/demo
 
-![Animation](https://vhs.charm.sh/vhs-5Ab3fT3ObEBGkEpU2Bp6u4.gif)
+![Animation](https://vhs.charm.sh/vhs-hmj80dFuzSnLc8Mjb1xTQ.gif)
 
 <details>
 
@@ -41,7 +41,7 @@ func main() {
 
 ### interactive_multiselect/custom-checkmarks
 
-![Animation](https://vhs.charm.sh/vhs-1qHwd2WmvXUm3zoVAgFGPm.gif)
+![Animation](https://vhs.charm.sh/vhs-PRIxhslFelieJ9gdmvnQX.gif)
 
 <details>
 
@@ -83,7 +83,7 @@ func main() {
 
 ### interactive_multiselect/custom-filter-placeholder
 
-![Animation](https://vhs.charm.sh/vhs-3NtvedqCpBJW1DRt8jMg4q.gif)
+![Animation](https://vhs.charm.sh/vhs-2fS26p1pVt8KI2SkzKp4FV.gif)
 
 <details>
 
@@ -131,7 +131,7 @@ func main() {
 
 ### interactive_multiselect/custom-keys
 
-![Animation](https://vhs.charm.sh/vhs-4OZy3vP4kGVWAAvhaZlp4G.gif)
+![Animation](https://vhs.charm.sh/vhs-5evJmE7RK94d65Fd9W7gSZ.gif)
 
 <details>
 
@@ -175,7 +175,7 @@ func main() {
 
 ### interactive_multiselect/show-selected-options
 
-![Animation](https://vhs.charm.sh/vhs-4XI4oApCAUAzEHQcPe5FFY.gif)
+![Animation](https://vhs.charm.sh/vhs-79UABV3FoZEyLTyXEChwR3.gif)
 
 <details>
 

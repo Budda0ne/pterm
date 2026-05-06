@@ -1,6 +1,6 @@
 # table/right-alignment
 
-![Animation](https://vhs.charm.sh/vhs-2w0inKSgt3JQLFYx3q3T64.gif)
+![Animation](https://vhs.charm.sh/vhs-5rWnbjwsvfGAhjgzf4POkb.gif)
 
 ```go
 package main

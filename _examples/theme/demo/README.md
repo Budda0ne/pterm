@@ -1,6 +1,6 @@
 # theme/demo
 
-![Animation](https://vhs.charm.sh/vhs-4ZgBDHqqntaY38Dkdj50Nh.gif)
+![Animation](https://vhs.charm.sh/vhs-2A0Ww3KAtZTvf68kJJXxVM.gif)
 
 ```go
 package main

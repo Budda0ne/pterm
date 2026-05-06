@@ -1,6 +1,6 @@
 ### progressbar/demo
 
-![Animation](https://vhs.charm.sh/vhs-6HhPdzqi4jY5ZzjYij6FKT.gif)
+![Animation](https://vhs.charm.sh/vhs-7zrsbpK0TVdfdIUgaHpmxe.gif)
 
 <details>
 
@@ -51,7 +51,7 @@ func main() {
 
 ### progressbar/multiple
 
-![Animation](https://vhs.charm.sh/vhs-2I9M18DhhJAUtFbFMGu68S.gif)
+![Animation](https://vhs.charm.sh/vhs-3rci8RIk58EznMYOLfOmpz.gif)
 
 <details>
 

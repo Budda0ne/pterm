@@ -1,6 +1,6 @@
 # interactive_multiselect/custom-keys
 
-![Animation](https://vhs.charm.sh/vhs-4OZy3vP4kGVWAAvhaZlp4G.gif)
+![Animation](https://vhs.charm.sh/vhs-5evJmE7RK94d65Fd9W7gSZ.gif)
 
 ```go
 package main

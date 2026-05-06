@@ -1,6 +1,6 @@
 # box/custom-padding
 
-![Animation](https://vhs.charm.sh/vhs-i8JKBbJhrtKmtrcIN2uCr.gif)
+![Animation](https://vhs.charm.sh/vhs-e83jtbSn11yL8J1Q7mWxd.gif)
 
 ```go
 package main

@@ -1,6 +1,6 @@
 # heatmap/custom_rgb
 
-![Animation](https://vhs.charm.sh/vhs-5gD43rIoUbSLhOoDXOsX4P.gif)
+![Animation](https://vhs.charm.sh/vhs-5K4eVK7S1b0sZZiUO2R2JD.gif)
 
 ```go
 package main

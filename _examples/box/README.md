@@ -1,6 +1,6 @@
 ### box/demo
 
-![Animation](https://vhs.charm.sh/vhs-43DUmCj6psdTlGZCIzKCkr.gif)
+![Animation](https://vhs.charm.sh/vhs-33SKAeYhBzeJOHrXFiiDeB.gif)
 
 <details>
 
@@ -12,9 +12,6 @@ package main
 import "github.com/pterm/pterm"
 
 func main() {
-	// Print an informational message.
-	pterm.Info.Println("This might not be rendered correctly on GitHub,\nbut it will work in a real terminal.\nThis is because GitHub does not use a monospaced font by default for SVGs")
-
 	// Create three panels with text, some of them with titles.
 	// The panels are created using the DefaultBox style.
 	panel1 := pterm.DefaultBox.Sprint("Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit,\nsed do eiusmod tempor incididunt\nut labore et dolore\nmagna aliqua.")
@@ -39,7 +36,7 @@ func main() {
 
 ### box/custom-padding
 
-![Animation](https://vhs.charm.sh/vhs-i8JKBbJhrtKmtrcIN2uCr.gif)
+![Animation](https://vhs.charm.sh/vhs-e83jtbSn11yL8J1Q7mWxd.gif)
 
 <details>
 
@@ -60,7 +57,7 @@ func main() {
 
 ### box/default
 
-![Animation](https://vhs.charm.sh/vhs-QVPtf5voQmddcwL3vosIS.gif)
+![Animation](https://vhs.charm.sh/vhs-143eHEcxwAHSkc50MnF8Nh.gif)
 
 <details>
 
@@ -82,7 +79,7 @@ func main() {
 
 ### box/title
 
-![Animation](https://vhs.charm.sh/vhs-4Que0JUommpulZ4oifPCxv.gif)
+![Animation](https://vhs.charm.sh/vhs-3wC8n5VgI11EIe58F5lcYO.gif)
 
 <details>
 

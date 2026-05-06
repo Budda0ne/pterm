@@ -1,6 +1,6 @@
 # heatmap/demo
 
-![Animation](https://vhs.charm.sh/vhs-5Gg9cnXkTW44HZiZqIKaM1.gif)
+![Animation](https://vhs.charm.sh/vhs-3z0GW9eXD4Q5Dqpa9d7hCd.gif)
 
 ```go
 package main

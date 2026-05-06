@@ -1,6 +1,6 @@
 # interactive_multiselect/custom-filter-placeholder
 
-![Animation](https://vhs.charm.sh/vhs-3NtvedqCpBJW1DRt8jMg4q.gif)
+![Animation](https://vhs.charm.sh/vhs-2fS26p1pVt8KI2SkzKp4FV.gif)
 
 ```go
 package main

@@ -1,6 +1,6 @@
 # area/fullscreen-center
 
-![Animation](https://vhs.charm.sh/vhs-2YvXZ3kek6XOaIGPQKpNbP.gif)
+![Animation](https://vhs.charm.sh/vhs-4x85l9QwUoh7qMgMklerCN.gif)
 
 ```go
 package main

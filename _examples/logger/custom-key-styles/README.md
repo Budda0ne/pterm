@@ -1,6 +1,6 @@
 # logger/custom-key-styles
 
-![Animation](https://vhs.charm.sh/vhs-4Km8B04pvnop5U2eUYiqB5.gif)
+![Animation](https://vhs.charm.sh/vhs-1eo5mU4Zrjxbu2KpH4rheX.gif)
 
 ```go
 package main

@@ -1,6 +1,6 @@
 # box/default
 
-![Animation](https://vhs.charm.sh/vhs-QVPtf5voQmddcwL3vosIS.gif)
+![Animation](https://vhs.charm.sh/vhs-143eHEcxwAHSkc50MnF8Nh.gif)
 
 ```go
 package main

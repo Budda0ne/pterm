@@ -1,6 +1,6 @@
 ### spinner/demo
 
-![Animation](https://vhs.charm.sh/vhs-4WGvqxFHjBF9WV9oWwOYis.gif)
+![Animation](https://vhs.charm.sh/vhs-2mQv5k8LJY3bgKQKSfTwKv.gif)
 
 <details>
 
@@ -64,7 +64,7 @@ func main() {
 
 ### spinner/multiple
 
-![Animation](https://vhs.charm.sh/vhs-4QUfdRQthIpsPvGGUM009s.gif)
+![Animation](https://vhs.charm.sh/vhs-3MI0B7g2nbqYUkLJ4SheYz.gif)
 
 <details>
 

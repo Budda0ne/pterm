@@ -1,6 +1,6 @@
 # coloring/fade-colors-rgb-style
 
-![Animation](https://vhs.charm.sh/vhs-7Fip42EJG4WSZJJN1ZD2ex.gif)
+![Animation](https://vhs.charm.sh/vhs-6fAwuLiS2Jx06O0wPwMF6C.gif)
 
 ```go
 package main

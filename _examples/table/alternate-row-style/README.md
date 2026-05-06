@@ -1,6 +1,6 @@
 # table/alternate-row-style
 
-![Animation](https://vhs.charm.sh/vhs-rWGNET95xSNwLzjSdKlUc.gif)
+![Animation](https://vhs.charm.sh/vhs-yteDmOmCrDnbD1iaE6zvv.gif)
 
 ```go
 package main

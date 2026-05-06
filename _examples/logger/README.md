@@ -1,6 +1,6 @@
 ### logger/demo
 
-![Animation](https://vhs.charm.sh/vhs-4mLT9fy0duDGy76Y2RcqXt.gif)
+![Animation](https://vhs.charm.sh/vhs-1nve3rn7NIA7to4SoEwwWM.gif)
 
 <details>
 
@@ -75,7 +75,7 @@ func sleep() {
 
 ### logger/custom-key-styles
 
-![Animation](https://vhs.charm.sh/vhs-4Km8B04pvnop5U2eUYiqB5.gif)
+![Animation](https://vhs.charm.sh/vhs-1eo5mU4Zrjxbu2KpH4rheX.gif)
 
 <details>
 
@@ -116,7 +116,7 @@ func main() {
 
 ### logger/default
 
-![Animation](https://vhs.charm.sh/vhs-4JeKCSLdG8p687vQFDcHby.gif)
+![Animation](https://vhs.charm.sh/vhs-1ON98pUXEF4e5HBjtcAef6.gif)
 
 <details>
 
@@ -171,7 +171,7 @@ func main() {
 
 ### logger/json
 
-![Animation](https://vhs.charm.sh/vhs-5pZsdHaBLSX6yTOhlHwQZz.gif)
+![Animation](https://vhs.charm.sh/vhs-6MBo5tGUyaVkMk3imfAcUN.gif)
 
 <details>
 
@@ -212,7 +212,7 @@ func main() {
 
 ### logger/with-caller
 
-![Animation](https://vhs.charm.sh/vhs-2LoJwXyihXvnJ2wyZRFP7g.gif)
+![Animation](https://vhs.charm.sh/vhs-70grmu6kbzkqdSt7rq3Ijq.gif)
 
 <details>
 

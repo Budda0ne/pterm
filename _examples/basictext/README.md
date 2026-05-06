@@ -1,6 +1,6 @@
 ### basictext/demo
 
-![Animation](https://vhs.charm.sh/vhs-25T1d3hhwrI27QeDNymk6f.gif)
+![Animation](https://vhs.charm.sh/vhs-74giaE9ixpmDuNURHgi66Z.gif)
 
 <details>
 

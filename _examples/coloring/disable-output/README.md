@@ -1,6 +1,6 @@
 # coloring/disable-output
 
-![Animation](https://vhs.charm.sh/vhs-66Cwz98xMAX0DwK6A3wZ4D.gif)
+![Animation](https://vhs.charm.sh/vhs-3f8NMOVB9Vff7DA43RHqCn.gif)
 
 ```go
 package main

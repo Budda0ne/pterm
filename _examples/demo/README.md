@@ -1,6 +1,6 @@
 ### demo/demo
 
-![Animation](https://vhs.charm.sh/vhs-476CDsxMFljwWYNGBXkb9X.gif)
+![Animation](https://vhs.charm.sh/vhs-7H0FnHbjINFtuaSPSDwZLF.gif)
 
 <details>
 
@@ -11,6 +11,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"math/rand"
 	"reflect"
 	"strconv"
@@ -21,17 +22,12 @@ import (
 	"github.com/pterm/pterm/putils"
 )
 
-// Speed the demo up, by setting this flag.
-// Usefull for debugging.
-// Example:
-//
-//	go run main.go -speedup
 var speedup = flag.Bool("speedup", false, "Speed up the demo")
 var skipIntro = flag.Bool("skip-intro", false, "Skips the intro")
 var second = time.Second
+var section = pterm.DefaultHeader.WithBackgroundStyle(pterm.NewStyle(pterm.BgLightBlue)).WithTextStyle(pterm.NewStyle(pterm.FgLightMagenta)).WithFullWidth()
 
-var pseudoProgramList = strings.Split("pseudo-excel pseudo-photoshop pseudo-chrome pseudo-outlook pseudo-explorer "+
-	"pseudo-git pseudo-vsc pseudo-intellij pseudo-minecraft pseudo-scoop pseudo-chocolatey", " ")
+var pseudoProgramList = []string{"excel", "photoshop", "chrome", "outlook", "git", "vscode", "minecraft", "neovim", "gopls"}
 
 func main() {
 	setup() // Setup the demo (flags etc.)
@@ -235,7 +231,9 @@ func introScreen() {
 
 	pterm.DefaultCenter.Print(ptermLogo)
 
-	pterm.DefaultCenter.Print(pterm.DefaultHeader.WithFullWidth().WithBackgroundStyle(pterm.NewStyle(pterm.BgLightBlue)).WithMargin(10).Sprint("PTDP - PTerm Demo Program"))
+	section.Println("PTDP - PTerm Demo Program")
+
+	fmt.Println() // blank line
 
 	pterm.Info.Println("This animation was generated with the latest version of PTerm!" +
 		"\nPTerm works on nearly every terminal and operating system." +
@@ -263,7 +261,7 @@ func clear() {
 }
 
 func showcase(title string, seconds int, content func()) {
-	pterm.DefaultHeader.WithBackgroundStyle(pterm.NewStyle(pterm.BgLightBlue)).WithFullWidth().Println(title)
+	section.Println(title)
 	pterm.Println()
 	time.Sleep(second / 2)
 	content()

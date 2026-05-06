@@ -1,6 +1,6 @@
 # tree/from-leveled-list
 
-![Animation](https://vhs.charm.sh/vhs-2bm3GXfPOGQxsVAIevSXyV.gif)
+![Animation](https://vhs.charm.sh/vhs-Oq3WRBLRwjbireH4KkuWO.gif)
 
 ```go
 package main

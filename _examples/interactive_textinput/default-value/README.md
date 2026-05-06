@@ -1,6 +1,6 @@
 # interactive_textinput/default-value
 
-![Animation](https://vhs.charm.sh/vhs-4xULLP7ugZkEcFsvi7O9r1.gif)
+![Animation](https://vhs.charm.sh/vhs-5DeRRhXi4O6FLuMCby1A2T.gif)
 
 ```go
 package main

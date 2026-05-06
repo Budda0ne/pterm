@@ -1,6 +1,6 @@
 # interactive_textinput/demo
 
-![Animation](https://vhs.charm.sh/vhs-B8fA0qEGTTDmSrWZDNA3.gif)
+![Animation](https://vhs.charm.sh/vhs-7tXyy2wsH9KgIXwJQtrmIH.gif)
 
 ```go
 package main

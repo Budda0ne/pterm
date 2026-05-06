@@ -1,6 +1,6 @@
 # interactive_select/demo
 
-![Animation](https://vhs.charm.sh/vhs-41bPcowyhaFNU5vvWSIL7R.gif)
+![Animation](https://vhs.charm.sh/vhs-4hzYVSw05ojIHiS6CARpkQ.gif)
 
 ```go
 package main

@@ -1,6 +1,6 @@
 # heatmap/custom_legend
 
-![Animation](https://vhs.charm.sh/vhs-1R4ftXBA6ji3DRObytiIPh.gif)
+![Animation](https://vhs.charm.sh/vhs-1we9LwHEoQ8K1KSEpaigx4.gif)
 
 ```go
 package main

@@ -316,10 +316,27 @@
 
 
 ────────────────────────────────────────────────────────────────────────────────
-2026-05-01 00:45:53 INFO  The priority key should now be red
+2026-05-06 21:45:01 INFO  The priority key should now be red
                       ├ priority: low
                       └ foo: bar
-2026-05-01 00:45:53 INFO  The foo key should now be blue
+2026-05-06 21:45:01 INFO  The foo key should now be blue
+                      ├ priority: low
+                      └ foo: bar
+
+
+
+
+
+
+
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+2026-05-06 21:45:01 INFO  The priority key should now be red
+                      ├ priority: low
+                      └ foo: bar
+2026-05-06 21:45:01 INFO  The foo key should now be blue
                       ├ priority: low
                       └ foo: bar
 >
@@ -333,27 +350,10 @@
 
 
 ────────────────────────────────────────────────────────────────────────────────
-2026-05-01 00:45:53 INFO  The priority key should now be red
+2026-05-06 21:45:01 INFO  The priority key should now be red
                       ├ priority: low
                       └ foo: bar
-2026-05-01 00:45:53 INFO  The foo key should now be blue
-                      ├ priority: low
-                      └ foo: bar
->
-
-
-
-
-
-
-
-
-
-────────────────────────────────────────────────────────────────────────────────
-2026-05-01 00:45:53 INFO  The priority key should now be red
-                      ├ priority: low
-                      └ foo: bar
-2026-05-01 00:45:53 INFO  The foo key should now be blue
+2026-05-06 21:45:01 INFO  The foo key should now be blue
                       ├ priority: low
                       └ foo: bar
 >

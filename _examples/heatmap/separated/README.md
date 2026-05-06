@@ -1,6 +1,6 @@
 # heatmap/separated
 
-![Animation](https://vhs.charm.sh/vhs-7tVQlAJIY38qZzmqnxXWTB.gif)
+![Animation](https://vhs.charm.sh/vhs-45oSPWmnHW2mOeCo3hCccL.gif)
 
 ```go
 package main
@@ -22,10 +22,6 @@ func main() {
 		XAxis: []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m"},
 		YAxis: []string{"1", "2", "3", "4", "5"},
 	}
-
-	// Print an informational message.
-	pterm.Info.Println("The following table has no rgb (supported by every terminal), no axis data and no legend.")
-	pterm.Println()
 
 	// Create the heatmap with the specified data and options, and render it.
 	pterm.DefaultHeatmap.WithData(data).WithBoxed(false).WithAxisData(headerData).WithLegend(false).Render()

@@ -334,8 +334,8 @@ Areas can update their content dynamically!
 
 ────────────────────────────────────────────────────────────────────────────────
 Current count: 4
-Areas can update their content dynamically!>
-
+Areas can update their content dynamically!
+>
 
 
 
@@ -351,8 +351,8 @@ Areas can update their content dynamically!>
 
 ────────────────────────────────────────────────────────────────────────────────
 Current count: 4
-Areas can update their content dynamically!>
-
+Areas can update their content dynamically!
+>
 
 
 

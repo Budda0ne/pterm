@@ -1,6 +1,6 @@
 # spinner/demo
 
-![Animation](https://vhs.charm.sh/vhs-4WGvqxFHjBF9WV9oWwOYis.gif)
+![Animation](https://vhs.charm.sh/vhs-2mQv5k8LJY3bgKQKSfTwKv.gif)
 
 ```go
 package main

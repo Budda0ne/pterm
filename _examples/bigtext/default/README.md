@@ -1,6 +1,6 @@
 # bigtext/default
 
-![Animation](https://vhs.charm.sh/vhs-203C7xwJQYMYIXebRw1vtS.gif)
+![Animation](https://vhs.charm.sh/vhs-2RkEXHCMCOHA0bAlyqhMSY.gif)
 
 ```go
 package main

@@ -1,6 +1,6 @@
 # table/boxed
 
-![Animation](https://vhs.charm.sh/vhs-17tWYbTxs0YTbytFpZcM95.gif)
+![Animation](https://vhs.charm.sh/vhs-1EsPVlcGiPkAnURnA7NdJN.gif)
 
 ```go
 package main

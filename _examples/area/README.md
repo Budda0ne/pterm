@@ -1,6 +1,6 @@
 ### area/demo
 
-![Animation](https://vhs.charm.sh/vhs-6BFEFVArJQSAqhDMB3LQl6.gif)
+![Animation](https://vhs.charm.sh/vhs-5EtvNsiVtRrbBEqJcGZJBD.gif)
 
 <details>
 
@@ -52,7 +52,7 @@ func main() {
 
 ### area/center
 
-![Animation](https://vhs.charm.sh/vhs-1cyd8YnCir7Mrwu7DyRiCP.gif)
+![Animation](https://vhs.charm.sh/vhs-68aK5FpvO7XZHzMnVZhXwu.gif)
 
 <details>
 
@@ -76,7 +76,7 @@ func main() {
 	for i := 0; i < 5; i++ {
 		// Update the content of the area with the current count.
 		// The Sprintf function is used to format the string.
-		area.Update(pterm.Sprintf("Current count: %d\nAreas can update their content dynamically!", i))
+		area.Update(pterm.Sprintln("Current count: %d\nAreas can update their content dynamically!", i))
 
 		// Pause for a second to simulate a time-consuming task.
 		time.Sleep(time.Second)
@@ -91,7 +91,7 @@ func main() {
 
 ### area/default
 
-![Animation](https://vhs.charm.sh/vhs-7IhCjsQA6e5Rp11e8eAxNG.gif)
+![Animation](https://vhs.charm.sh/vhs-4InCBry5R7TszPTjxNjDZ8.gif)
 
 <details>
 
@@ -115,7 +115,7 @@ func main() {
 	for i := 0; i < 5; i++ {
 		// Update the content of the area dynamically.
 		// Here we're just displaying the current count.
-		area.Update(pterm.Sprintf("Current count: %d\nAreas can update their content dynamically!", i))
+		area.Update(pterm.Sprintfln("Current count: %d\nAreas can update their content dynamically!", i))
 
 		// Pause for a second before the next update.
 		time.Sleep(time.Second)
@@ -131,7 +131,7 @@ func main() {
 
 ### area/dynamic-chart
 
-![Animation](https://vhs.charm.sh/vhs-2cQvhvuQ3B9pBj4FFQhHfa.gif)
+![Animation](https://vhs.charm.sh/vhs-6EcuXmQAQeoHIAiFuzyR6U.gif)
 
 <details>
 
@@ -184,7 +184,7 @@ func dynamicBars(i int) pterm.Bars {
 
 ### area/fullscreen
 
-![Animation](https://vhs.charm.sh/vhs-2FCFVs5NSV0kYMRVzRCr34.gif)
+![Animation](https://vhs.charm.sh/vhs-1bxXPzNh5YCNebQ3pEm86a.gif)
 
 <details>
 
@@ -223,7 +223,7 @@ func main() {
 
 ### area/fullscreen-center
 
-![Animation](https://vhs.charm.sh/vhs-2YvXZ3kek6XOaIGPQKpNbP.gif)
+![Animation](https://vhs.charm.sh/vhs-4x85l9QwUoh7qMgMklerCN.gif)
 
 <details>
 

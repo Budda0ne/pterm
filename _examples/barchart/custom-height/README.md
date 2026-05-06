@@ -1,6 +1,6 @@
 # barchart/custom-height
 
-![Animation](https://vhs.charm.sh/vhs-5vLTJ082V7bklOqcjLFHIR.gif)
+![Animation](https://vhs.charm.sh/vhs-1vMGcEfkRlvB4jakRvOrGm.gif)
 
 ```go
 package main

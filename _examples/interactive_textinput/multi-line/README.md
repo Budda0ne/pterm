@@ -1,6 +1,6 @@
 # interactive_textinput/multi-line
 
-![Animation](https://vhs.charm.sh/vhs-5lCjIPFgeGrVP0sz9Du9aq.gif)
+![Animation](https://vhs.charm.sh/vhs-15THY2bAaKN3cHTDnoa1IH.gif)
 
 ```go
 package main

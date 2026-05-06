@@ -45,7 +45,7 @@
 <br/>
 
 <a href="https://github.com/pterm/pterm/tree/master/_examples/demo/demo" style="text-decoration: none">
-<img src="https://vhs.charm.sh/vhs-476CDsxMFljwWYNGBXkb9X.gif" alt="PTerm">
+<img src="https://vhs.charm.sh/vhs-7H0FnHbjINFtuaSPSDwZLF.gif" alt="PTerm">
 </a>
 <p align="center"><a href="https://github.com/pterm/pterm/tree/master/_examples/demo/demo" >Show Demo Code</p></p>
 
@@ -139,7 +139,7 @@ go get github.com/pterm/pterm
 <!-- examples:start -->
 ### area/demo
 
-![Animation](https://vhs.charm.sh/vhs-6BFEFVArJQSAqhDMB3LQl6.gif)
+![Animation](https://vhs.charm.sh/vhs-5EtvNsiVtRrbBEqJcGZJBD.gif)
 
 <details>
 
@@ -191,7 +191,7 @@ func main() {
 
 ### area/center
 
-![Animation](https://vhs.charm.sh/vhs-1cyd8YnCir7Mrwu7DyRiCP.gif)
+![Animation](https://vhs.charm.sh/vhs-68aK5FpvO7XZHzMnVZhXwu.gif)
 
 <details>
 
@@ -215,7 +215,7 @@ func main() {
 	for i := 0; i < 5; i++ {
 		// Update the content of the area with the current count.
 		// The Sprintf function is used to format the string.
-		area.Update(pterm.Sprintf("Current count: %d\nAreas can update their content dynamically!", i))
+		area.Update(pterm.Sprintln("Current count: %d\nAreas can update their content dynamically!", i))
 
 		// Pause for a second to simulate a time-consuming task.
 		time.Sleep(time.Second)
@@ -230,7 +230,7 @@ func main() {
 
 ### area/default
 
-![Animation](https://vhs.charm.sh/vhs-7IhCjsQA6e5Rp11e8eAxNG.gif)
+![Animation](https://vhs.charm.sh/vhs-4InCBry5R7TszPTjxNjDZ8.gif)
 
 <details>
 
@@ -254,7 +254,7 @@ func main() {
 	for i := 0; i < 5; i++ {
 		// Update the content of the area dynamically.
 		// Here we're just displaying the current count.
-		area.Update(pterm.Sprintf("Current count: %d\nAreas can update their content dynamically!", i))
+		area.Update(pterm.Sprintfln("Current count: %d\nAreas can update their content dynamically!", i))
 
 		// Pause for a second before the next update.
 		time.Sleep(time.Second)
@@ -270,7 +270,7 @@ func main() {
 
 ### area/dynamic-chart
 
-![Animation](https://vhs.charm.sh/vhs-2cQvhvuQ3B9pBj4FFQhHfa.gif)
+![Animation](https://vhs.charm.sh/vhs-6EcuXmQAQeoHIAiFuzyR6U.gif)
 
 <details>
 
@@ -323,7 +323,7 @@ func dynamicBars(i int) pterm.Bars {
 
 ### area/fullscreen
 
-![Animation](https://vhs.charm.sh/vhs-2FCFVs5NSV0kYMRVzRCr34.gif)
+![Animation](https://vhs.charm.sh/vhs-1bxXPzNh5YCNebQ3pEm86a.gif)
 
 <details>
 
@@ -362,7 +362,7 @@ func main() {
 
 ### area/fullscreen-center
 
-![Animation](https://vhs.charm.sh/vhs-2YvXZ3kek6XOaIGPQKpNbP.gif)
+![Animation](https://vhs.charm.sh/vhs-4x85l9QwUoh7qMgMklerCN.gif)
 
 <details>
 
@@ -402,7 +402,7 @@ func main() {
 
 ### barchart/demo
 
-![Animation](https://vhs.charm.sh/vhs-48hC9kutzQcqurPjdprkey.gif)
+![Animation](https://vhs.charm.sh/vhs-7tiFqSuN31XrJLGlMASj1A.gif)
 
 <details>
 
@@ -442,7 +442,7 @@ func main() {
 
 ### barchart/custom-height
 
-![Animation](https://vhs.charm.sh/vhs-5vLTJ082V7bklOqcjLFHIR.gif)
+![Animation](https://vhs.charm.sh/vhs-1vMGcEfkRlvB4jakRvOrGm.gif)
 
 <details>
 
@@ -480,7 +480,7 @@ func main() {
 
 ### barchart/custom-width
 
-![Animation](https://vhs.charm.sh/vhs-471reYokQ5iNiKbyhQawvz.gif)
+![Animation](https://vhs.charm.sh/vhs-3gAVvSZRjLEHeZWZf7mrCy.gif)
 
 <details>
 
@@ -516,7 +516,7 @@ func main() {
 
 ### barchart/default
 
-![Animation](https://vhs.charm.sh/vhs-1l29HBVXZEKqB5fR20U7yg.gif)
+![Animation](https://vhs.charm.sh/vhs-7n1pfa4nlfPy26U4lYZ2E1.gif)
 
 <details>
 
@@ -553,7 +553,7 @@ func main() {
 
 ### barchart/horizontal
 
-![Animation](https://vhs.charm.sh/vhs-42CW1xtORKZ1ZAg1r0Cv5X.gif)
+![Animation](https://vhs.charm.sh/vhs-1qPlEkdkqNeeARppWspi8x.gif)
 
 <details>
 
@@ -589,7 +589,7 @@ func main() {
 
 ### barchart/horizontal-show-value
 
-![Animation](https://vhs.charm.sh/vhs-3iDMaVYU1VnylxmagojVzt.gif)
+![Animation](https://vhs.charm.sh/vhs-4KwtTTVaI99hg0dy4pSMvG.gif)
 
 <details>
 
@@ -625,7 +625,7 @@ func main() {
 
 ### barchart/mixed-values
 
-![Animation](https://vhs.charm.sh/vhs-54klL5UuBaS89PN935LwvX.gif)
+![Animation](https://vhs.charm.sh/vhs-1wwEBPEMVbpLJ5jyYJgE9z.gif)
 
 <details>
 
@@ -669,7 +669,7 @@ func main() {
 
 ### barchart/negative-values
 
-![Animation](https://vhs.charm.sh/vhs-4cB5U3tsHOwMpArQkPR2t2.gif)
+![Animation](https://vhs.charm.sh/vhs-6Kct1v1JnXJtZyPjMX39GK.gif)
 
 <details>
 
@@ -710,7 +710,7 @@ func main() {
 
 ### barchart/show-value
 
-![Animation](https://vhs.charm.sh/vhs-Pur7MhOe8rCRcRX8LO4P6.gif)
+![Animation](https://vhs.charm.sh/vhs-Ds2GEVwagNrNOuucVqyyI.gif)
 
 <details>
 
@@ -749,7 +749,7 @@ func main() {
 
 ### basictext/demo
 
-![Animation](https://vhs.charm.sh/vhs-25T1d3hhwrI27QeDNymk6f.gif)
+![Animation](https://vhs.charm.sh/vhs-74giaE9ixpmDuNURHgi66Z.gif)
 
 <details>
 
@@ -777,7 +777,7 @@ func main() {
 
 ### bigtext/demo
 
-![Animation](https://vhs.charm.sh/vhs-Mx7g40UDxZku0rPbGiHC5.gif)
+![Animation](https://vhs.charm.sh/vhs-27SYMNdlNP4NoDNUaTYWPu.gif)
 
 <details>
 
@@ -817,7 +817,7 @@ func main() {
 
 ### bigtext/colored
 
-![Animation](https://vhs.charm.sh/vhs-5lqFGFgHfY3LAZPMDqLtF.gif)
+![Animation](https://vhs.charm.sh/vhs-632XIxQIqQ4UuyGBX4cCWI.gif)
 
 <details>
 
@@ -845,7 +845,7 @@ func main() {
 
 ### bigtext/default
 
-![Animation](https://vhs.charm.sh/vhs-203C7xwJQYMYIXebRw1vtS.gif)
+![Animation](https://vhs.charm.sh/vhs-2RkEXHCMCOHA0bAlyqhMSY.gif)
 
 <details>
 
@@ -875,7 +875,7 @@ func main() {
 
 ### box/demo
 
-![Animation](https://vhs.charm.sh/vhs-43DUmCj6psdTlGZCIzKCkr.gif)
+![Animation](https://vhs.charm.sh/vhs-33SKAeYhBzeJOHrXFiiDeB.gif)
 
 <details>
 
@@ -887,9 +887,6 @@ package main
 import "github.com/pterm/pterm"
 
 func main() {
-	// Print an informational message.
-	pterm.Info.Println("This might not be rendered correctly on GitHub,\nbut it will work in a real terminal.\nThis is because GitHub does not use a monospaced font by default for SVGs")
-
 	// Create three panels with text, some of them with titles.
 	// The panels are created using the DefaultBox style.
 	panel1 := pterm.DefaultBox.Sprint("Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit,\nsed do eiusmod tempor incididunt\nut labore et dolore\nmagna aliqua.")
@@ -914,7 +911,7 @@ func main() {
 
 ### box/custom-padding
 
-![Animation](https://vhs.charm.sh/vhs-i8JKBbJhrtKmtrcIN2uCr.gif)
+![Animation](https://vhs.charm.sh/vhs-e83jtbSn11yL8J1Q7mWxd.gif)
 
 <details>
 
@@ -935,7 +932,7 @@ func main() {
 
 ### box/default
 
-![Animation](https://vhs.charm.sh/vhs-QVPtf5voQmddcwL3vosIS.gif)
+![Animation](https://vhs.charm.sh/vhs-143eHEcxwAHSkc50MnF8Nh.gif)
 
 <details>
 
@@ -957,7 +954,7 @@ func main() {
 
 ### box/title
 
-![Animation](https://vhs.charm.sh/vhs-4Que0JUommpulZ4oifPCxv.gif)
+![Animation](https://vhs.charm.sh/vhs-3wC8n5VgI11EIe58F5lcYO.gif)
 
 <details>
 
@@ -997,7 +994,7 @@ func main() {
 
 ### bulletlist/demo
 
-![Animation](https://vhs.charm.sh/vhs-5VyjQrMRgVzF8GolGYYK7x.gif)
+![Animation](https://vhs.charm.sh/vhs-OpzetpaKxQ4yRzpAHSiI5.gif)
 
 <details>
 
@@ -1037,7 +1034,7 @@ func main() {
 
 ### bulletlist/customized
 
-![Animation](https://vhs.charm.sh/vhs-2eWtEghPEkDYALoMcOw9Sz.gif)
+![Animation](https://vhs.charm.sh/vhs-6MPrmf3GZmnWEGRRX37bHK.gif)
 
 <details>
 
@@ -1084,7 +1081,7 @@ func main() {
 
 ### center/demo
 
-![Animation](https://vhs.charm.sh/vhs-3IMjlTNrnVWmLt4zChCmgN.gif)
+![Animation](https://vhs.charm.sh/vhs-3nTWanP7CAvvx79uwC9ZFK.gif)
 
 <details>
 
@@ -1117,7 +1114,7 @@ func main() {
 
 ### coloring/demo
 
-![Animation](https://vhs.charm.sh/vhs-1o5LppFpGpoqMHQK3kmjn6.gif)
+![Animation](https://vhs.charm.sh/vhs-65vB6zJ15U1rhm3U7YESUr.gif)
 
 <details>
 
@@ -1160,7 +1157,7 @@ func main() {
 
 ### coloring/disable-output
 
-![Animation](https://vhs.charm.sh/vhs-66Cwz98xMAX0DwK6A3wZ4D.gif)
+![Animation](https://vhs.charm.sh/vhs-3f8NMOVB9Vff7DA43RHqCn.gif)
 
 <details>
 
@@ -1195,7 +1192,7 @@ func main() {
 
 ### coloring/fade-colors
 
-![Animation](https://vhs.charm.sh/vhs-7HjCE1jhInLJAxVU15lslJ.gif)
+![Animation](https://vhs.charm.sh/vhs-6wSSuOadwqdEUHL7iAjXJQ.gif)
 
 <details>
 
@@ -1237,7 +1234,7 @@ func main() {
 
 ### coloring/fade-colors-rgb-style
 
-![Animation](https://vhs.charm.sh/vhs-7Fip42EJG4WSZJJN1ZD2ex.gif)
+![Animation](https://vhs.charm.sh/vhs-6fAwuLiS2Jx06O0wPwMF6C.gif)
 
 <details>
 
@@ -1318,7 +1315,7 @@ func printStyledString(str string, fgStart, fgEnd, bgStart, bgEnd pterm.RGB) {
 
 ### coloring/fade-multiple-colors
 
-![Animation](https://vhs.charm.sh/vhs-35y9qa1hwoU0T9QIVueo7D.gif)
+![Animation](https://vhs.charm.sh/vhs-37ym1OxsgalgEx0d7vVCyt.gif)
 
 <details>
 
@@ -1372,7 +1369,7 @@ func main() {
 
 ### coloring/override-default-printers
 
-![Animation](https://vhs.charm.sh/vhs-5uqfqe2Y4nIt6DAahZxgrR.gif)
+![Animation](https://vhs.charm.sh/vhs-78SeLpJkrNb6gYDXqf3l1e.gif)
 
 <details>
 
@@ -1399,7 +1396,7 @@ func main() {
 
 ### coloring/print-color-rgb
 
-![Animation](https://vhs.charm.sh/vhs-4Iok4H7S6qYWGRtf5H2dTf.gif)
+![Animation](https://vhs.charm.sh/vhs-1d8GxiyibSHkixtBJ6l3BG.gif)
 
 <details>
 
@@ -1430,7 +1427,7 @@ func main() {
 
 ### coloring/print-color-rgb-style
 
-![Animation](https://vhs.charm.sh/vhs-63t83e2pmcTdMLQNHUvHt5.gif)
+![Animation](https://vhs.charm.sh/vhs-1ecKJhl2WW7pDEZyQFZBzq.gif)
 
 <details>
 
@@ -1466,7 +1463,7 @@ func main() {
 
 ### demo/demo
 
-![Animation](https://vhs.charm.sh/vhs-476CDsxMFljwWYNGBXkb9X.gif)
+![Animation](https://vhs.charm.sh/vhs-7H0FnHbjINFtuaSPSDwZLF.gif)
 
 <details>
 
@@ -1477,6 +1474,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"math/rand"
 	"reflect"
 	"strconv"
@@ -1487,17 +1485,12 @@ import (
 	"github.com/pterm/pterm/putils"
 )
 
-// Speed the demo up, by setting this flag.
-// Usefull for debugging.
-// Example:
-//
-//	go run main.go -speedup
 var speedup = flag.Bool("speedup", false, "Speed up the demo")
 var skipIntro = flag.Bool("skip-intro", false, "Skips the intro")
 var second = time.Second
+var section = pterm.DefaultHeader.WithBackgroundStyle(pterm.NewStyle(pterm.BgLightBlue)).WithTextStyle(pterm.NewStyle(pterm.FgLightMagenta)).WithFullWidth()
 
-var pseudoProgramList = strings.Split("pseudo-excel pseudo-photoshop pseudo-chrome pseudo-outlook pseudo-explorer "+
-	"pseudo-git pseudo-vsc pseudo-intellij pseudo-minecraft pseudo-scoop pseudo-chocolatey", " ")
+var pseudoProgramList = []string{"excel", "photoshop", "chrome", "outlook", "git", "vscode", "minecraft", "neovim", "gopls"}
 
 func main() {
 	setup() // Setup the demo (flags etc.)
@@ -1701,7 +1694,9 @@ func introScreen() {
 
 	pterm.DefaultCenter.Print(ptermLogo)
 
-	pterm.DefaultCenter.Print(pterm.DefaultHeader.WithFullWidth().WithBackgroundStyle(pterm.NewStyle(pterm.BgLightBlue)).WithMargin(10).Sprint("PTDP - PTerm Demo Program"))
+	section.Println("PTDP - PTerm Demo Program")
+
+	fmt.Println() // blank line
 
 	pterm.Info.Println("This animation was generated with the latest version of PTerm!" +
 		"\nPTerm works on nearly every terminal and operating system." +
@@ -1729,7 +1724,7 @@ func clear() {
 }
 
 func showcase(title string, seconds int, content func()) {
-	pterm.DefaultHeader.WithBackgroundStyle(pterm.NewStyle(pterm.BgLightBlue)).WithFullWidth().Println(title)
+	section.Println(title)
 	pterm.Println()
 	time.Sleep(second / 2)
 	content()
@@ -1747,7 +1742,7 @@ func randomInt(min, max int) int {
 
 ### header/demo
 
-![Animation](https://vhs.charm.sh/vhs-41l3x0NGuRGy2lR41m5S8x.gif)
+![Animation](https://vhs.charm.sh/vhs-6o6nuCUbb0im0o4T4wgRX3.gif)
 
 <details>
 
@@ -1776,7 +1771,7 @@ func main() {
 
 ### header/custom
 
-![Animation](https://vhs.charm.sh/vhs-5c8QzHYrjymhxB5DTG6XEF.gif)
+![Animation](https://vhs.charm.sh/vhs-6ssENqavYH9qwIuG6HQXbP.gif)
 
 <details>
 
@@ -1807,7 +1802,7 @@ func main() {
 
 ### heatmap/demo
 
-![Animation](https://vhs.charm.sh/vhs-5Gg9cnXkTW44HZiZqIKaM1.gif)
+![Animation](https://vhs.charm.sh/vhs-3z0GW9eXD4Q5Dqpa9d7hCd.gif)
 
 <details>
 
@@ -1846,7 +1841,7 @@ func main() {
 
 ### heatmap/custom_colors
 
-![Animation](https://vhs.charm.sh/vhs-31y7AvLKclklj1MfSXW9wq.gif)
+![Animation](https://vhs.charm.sh/vhs-f1QlokaZY828iOfDUnPS7.gif)
 
 <details>
 
@@ -1895,7 +1890,7 @@ func main() {
 
 ### heatmap/custom_legend
 
-![Animation](https://vhs.charm.sh/vhs-1R4ftXBA6ji3DRObytiIPh.gif)
+![Animation](https://vhs.charm.sh/vhs-1we9LwHEoQ8K1KSEpaigx4.gif)
 
 <details>
 
@@ -1945,7 +1940,7 @@ func main() {
 
 ### heatmap/custom_rgb
 
-![Animation](https://vhs.charm.sh/vhs-5gD43rIoUbSLhOoDXOsX4P.gif)
+![Animation](https://vhs.charm.sh/vhs-5K4eVK7S1b0sZZiUO2R2JD.gif)
 
 <details>
 
@@ -2001,7 +1996,7 @@ func main() {
 
 ### heatmap/no_grid
 
-![Animation](https://vhs.charm.sh/vhs-GCMu734z7KipKZyJkJAKQ.gif)
+![Animation](https://vhs.charm.sh/vhs-6lkwrF7EPJmYKCm9gJJPog.gif)
 
 <details>
 
@@ -2043,7 +2038,7 @@ func main() {
 
 ### heatmap/separated
 
-![Animation](https://vhs.charm.sh/vhs-7tVQlAJIY38qZzmqnxXWTB.gif)
+![Animation](https://vhs.charm.sh/vhs-45oSPWmnHW2mOeCo3hCccL.gif)
 
 <details>
 
@@ -2070,10 +2065,6 @@ func main() {
 		YAxis: []string{"1", "2", "3", "4", "5"},
 	}
 
-	// Print an informational message.
-	pterm.Info.Println("The following table has no rgb (supported by every terminal), no axis data and no legend.")
-	pterm.Println()
-
 	// Create the heatmap with the specified data and options, and render it.
 	pterm.DefaultHeatmap.WithData(data).WithBoxed(false).WithAxisData(headerData).WithLegend(false).Render()
 }
@@ -2083,7 +2074,7 @@ func main() {
 
 ### interactive_confirm/demo
 
-![Animation](https://vhs.charm.sh/vhs-369MF4fKJkA8Trb6dtr7vw.gif)
+![Animation](https://vhs.charm.sh/vhs-6esCTjVXQ9nKf3HGlldCD8.gif)
 
 <details>
 
@@ -2122,7 +2113,7 @@ func boolToText(b bool) string {
 
 ### interactive_continue/demo
 
-![Animation](https://vhs.charm.sh/vhs-6hMsHXqe6NghZfGaLNplsV.gif)
+![Animation](https://vhs.charm.sh/vhs-1KsEXUXtyo8pAAZ7FTpjZC.gif)
 
 <details>
 
@@ -2159,7 +2150,7 @@ func main() {
 
 ### interactive_multiselect/demo
 
-![Animation](https://vhs.charm.sh/vhs-5Ab3fT3ObEBGkEpU2Bp6u4.gif)
+![Animation](https://vhs.charm.sh/vhs-hmj80dFuzSnLc8Mjb1xTQ.gif)
 
 <details>
 
@@ -2200,7 +2191,7 @@ func main() {
 
 ### interactive_multiselect/custom-checkmarks
 
-![Animation](https://vhs.charm.sh/vhs-1qHwd2WmvXUm3zoVAgFGPm.gif)
+![Animation](https://vhs.charm.sh/vhs-PRIxhslFelieJ9gdmvnQX.gif)
 
 <details>
 
@@ -2242,7 +2233,7 @@ func main() {
 
 ### interactive_multiselect/custom-filter-placeholder
 
-![Animation](https://vhs.charm.sh/vhs-3NtvedqCpBJW1DRt8jMg4q.gif)
+![Animation](https://vhs.charm.sh/vhs-2fS26p1pVt8KI2SkzKp4FV.gif)
 
 <details>
 
@@ -2290,7 +2281,7 @@ func main() {
 
 ### interactive_multiselect/custom-keys
 
-![Animation](https://vhs.charm.sh/vhs-4OZy3vP4kGVWAAvhaZlp4G.gif)
+![Animation](https://vhs.charm.sh/vhs-5evJmE7RK94d65Fd9W7gSZ.gif)
 
 <details>
 
@@ -2334,7 +2325,7 @@ func main() {
 
 ### interactive_multiselect/show-selected-options
 
-![Animation](https://vhs.charm.sh/vhs-4XI4oApCAUAzEHQcPe5FFY.gif)
+![Animation](https://vhs.charm.sh/vhs-79UABV3FoZEyLTyXEChwR3.gif)
 
 <details>
 
@@ -2374,7 +2365,7 @@ func main() {
 
 ### interactive_select/demo
 
-![Animation](https://vhs.charm.sh/vhs-41bPcowyhaFNU5vvWSIL7R.gif)
+![Animation](https://vhs.charm.sh/vhs-4hzYVSw05ojIHiS6CARpkQ.gif)
 
 <details>
 
@@ -2415,7 +2406,7 @@ func main() {
 
 ### interactive_select/custom-filter-placeholder
 
-![Animation](https://vhs.charm.sh/vhs-2Bip74m8wIQdkeK2FjH86G.gif)
+![Animation](https://vhs.charm.sh/vhs-66os7CZPkZfcgtCnWZYQI6.gif)
 
 <details>
 
@@ -2463,7 +2454,7 @@ func main() {
 
 ### interactive_textinput/demo
 
-![Animation](https://vhs.charm.sh/vhs-B8fA0qEGTTDmSrWZDNA3.gif)
+![Animation](https://vhs.charm.sh/vhs-7tXyy2wsH9KgIXwJQtrmIH.gif)
 
 <details>
 
@@ -2492,7 +2483,7 @@ func main() {
 
 ### interactive_textinput/default-value
 
-![Animation](https://vhs.charm.sh/vhs-4xULLP7ugZkEcFsvi7O9r1.gif)
+![Animation](https://vhs.charm.sh/vhs-5DeRRhXi4O6FLuMCby1A2T.gif)
 
 <details>
 
@@ -2521,7 +2512,7 @@ func main() {
 
 ### interactive_textinput/multi-line
 
-![Animation](https://vhs.charm.sh/vhs-5lCjIPFgeGrVP0sz9Du9aq.gif)
+![Animation](https://vhs.charm.sh/vhs-15THY2bAaKN3cHTDnoa1IH.gif)
 
 <details>
 
@@ -2556,7 +2547,7 @@ func main() {
 
 ### interactive_textinput/password
 
-![Animation](https://vhs.charm.sh/vhs-3ROZC0UkqpmvnYhnwc5Ws.gif)
+![Animation](https://vhs.charm.sh/vhs-7frTfYg9xKrnSszR3KFYbp.gif)
 
 <details>
 
@@ -2587,7 +2578,7 @@ func main() {
 
 ### logger/demo
 
-![Animation](https://vhs.charm.sh/vhs-4mLT9fy0duDGy76Y2RcqXt.gif)
+![Animation](https://vhs.charm.sh/vhs-1nve3rn7NIA7to4SoEwwWM.gif)
 
 <details>
 
@@ -2662,7 +2653,7 @@ func sleep() {
 
 ### logger/custom-key-styles
 
-![Animation](https://vhs.charm.sh/vhs-4Km8B04pvnop5U2eUYiqB5.gif)
+![Animation](https://vhs.charm.sh/vhs-1eo5mU4Zrjxbu2KpH4rheX.gif)
 
 <details>
 
@@ -2703,7 +2694,7 @@ func main() {
 
 ### logger/default
 
-![Animation](https://vhs.charm.sh/vhs-4JeKCSLdG8p687vQFDcHby.gif)
+![Animation](https://vhs.charm.sh/vhs-1ON98pUXEF4e5HBjtcAef6.gif)
 
 <details>
 
@@ -2758,7 +2749,7 @@ func main() {
 
 ### logger/json
 
-![Animation](https://vhs.charm.sh/vhs-5pZsdHaBLSX6yTOhlHwQZz.gif)
+![Animation](https://vhs.charm.sh/vhs-6MBo5tGUyaVkMk3imfAcUN.gif)
 
 <details>
 
@@ -2799,7 +2790,7 @@ func main() {
 
 ### logger/with-caller
 
-![Animation](https://vhs.charm.sh/vhs-2LoJwXyihXvnJ2wyZRFP7g.gif)
+![Animation](https://vhs.charm.sh/vhs-70grmu6kbzkqdSt7rq3Ijq.gif)
 
 <details>
 
@@ -2848,7 +2839,7 @@ func main() {
 
 ### multiple-live-printers/demo
 
-![Animation](https://vhs.charm.sh/vhs-39j4YJq7Bo9hlTFBSRtGje.gif)
+![Animation](https://vhs.charm.sh/vhs-1AbWP1HBwnaOuWl0S9hfnv.gif)
 
 <details>
 
@@ -2921,7 +2912,7 @@ func main() {
 
 ### panel/demo
 
-![Animation](https://vhs.charm.sh/vhs-5jDPQFYIn1Xy7WKHzpmlhr.gif)
+![Animation](https://vhs.charm.sh/vhs-u77tKDnd5Oye5lxTZRqTT.gif)
 
 <details>
 
@@ -2955,7 +2946,7 @@ func main() {
 
 ### paragraph/demo
 
-![Animation](https://vhs.charm.sh/vhs-XzVRxEhdoNVjnMBSYcr3l.gif)
+![Animation](https://vhs.charm.sh/vhs-5sLHLFlQgbKk3w3Y7bzEYB.gif)
 
 <details>
 
@@ -2988,7 +2979,7 @@ func main() {
 
 ### paragraph/customized
 
-![Animation](https://vhs.charm.sh/vhs-3xLWMgbnFYKdGRsX2q6Ugh.gif)
+![Animation](https://vhs.charm.sh/vhs-2XnbizCDji0M8I6j3NvQYN.gif)
 
 <details>
 
@@ -3024,7 +3015,7 @@ func main() {
 
 ### prefix/demo
 
-![Animation](https://vhs.charm.sh/vhs-1iOTkR1cx1xrUxeoOFYvIf.gif)
+![Animation](https://vhs.charm.sh/vhs-4oD2pYbYNi4mUunIOxiLty.gif)
 
 <details>
 
@@ -3068,7 +3059,7 @@ func main() {
 
 ### progressbar/demo
 
-![Animation](https://vhs.charm.sh/vhs-6HhPdzqi4jY5ZzjYij6FKT.gif)
+![Animation](https://vhs.charm.sh/vhs-7zrsbpK0TVdfdIUgaHpmxe.gif)
 
 <details>
 
@@ -3119,7 +3110,7 @@ func main() {
 
 ### progressbar/multiple
 
-![Animation](https://vhs.charm.sh/vhs-2I9M18DhhJAUtFbFMGu68S.gif)
+![Animation](https://vhs.charm.sh/vhs-3rci8RIk58EznMYOLfOmpz.gif)
 
 <details>
 
@@ -3180,7 +3171,7 @@ func main() {
 
 ### section/demo
 
-![Animation](https://vhs.charm.sh/vhs-1Bm0QS1p5YdzEiIo4RFXGt.gif)
+![Animation](https://vhs.charm.sh/vhs-6KVtYXvSGnQZL8zuEdNmtA.gif)
 
 <details>
 
@@ -3210,7 +3201,7 @@ func main() {
 
 ### slog/demo
 
-![Animation](https://vhs.charm.sh/vhs-9t83xQJ4ILYyhj3jxjLZB.gif)
+![Animation](https://vhs.charm.sh/vhs-D72xRstO0EB2fjY9Ylcl1.gif)
 
 <details>
 
@@ -3256,7 +3247,7 @@ func main() {
 
 ### spinner/demo
 
-![Animation](https://vhs.charm.sh/vhs-4WGvqxFHjBF9WV9oWwOYis.gif)
+![Animation](https://vhs.charm.sh/vhs-2mQv5k8LJY3bgKQKSfTwKv.gif)
 
 <details>
 
@@ -3320,7 +3311,7 @@ func main() {
 
 ### spinner/multiple
 
-![Animation](https://vhs.charm.sh/vhs-4QUfdRQthIpsPvGGUM009s.gif)
+![Animation](https://vhs.charm.sh/vhs-3MI0B7g2nbqYUkLJ4SheYz.gif)
 
 <details>
 
@@ -3411,7 +3402,7 @@ func main() {
 
 ### table/demo
 
-![Animation](https://vhs.charm.sh/vhs-6aonUdpPit5uyKAFBG2YLz.gif)
+![Animation](https://vhs.charm.sh/vhs-2lXwGQ24qFiDxKRZrCBZ2Y.gif)
 
 <details>
 
@@ -3455,7 +3446,7 @@ func main() {
 
 ### table/alternate-row-style
 
-![Animation](https://vhs.charm.sh/vhs-rWGNET95xSNwLzjSdKlUc.gif)
+![Animation](https://vhs.charm.sh/vhs-yteDmOmCrDnbD1iaE6zvv.gif)
 
 <details>
 
@@ -3491,7 +3482,7 @@ func main() {
 
 ### table/boxed
 
-![Animation](https://vhs.charm.sh/vhs-17tWYbTxs0YTbytFpZcM95.gif)
+![Animation](https://vhs.charm.sh/vhs-1EsPVlcGiPkAnURnA7NdJN.gif)
 
 <details>
 
@@ -3525,7 +3516,7 @@ func main() {
 
 ### table/multiple-lines
 
-![Animation](https://vhs.charm.sh/vhs-2ZODMOw5xf1LyirhAchVr2.gif)
+![Animation](https://vhs.charm.sh/vhs-6jJA0OE0oEmRifT80vcnFM.gif)
 
 <details>
 
@@ -3557,7 +3548,7 @@ func main() {
 
 ### table/right-alignment
 
-![Animation](https://vhs.charm.sh/vhs-2w0inKSgt3JQLFYx3q3T64.gif)
+![Animation](https://vhs.charm.sh/vhs-5rWnbjwsvfGAhjgzf4POkb.gif)
 
 <details>
 
@@ -3591,7 +3582,7 @@ func main() {
 
 ### theme/demo
 
-![Animation](https://vhs.charm.sh/vhs-4ZgBDHqqntaY38Dkdj50Nh.gif)
+![Animation](https://vhs.charm.sh/vhs-2A0Ww3KAtZTvf68kJJXxVM.gif)
 
 <details>
 
@@ -3679,7 +3670,7 @@ func main() {
 
 ### tree/from-leveled-list
 
-![Animation](https://vhs.charm.sh/vhs-2bm3GXfPOGQxsVAIevSXyV.gif)
+![Animation](https://vhs.charm.sh/vhs-Oq3WRBLRwjbireH4KkuWO.gif)
 
 <details>
 

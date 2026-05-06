@@ -1,6 +1,6 @@
 # interactive_textinput/password
 
-![Animation](https://vhs.charm.sh/vhs-3ROZC0UkqpmvnYhnwc5Ws.gif)
+![Animation](https://vhs.charm.sh/vhs-7frTfYg9xKrnSszR3KFYbp.gif)
 
 ```go
 package main

@@ -1,6 +1,6 @@
 ### coloring/demo
 
-![Animation](https://vhs.charm.sh/vhs-1o5LppFpGpoqMHQK3kmjn6.gif)
+![Animation](https://vhs.charm.sh/vhs-65vB6zJ15U1rhm3U7YESUr.gif)
 
 <details>
 
@@ -43,7 +43,7 @@ func main() {
 
 ### coloring/disable-output
 
-![Animation](https://vhs.charm.sh/vhs-66Cwz98xMAX0DwK6A3wZ4D.gif)
+![Animation](https://vhs.charm.sh/vhs-3f8NMOVB9Vff7DA43RHqCn.gif)
 
 <details>
 
@@ -78,7 +78,7 @@ func main() {
 
 ### coloring/fade-colors
 
-![Animation](https://vhs.charm.sh/vhs-7HjCE1jhInLJAxVU15lslJ.gif)
+![Animation](https://vhs.charm.sh/vhs-6wSSuOadwqdEUHL7iAjXJQ.gif)
 
 <details>
 
@@ -120,7 +120,7 @@ func main() {
 
 ### coloring/fade-colors-rgb-style
 
-![Animation](https://vhs.charm.sh/vhs-7Fip42EJG4WSZJJN1ZD2ex.gif)
+![Animation](https://vhs.charm.sh/vhs-6fAwuLiS2Jx06O0wPwMF6C.gif)
 
 <details>
 
@@ -201,7 +201,7 @@ func printStyledString(str string, fgStart, fgEnd, bgStart, bgEnd pterm.RGB) {
 
 ### coloring/fade-multiple-colors
 
-![Animation](https://vhs.charm.sh/vhs-35y9qa1hwoU0T9QIVueo7D.gif)
+![Animation](https://vhs.charm.sh/vhs-37ym1OxsgalgEx0d7vVCyt.gif)
 
 <details>
 
@@ -255,7 +255,7 @@ func main() {
 
 ### coloring/override-default-printers
 
-![Animation](https://vhs.charm.sh/vhs-5uqfqe2Y4nIt6DAahZxgrR.gif)
+![Animation](https://vhs.charm.sh/vhs-78SeLpJkrNb6gYDXqf3l1e.gif)
 
 <details>
 
@@ -282,7 +282,7 @@ func main() {
 
 ### coloring/print-color-rgb
 
-![Animation](https://vhs.charm.sh/vhs-4Iok4H7S6qYWGRtf5H2dTf.gif)
+![Animation](https://vhs.charm.sh/vhs-1d8GxiyibSHkixtBJ6l3BG.gif)
 
 <details>
 
@@ -313,7 +313,7 @@ func main() {
 
 ### coloring/print-color-rgb-style
 
-![Animation](https://vhs.charm.sh/vhs-63t83e2pmcTdMLQNHUvHt5.gif)
+![Animation](https://vhs.charm.sh/vhs-1ecKJhl2WW7pDEZyQFZBzq.gif)
 
 <details>
 

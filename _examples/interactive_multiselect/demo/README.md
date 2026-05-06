@@ -1,6 +1,6 @@
 # interactive_multiselect/demo
 
-![Animation](https://vhs.charm.sh/vhs-5Ab3fT3ObEBGkEpU2Bp6u4.gif)
+![Animation](https://vhs.charm.sh/vhs-hmj80dFuzSnLc8Mjb1xTQ.gif)
 
 ```go
 package main

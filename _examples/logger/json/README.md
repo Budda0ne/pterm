@@ -1,6 +1,6 @@
 # logger/json
 
-![Animation](https://vhs.charm.sh/vhs-5pZsdHaBLSX6yTOhlHwQZz.gif)
+![Animation](https://vhs.charm.sh/vhs-6MBo5tGUyaVkMk3imfAcUN.gif)
 
 ```go
 package main

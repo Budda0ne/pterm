@@ -1,6 +1,6 @@
 # interactive_multiselect/custom-checkmarks
 
-![Animation](https://vhs.charm.sh/vhs-1qHwd2WmvXUm3zoVAgFGPm.gif)
+![Animation](https://vhs.charm.sh/vhs-PRIxhslFelieJ9gdmvnQX.gif)
 
 ```go
 package main

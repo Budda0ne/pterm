@@ -1,6 +1,6 @@
 # coloring/print-color-rgb-style
 
-![Animation](https://vhs.charm.sh/vhs-63t83e2pmcTdMLQNHUvHt5.gif)
+![Animation](https://vhs.charm.sh/vhs-1ecKJhl2WW7pDEZyQFZBzq.gif)
 
 ```go
 package main
