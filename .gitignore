@@ -20,3 +20,13 @@ vendor/
 /.history
 /.vscode
 /.idea
+/.cursor
+
+# Generated animation artifacts
+*.svg
+*.gif
+*.tape
+!/_examples/**/keys.tape
+!/_examples/**/options.tape
+/_examples/**/.pterm-vhs-example
+/_examples/**/.pterm-vhs-run
