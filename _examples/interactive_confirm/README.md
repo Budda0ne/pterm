@@ -1,6 +1,6 @@
 ### interactive_confirm/demo
 
-![Animation](https://vhs.charm.sh/vhs-6esCTjVXQ9nKf3HGlldCD8.gif)
+![Animation](https://vhs.charm.sh/vhs-12u91PiHaThQdipjpxW8zx.gif)
 
 <details>
 

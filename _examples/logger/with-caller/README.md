@@ -1,6 +1,6 @@
 # logger/with-caller
 
-![Animation](https://vhs.charm.sh/vhs-70grmu6kbzkqdSt7rq3Ijq.gif)
+![Animation](https://vhs.charm.sh/vhs-2xmCF7PGwbinE6OAF4QoUj.gif)
 
 ```go
 package main

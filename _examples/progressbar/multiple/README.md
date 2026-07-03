@@ -1,6 +1,6 @@
 # progressbar/multiple
 
-![Animation](https://vhs.charm.sh/vhs-3rci8RIk58EznMYOLfOmpz.gif)
+![Animation](https://vhs.charm.sh/vhs-16IBYIONVoHmjaksNd1NdW.gif)
 
 ```go
 package main

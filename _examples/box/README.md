@@ -1,6 +1,6 @@
 ### box/demo
 
-![Animation](https://vhs.charm.sh/vhs-33SKAeYhBzeJOHrXFiiDeB.gif)
+![Animation](https://vhs.charm.sh/vhs-lqktD6OLP4HyGVRdCjKpm.gif)
 
 <details>
 
@@ -36,7 +36,7 @@ func main() {
 
 ### box/custom-padding
 
-![Animation](https://vhs.charm.sh/vhs-e83jtbSn11yL8J1Q7mWxd.gif)
+![Animation](https://vhs.charm.sh/vhs-60EBOriuxBvC3tFX9Ka32o.gif)
 
 <details>
 
@@ -57,7 +57,7 @@ func main() {
 
 ### box/default
 
-![Animation](https://vhs.charm.sh/vhs-143eHEcxwAHSkc50MnF8Nh.gif)
+![Animation](https://vhs.charm.sh/vhs-1vMHYtDADRN43NUrOdbdQ7.gif)
 
 <details>
 
@@ -79,7 +79,7 @@ func main() {
 
 ### box/title
 
-![Animation](https://vhs.charm.sh/vhs-3wC8n5VgI11EIe58F5lcYO.gif)
+![Animation](https://vhs.charm.sh/vhs-3qhIVE9uH2hL8LVSBmVCwS.gif)
 
 <details>
 

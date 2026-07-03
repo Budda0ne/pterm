@@ -1,6 +1,6 @@
 # interactive_continue/demo
 
-![Animation](https://vhs.charm.sh/vhs-1KsEXUXtyo8pAAZ7FTpjZC.gif)
+![Animation](https://vhs.charm.sh/vhs-3Vl4Z51cdoe6fbg8Olqw7m.gif)
 
 ```go
 package main

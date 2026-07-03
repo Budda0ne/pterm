@@ -1,57 +1,4 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-────────────────────────────────────────────────────────────────────────────────
-
+>
 
 
 
@@ -104,7 +51,60 @@
 
 
 ────────────────────────────────────────────────────────────────────────────────
+>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+>
 
 
 
@@ -370,22 +370,22 @@
 
 ────────────────────────────────────────────────────────────────────────────────
 ┌────────────────────────────────────────────────────────────────────┐
-| ┌──────────────────────────────────┐ ┌─ title ───────────────────┐ |
-| | Lorem ipsum dolor sit amet,      | | Ut enim ad minim veniam,  | |
-| | consectetur adipiscing elit,     | | quis nostrud exercitation | |
-| | sed do eiusmod tempor incididunt | | ullamco laboris           | |
-| | ut labore et dolore              | | nisi ut aliquip           | |
-| | magna aliqua.                    | | ex ea commodo             | |
-| └──────────────────────────────────┘ | consequat.                | |
-|                                      └───────────────────────────┘ |
-| ┌────────────────────────────────┐                                 |
-| | Duis aute irure                |                                 |
-| | dolor in reprehenderit         |                                 |
-| | in voluptate velit esse cillum |                                 |
-| | dolore eu fugiat               |                                 |
-| | nulla pariatur.                |                                 |
-| └───── bottom center title ──────┘                                 |
-|                                                                    |
+│ ┌──────────────────────────────────┐ ┌─ title ───────────────────┐ │
+│ │ Lorem ipsum dolor sit amet,      │ │ Ut enim ad minim veniam,  │ │
+│ │ consectetur adipiscing elit,     │ │ quis nostrud exercitation │ │
+│ │ sed do eiusmod tempor incididunt │ │ ullamco laboris           │ │
+│ │ ut labore et dolore              │ │ nisi ut aliquip           │ │
+│ │ magna aliqua.                    │ │ ex ea commodo             │ │
+│ └──────────────────────────────────┘ │ consequat.                │ │
+│                                      └───────────────────────────┘ │
+│ ┌────────────────────────────────┐                                 │
+│ │ Duis aute irure                │                                 │
+│ │ dolor in reprehenderit         │                                 │
+│ │ in voluptate velit esse cillum │                                 │
+│ │ dolore eu fugiat               │                                 │
+│ │ nulla pariatur.                │                                 │
+│ └───── bottom center title ──────┘                                 │
+│                                                                    │
 └────────────────────────────────────────────────────── Lorem Ipsum ─┘
 >
 
@@ -394,22 +394,22 @@
 
 ────────────────────────────────────────────────────────────────────────────────
 ┌────────────────────────────────────────────────────────────────────┐
-| ┌──────────────────────────────────┐ ┌─ title ───────────────────┐ |
-| | Lorem ipsum dolor sit amet,      | | Ut enim ad minim veniam,  | |
-| | consectetur adipiscing elit,     | | quis nostrud exercitation | |
-| | sed do eiusmod tempor incididunt | | ullamco laboris           | |
-| | ut labore et dolore              | | nisi ut aliquip           | |
-| | magna aliqua.                    | | ex ea commodo             | |
-| └──────────────────────────────────┘ | consequat.                | |
-|                                      └───────────────────────────┘ |
-| ┌────────────────────────────────┐                                 |
-| | Duis aute irure                |                                 |
-| | dolor in reprehenderit         |                                 |
-| | in voluptate velit esse cillum |                                 |
-| | dolore eu fugiat               |                                 |
-| | nulla pariatur.                |                                 |
-| └───── bottom center title ──────┘                                 |
-|                                                                    |
+│ ┌──────────────────────────────────┐ ┌─ title ───────────────────┐ │
+│ │ Lorem ipsum dolor sit amet,      │ │ Ut enim ad minim veniam,  │ │
+│ │ consectetur adipiscing elit,     │ │ quis nostrud exercitation │ │
+│ │ sed do eiusmod tempor incididunt │ │ ullamco laboris           │ │
+│ │ ut labore et dolore              │ │ nisi ut aliquip           │ │
+│ │ magna aliqua.                    │ │ ex ea commodo             │ │
+│ └──────────────────────────────────┘ │ consequat.                │ │
+│                                      └───────────────────────────┘ │
+│ ┌────────────────────────────────┐                                 │
+│ │ Duis aute irure                │                                 │
+│ │ dolor in reprehenderit         │                                 │
+│ │ in voluptate velit esse cillum │                                 │
+│ │ dolore eu fugiat               │                                 │
+│ │ nulla pariatur.                │                                 │
+│ └───── bottom center title ──────┘                                 │
+│                                                                    │
 └────────────────────────────────────────────────────── Lorem Ipsum ─┘
 >
 
@@ -418,22 +418,22 @@
 
 ────────────────────────────────────────────────────────────────────────────────
 ┌────────────────────────────────────────────────────────────────────┐
-| ┌──────────────────────────────────┐ ┌─ title ───────────────────┐ |
-| | Lorem ipsum dolor sit amet,      | | Ut enim ad minim veniam,  | |
-| | consectetur adipiscing elit,     | | quis nostrud exercitation | |
-| | sed do eiusmod tempor incididunt | | ullamco laboris           | |
-| | ut labore et dolore              | | nisi ut aliquip           | |
-| | magna aliqua.                    | | ex ea commodo             | |
-| └──────────────────────────────────┘ | consequat.                | |
-|                                      └───────────────────────────┘ |
-| ┌────────────────────────────────┐                                 |
-| | Duis aute irure                |                                 |
-| | dolor in reprehenderit         |                                 |
-| | in voluptate velit esse cillum |                                 |
-| | dolore eu fugiat               |                                 |
-| | nulla pariatur.                |                                 |
-| └───── bottom center title ──────┘                                 |
-|                                                                    |
+│ ┌──────────────────────────────────┐ ┌─ title ───────────────────┐ │
+│ │ Lorem ipsum dolor sit amet,      │ │ Ut enim ad minim veniam,  │ │
+│ │ consectetur adipiscing elit,     │ │ quis nostrud exercitation │ │
+│ │ sed do eiusmod tempor incididunt │ │ ullamco laboris           │ │
+│ │ ut labore et dolore              │ │ nisi ut aliquip           │ │
+│ │ magna aliqua.                    │ │ ex ea commodo             │ │
+│ └──────────────────────────────────┘ │ consequat.                │ │
+│                                      └───────────────────────────┘ │
+│ ┌────────────────────────────────┐                                 │
+│ │ Duis aute irure                │                                 │
+│ │ dolor in reprehenderit         │                                 │
+│ │ in voluptate velit esse cillum │                                 │
+│ │ dolore eu fugiat               │                                 │
+│ │ nulla pariatur.                │                                 │
+│ └───── bottom center title ──────┘                                 │
+│                                                                    │
 └────────────────────────────────────────────────────── Lorem Ipsum ─┘
 >
 

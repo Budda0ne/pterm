@@ -1,6 +1,6 @@
 # prefix/demo
 
-![Animation](https://vhs.charm.sh/vhs-4oD2pYbYNi4mUunIOxiLty.gif)
+![Animation](https://vhs.charm.sh/vhs-5trwBpMcg8OChycvf5jqAW.gif)
 
 ```go
 package main

@@ -1,6 +1,6 @@
 # panel/demo
 
-![Animation](https://vhs.charm.sh/vhs-u77tKDnd5Oye5lxTZRqTT.gif)
+![Animation](https://vhs.charm.sh/vhs-693JnLkK7VIjWCqYDSwqYw.gif)
 
 ```go
 package main

@@ -1,6 +1,6 @@
 # table/multiple-lines
 
-![Animation](https://vhs.charm.sh/vhs-6jJA0OE0oEmRifT80vcnFM.gif)
+![Animation](https://vhs.charm.sh/vhs-7dXD3ndtumyMAF9QJafxCK.gif)
 
 ```go
 package main

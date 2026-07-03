@@ -1,6 +1,6 @@
 # slog/demo
 
-![Animation](https://vhs.charm.sh/vhs-D72xRstO0EB2fjY9Ylcl1.gif)
+![Animation](https://vhs.charm.sh/vhs-5IbRmZidgFEutyJj84ocrg.gif)
 
 ```go
 package main

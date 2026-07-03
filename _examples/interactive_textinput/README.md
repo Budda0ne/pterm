@@ -1,6 +1,6 @@
 ### interactive_textinput/demo
 
-![Animation](https://vhs.charm.sh/vhs-7tXyy2wsH9KgIXwJQtrmIH.gif)
+![Animation](https://vhs.charm.sh/vhs-7A6qra59zXGeVw80cHKPXR.gif)
 
 <details>
 
@@ -29,7 +29,7 @@ func main() {
 
 ### interactive_textinput/default-value
 
-![Animation](https://vhs.charm.sh/vhs-5DeRRhXi4O6FLuMCby1A2T.gif)
+![Animation](https://vhs.charm.sh/vhs-68CHDW0aCClNw0cb9imUpa.gif)
 
 <details>
 
@@ -58,7 +58,7 @@ func main() {
 
 ### interactive_textinput/multi-line
 
-![Animation](https://vhs.charm.sh/vhs-15THY2bAaKN3cHTDnoa1IH.gif)
+![Animation](https://vhs.charm.sh/vhs-46fUEcZ73DhCbtcwg0AH4u.gif)
 
 <details>
 
@@ -93,7 +93,7 @@ func main() {
 
 ### interactive_textinput/password
 
-![Animation](https://vhs.charm.sh/vhs-7frTfYg9xKrnSszR3KFYbp.gif)
+![Animation](https://vhs.charm.sh/vhs-3I8pdhHw8yi6UCPWUZDwyR.gif)
 
 <details>
 

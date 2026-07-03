@@ -1,6 +1,6 @@
 ### heatmap/demo
 
-![Animation](https://vhs.charm.sh/vhs-3z0GW9eXD4Q5Dqpa9d7hCd.gif)
+![Animation](https://vhs.charm.sh/vhs-tr9ssgR19zGWt6W3ad0Xo.gif)
 
 <details>
 
@@ -39,7 +39,7 @@ func main() {
 
 ### heatmap/custom_colors
 
-![Animation](https://vhs.charm.sh/vhs-f1QlokaZY828iOfDUnPS7.gif)
+![Animation](https://vhs.charm.sh/vhs-4bCcd0ESaOZQWmdlCcD1AH.gif)
 
 <details>
 
@@ -88,7 +88,7 @@ func main() {
 
 ### heatmap/custom_legend
 
-![Animation](https://vhs.charm.sh/vhs-1we9LwHEoQ8K1KSEpaigx4.gif)
+![Animation](https://vhs.charm.sh/vhs-3hPUzI8qMFLsiNTWZoPgF8.gif)
 
 <details>
 
@@ -138,7 +138,7 @@ func main() {
 
 ### heatmap/custom_rgb
 
-![Animation](https://vhs.charm.sh/vhs-5K4eVK7S1b0sZZiUO2R2JD.gif)
+![Animation](https://vhs.charm.sh/vhs-2LcJtECdDlR650CzD6Dbon.gif)
 
 <details>
 
@@ -194,7 +194,7 @@ func main() {
 
 ### heatmap/no_grid
 
-![Animation](https://vhs.charm.sh/vhs-6lkwrF7EPJmYKCm9gJJPog.gif)
+![Animation](https://vhs.charm.sh/vhs-2RDORQNZJpGASh4hfcWuAE.gif)
 
 <details>
 
@@ -236,7 +236,7 @@ func main() {
 
 ### heatmap/separated
 
-![Animation](https://vhs.charm.sh/vhs-45oSPWmnHW2mOeCo3hCccL.gif)
+![Animation](https://vhs.charm.sh/vhs-61UPW62VYsouCmIP6Oyvw4.gif)
 
 <details>
 

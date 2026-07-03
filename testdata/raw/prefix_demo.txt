@@ -1,4 +1,4 @@
-
+>
 
 
 
@@ -51,7 +51,7 @@
 
 
 ────────────────────────────────────────────────────────────────────────────────
-
+>
 
 
 
@@ -325,7 +325,7 @@
 └ (/home/nixos/projects/github/pterm/pterm/_examples/prefix/demo/main.go:26
 )
   FATAL   Hello, World!
-
+>
 
 
 

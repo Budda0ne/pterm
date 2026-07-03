@@ -1,6 +1,6 @@
 ### paragraph/demo
 
-![Animation](https://vhs.charm.sh/vhs-5sLHLFlQgbKk3w3Y7bzEYB.gif)
+![Animation](https://vhs.charm.sh/vhs-4n0R7fogIR57pndB03GIl6.gif)
 
 <details>
 
@@ -33,7 +33,7 @@ func main() {
 
 ### paragraph/customized
 
-![Animation](https://vhs.charm.sh/vhs-2XnbizCDji0M8I6j3NvQYN.gif)
+![Animation](https://vhs.charm.sh/vhs-2kW1Y4I48YMgKrU9ujRNwK.gif)
 
 <details>
 

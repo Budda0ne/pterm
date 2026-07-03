@@ -1,6 +1,6 @@
 ### bigtext/demo
 
-![Animation](https://vhs.charm.sh/vhs-27SYMNdlNP4NoDNUaTYWPu.gif)
+![Animation](https://vhs.charm.sh/vhs-436Z7urhlQ5nlYKjcTS9r1.gif)
 
 <details>
 
@@ -40,7 +40,7 @@ func main() {
 
 ### bigtext/colored
 
-![Animation](https://vhs.charm.sh/vhs-632XIxQIqQ4UuyGBX4cCWI.gif)
+![Animation](https://vhs.charm.sh/vhs-5lqFGFgHfY3LAZPMDqLtF.gif)
 
 <details>
 
@@ -68,7 +68,7 @@ func main() {
 
 ### bigtext/default
 
-![Animation](https://vhs.charm.sh/vhs-2RkEXHCMCOHA0bAlyqhMSY.gif)
+![Animation](https://vhs.charm.sh/vhs-2bVeSbhoJTVDC6XGV8CEBj.gif)
 
 <details>
 

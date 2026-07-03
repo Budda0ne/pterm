@@ -1,6 +1,6 @@
 # bigtext/colored
 
-![Animation](https://vhs.charm.sh/vhs-632XIxQIqQ4UuyGBX4cCWI.gif)
+![Animation](https://vhs.charm.sh/vhs-5lqFGFgHfY3LAZPMDqLtF.gif)
 
 ```go
 package main

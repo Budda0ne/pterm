@@ -1,6 +1,6 @@
 # barchart/demo
 
-![Animation](https://vhs.charm.sh/vhs-7tiFqSuN31XrJLGlMASj1A.gif)
+![Animation](https://vhs.charm.sh/vhs-48hC9kutzQcqurPjdprkey.gif)
 
 ```go
 package main

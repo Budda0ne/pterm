@@ -1,6 +1,6 @@
 ### interactive_select/demo
 
-![Animation](https://vhs.charm.sh/vhs-4hzYVSw05ojIHiS6CARpkQ.gif)
+![Animation](https://vhs.charm.sh/vhs-5TQ0eyC8pwKTfUjjUQXz4t.gif)
 
 <details>
 
@@ -41,7 +41,7 @@ func main() {
 
 ### interactive_select/custom-filter-placeholder
 
-![Animation](https://vhs.charm.sh/vhs-66os7CZPkZfcgtCnWZYQI6.gif)
+![Animation](https://vhs.charm.sh/vhs-6SImSLA5ttXEbuisOd92Kf.gif)
 
 <details>
 

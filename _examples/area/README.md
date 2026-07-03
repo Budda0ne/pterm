@@ -1,6 +1,6 @@
 ### area/demo
 
-![Animation](https://vhs.charm.sh/vhs-5EtvNsiVtRrbBEqJcGZJBD.gif)
+![Animation](https://vhs.charm.sh/vhs-6W5c88fEq7CoYUs2eEFv8G.gif)
 
 <details>
 
@@ -52,7 +52,7 @@ func main() {
 
 ### area/center
 
-![Animation](https://vhs.charm.sh/vhs-68aK5FpvO7XZHzMnVZhXwu.gif)
+![Animation](https://vhs.charm.sh/vhs-3m4Bh8jR98m10dx2dkJZhz.gif)
 
 <details>
 
@@ -91,7 +91,7 @@ func main() {
 
 ### area/default
 
-![Animation](https://vhs.charm.sh/vhs-4InCBry5R7TszPTjxNjDZ8.gif)
+![Animation](https://vhs.charm.sh/vhs-5M5JOWpyiTYs0QC4AzAmDP.gif)
 
 <details>
 
@@ -131,7 +131,7 @@ func main() {
 
 ### area/dynamic-chart
 
-![Animation](https://vhs.charm.sh/vhs-6EcuXmQAQeoHIAiFuzyR6U.gif)
+![Animation](https://vhs.charm.sh/vhs-Xx5vG9AYJ421QTosITJGO.gif)
 
 <details>
 
@@ -184,7 +184,7 @@ func dynamicBars(i int) pterm.Bars {
 
 ### area/fullscreen
 
-![Animation](https://vhs.charm.sh/vhs-1bxXPzNh5YCNebQ3pEm86a.gif)
+![Animation](https://vhs.charm.sh/vhs-335RIz5EXaY8dDH57MzHBG.gif)
 
 <details>
 
@@ -223,7 +223,7 @@ func main() {
 
 ### area/fullscreen-center
 
-![Animation](https://vhs.charm.sh/vhs-4x85l9QwUoh7qMgMklerCN.gif)
+![Animation](https://vhs.charm.sh/vhs-4dRHxTQjr2lKD3lvM9zERx.gif)
 
 <details>
 

@@ -1,6 +1,6 @@
 ### tree/demo
 
-![Animation](https://vhs.charm.sh/vhs-3Tmr0W1BGVIsXEPYqfSpGa.gif)
+![Animation](https://vhs.charm.sh/vhs-3Gueu1gWoUUM2a6kN7jYa9.gif)
 
 <details>
 
@@ -41,7 +41,7 @@ func main() {
 
 ### tree/from-leveled-list
 
-![Animation](https://vhs.charm.sh/vhs-Oq3WRBLRwjbireH4KkuWO.gif)
+![Animation](https://vhs.charm.sh/vhs-6HkhRxmQbhf7oI21gVu936.gif)
 
 <details>
 

@@ -1,6 +1,6 @@
 # interactive_multiselect/show-selected-options
 
-![Animation](https://vhs.charm.sh/vhs-79UABV3FoZEyLTyXEChwR3.gif)
+![Animation](https://vhs.charm.sh/vhs-3ZltaYfJwZCZ61Xn4hff5K.gif)
 
 ```go
 package main

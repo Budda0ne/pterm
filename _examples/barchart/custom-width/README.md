@@ -1,6 +1,6 @@
 # barchart/custom-width
 
-![Animation](https://vhs.charm.sh/vhs-3gAVvSZRjLEHeZWZf7mrCy.gif)
+![Animation](https://vhs.charm.sh/vhs-471reYokQ5iNiKbyhQawvz.gif)
 
 ```go
 package main

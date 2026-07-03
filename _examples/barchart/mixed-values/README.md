@@ -1,6 +1,6 @@
 # barchart/mixed-values
 
-![Animation](https://vhs.charm.sh/vhs-1wwEBPEMVbpLJ5jyYJgE9z.gif)
+![Animation](https://vhs.charm.sh/vhs-54klL5UuBaS89PN935LwvX.gif)
 
 ```go
 package main

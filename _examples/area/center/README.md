@@ -1,6 +1,6 @@
 # area/center
 
-![Animation](https://vhs.charm.sh/vhs-68aK5FpvO7XZHzMnVZhXwu.gif)
+![Animation](https://vhs.charm.sh/vhs-3m4Bh8jR98m10dx2dkJZhz.gif)
 
 ```go
 package main

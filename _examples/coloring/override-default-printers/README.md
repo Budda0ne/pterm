@@ -1,6 +1,6 @@
 # coloring/override-default-printers
 
-![Animation](https://vhs.charm.sh/vhs-78SeLpJkrNb6gYDXqf3l1e.gif)
+![Animation](https://vhs.charm.sh/vhs-5eWqB8psQme8pKT56kFD6y.gif)
 
 ```go
 package main

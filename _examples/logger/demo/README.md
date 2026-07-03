@@ -1,6 +1,6 @@
 # logger/demo
 
-![Animation](https://vhs.charm.sh/vhs-1nve3rn7NIA7to4SoEwwWM.gif)
+![Animation](https://vhs.charm.sh/vhs-5FnE97DCvSuHTf9AIEulfH.gif)
 
 ```go
 package main

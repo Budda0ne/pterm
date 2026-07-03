@@ -1,6 +1,6 @@
 # header/custom
 
-![Animation](https://vhs.charm.sh/vhs-6ssENqavYH9qwIuG6HQXbP.gif)
+![Animation](https://vhs.charm.sh/vhs-526mSOappYoWOASfdTftTF.gif)
 
 ```go
 package main

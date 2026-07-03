@@ -1,6 +1,6 @@
 # barchart/horizontal-show-value
 
-![Animation](https://vhs.charm.sh/vhs-4KwtTTVaI99hg0dy4pSMvG.gif)
+![Animation](https://vhs.charm.sh/vhs-72EkXbgehJXsOLGUFNxOkO.gif)
 
 ```go
 package main

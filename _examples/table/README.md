@@ -1,6 +1,6 @@
 ### table/demo
 
-![Animation](https://vhs.charm.sh/vhs-2lXwGQ24qFiDxKRZrCBZ2Y.gif)
+![Animation](https://vhs.charm.sh/vhs-4NMo5yXw7v0wtjOqrOeBgt.gif)
 
 <details>
 
@@ -44,7 +44,7 @@ func main() {
 
 ### table/alternate-row-style
 
-![Animation](https://vhs.charm.sh/vhs-yteDmOmCrDnbD1iaE6zvv.gif)
+![Animation](https://vhs.charm.sh/vhs-5dyBpzlQwOYMzISaI5fn97.gif)
 
 <details>
 
@@ -80,7 +80,7 @@ func main() {
 
 ### table/boxed
 
-![Animation](https://vhs.charm.sh/vhs-1EsPVlcGiPkAnURnA7NdJN.gif)
+![Animation](https://vhs.charm.sh/vhs-7qXGEJfrGZ6fMTwxqk5W55.gif)
 
 <details>
 
@@ -114,7 +114,7 @@ func main() {
 
 ### table/multiple-lines
 
-![Animation](https://vhs.charm.sh/vhs-6jJA0OE0oEmRifT80vcnFM.gif)
+![Animation](https://vhs.charm.sh/vhs-7dXD3ndtumyMAF9QJafxCK.gif)
 
 <details>
 
@@ -146,7 +146,7 @@ func main() {
 
 ### table/right-alignment
 
-![Animation](https://vhs.charm.sh/vhs-5rWnbjwsvfGAhjgzf4POkb.gif)
+![Animation](https://vhs.charm.sh/vhs-2mDOj18uXaOOtISlScg69v.gif)
 
 <details>
 

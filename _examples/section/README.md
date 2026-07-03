@@ -1,6 +1,6 @@
 ### section/demo
 
-![Animation](https://vhs.charm.sh/vhs-6KVtYXvSGnQZL8zuEdNmtA.gif)
+![Animation](https://vhs.charm.sh/vhs-6iAbq2rRVSqMkZIbiDMLKw.gif)
 
 <details>
 

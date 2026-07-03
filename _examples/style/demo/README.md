@@ -1,6 +1,6 @@
 # style/demo
 
-![Animation](https://vhs.charm.sh/vhs-7e8elQAwo2XedISw4XaNL.gif)
+![Animation](https://vhs.charm.sh/vhs-7BokvgayvsCG61ufVHoV9F.gif)
 
 ```go
 package main

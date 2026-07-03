@@ -1,6 +1,6 @@
 # area/dynamic-chart
 
-![Animation](https://vhs.charm.sh/vhs-6EcuXmQAQeoHIAiFuzyR6U.gif)
+![Animation](https://vhs.charm.sh/vhs-Xx5vG9AYJ421QTosITJGO.gif)
 
 ```go
 package main

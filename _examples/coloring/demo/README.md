@@ -1,6 +1,6 @@
 # coloring/demo
 
-![Animation](https://vhs.charm.sh/vhs-65vB6zJ15U1rhm3U7YESUr.gif)
+![Animation](https://vhs.charm.sh/vhs-2AMqiy2bpnaVVdAAokwI79.gif)
 
 ```go
 package main

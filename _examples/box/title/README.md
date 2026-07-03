@@ -1,6 +1,6 @@
 # box/title
 
-![Animation](https://vhs.charm.sh/vhs-3wC8n5VgI11EIe58F5lcYO.gif)
+![Animation](https://vhs.charm.sh/vhs-3qhIVE9uH2hL8LVSBmVCwS.gif)
 
 ```go
 package main

@@ -1,6 +1,6 @@
 # heatmap/no_grid
 
-![Animation](https://vhs.charm.sh/vhs-6lkwrF7EPJmYKCm9gJJPog.gif)
+![Animation](https://vhs.charm.sh/vhs-2RDORQNZJpGASh4hfcWuAE.gif)
 
 ```go
 package main

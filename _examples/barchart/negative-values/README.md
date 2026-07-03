@@ -1,6 +1,6 @@
 # barchart/negative-values
 
-![Animation](https://vhs.charm.sh/vhs-6Kct1v1JnXJtZyPjMX39GK.gif)
+![Animation](https://vhs.charm.sh/vhs-1Ljg315mQlTrBpwp5figBD.gif)
 
 ```go
 package main

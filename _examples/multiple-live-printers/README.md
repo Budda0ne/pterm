@@ -1,6 +1,6 @@
 ### multiple-live-printers/demo
 
-![Animation](https://vhs.charm.sh/vhs-1AbWP1HBwnaOuWl0S9hfnv.gif)
+![Animation](https://vhs.charm.sh/vhs-4pZNYJMstIP1aednFlQJWa.gif)
 
 <details>
 

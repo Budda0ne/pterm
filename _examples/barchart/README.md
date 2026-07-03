@@ -1,6 +1,6 @@
 ### barchart/demo
 
-![Animation](https://vhs.charm.sh/vhs-7tiFqSuN31XrJLGlMASj1A.gif)
+![Animation](https://vhs.charm.sh/vhs-48hC9kutzQcqurPjdprkey.gif)
 
 <details>
 
@@ -40,7 +40,7 @@ func main() {
 
 ### barchart/custom-height
 
-![Animation](https://vhs.charm.sh/vhs-1vMGcEfkRlvB4jakRvOrGm.gif)
+![Animation](https://vhs.charm.sh/vhs-3jQkDpVz4uh9cYa70fOBQg.gif)
 
 <details>
 
@@ -78,7 +78,7 @@ func main() {
 
 ### barchart/custom-width
 
-![Animation](https://vhs.charm.sh/vhs-3gAVvSZRjLEHeZWZf7mrCy.gif)
+![Animation](https://vhs.charm.sh/vhs-471reYokQ5iNiKbyhQawvz.gif)
 
 <details>
 
@@ -114,7 +114,7 @@ func main() {
 
 ### barchart/default
 
-![Animation](https://vhs.charm.sh/vhs-7n1pfa4nlfPy26U4lYZ2E1.gif)
+![Animation](https://vhs.charm.sh/vhs-7wX8SUWFtrGOZEH9PIx6Vh.gif)
 
 <details>
 
@@ -151,7 +151,7 @@ func main() {
 
 ### barchart/horizontal
 
-![Animation](https://vhs.charm.sh/vhs-1qPlEkdkqNeeARppWspi8x.gif)
+![Animation](https://vhs.charm.sh/vhs-70ICgyL6YEO64KZ7uTmbI6.gif)
 
 <details>
 
@@ -187,7 +187,7 @@ func main() {
 
 ### barchart/horizontal-show-value
 
-![Animation](https://vhs.charm.sh/vhs-4KwtTTVaI99hg0dy4pSMvG.gif)
+![Animation](https://vhs.charm.sh/vhs-72EkXbgehJXsOLGUFNxOkO.gif)
 
 <details>
 
@@ -223,7 +223,7 @@ func main() {
 
 ### barchart/mixed-values
 
-![Animation](https://vhs.charm.sh/vhs-1wwEBPEMVbpLJ5jyYJgE9z.gif)
+![Animation](https://vhs.charm.sh/vhs-54klL5UuBaS89PN935LwvX.gif)
 
 <details>
 
@@ -267,7 +267,7 @@ func main() {
 
 ### barchart/negative-values
 
-![Animation](https://vhs.charm.sh/vhs-6Kct1v1JnXJtZyPjMX39GK.gif)
+![Animation](https://vhs.charm.sh/vhs-1Ljg315mQlTrBpwp5figBD.gif)
 
 <details>
 
@@ -308,7 +308,7 @@ func main() {
 
 ### barchart/show-value
 
-![Animation](https://vhs.charm.sh/vhs-Ds2GEVwagNrNOuucVqyyI.gif)
+![Animation](https://vhs.charm.sh/vhs-288R7xBbcbBUJ17RqEDl1o.gif)
 
 <details>
 
