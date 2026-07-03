@@ -1,9 +1,13 @@
 // Package color is pterm's own ANSI coloring engine.
 //
-// It is deliberately stateless: every function is pure, so the package is
-// safe for concurrent use without any locking. Whether colors should be
-// emitted at all is decided by the caller (pterm gates on pterm.PrintColor);
-// this package only knows how to build and remove escape sequences.
+// The sequence builders (Sequence, Wrap, ForegroundRGB, ...) are pure
+// functions that always emit escape sequences: whether colors should be
+// printed at all is decided by the caller (pterm gates on pterm.PrintColor).
+// On top of that the package detects how many colors the current terminal can
+// render (DetectLevel) so callers can degrade RGB colors gracefully, and on
+// Windows it switches the console into virtual terminal mode so ANSI colors
+// also work in classic consoles like cmd.exe — the only state the package
+// keeps is the result of that one-time console handshake.
 //
 // The package is internal for now — it is an experiment in giving pterm full
 // control over its color rendering. If it proves itself, it may be promoted
@@ -11,7 +15,6 @@
 package color
 
 import (
-	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -53,6 +56,18 @@ func BackgroundRGB(r, g, b uint8) string {
 	return rgbSequence("48", r, g, b)
 }
 
+// Foreground256 returns the ANSI escape sequence that sets the foreground to
+// the given xterm 256-color palette index.
+func Foreground256(n uint8) string {
+	return esc + "[38;5;" + strconv.Itoa(int(n)) + "m"
+}
+
+// Background256 returns the ANSI escape sequence that sets the background to
+// the given xterm 256-color palette index.
+func Background256(n uint8) string {
+	return esc + "[48;5;" + strconv.Itoa(int(n)) + "m"
+}
+
 func rgbSequence(layer string, r, g, b uint8) string {
 	var sb strings.Builder
 	sb.WriteString(esc + "[")
@@ -84,31 +99,4 @@ func Wrap(code, s string) string {
 // Strip removes all ANSI SGR (color and style) escape sequences from s.
 func Strip(s string) string {
 	return sgrRegex.ReplaceAllString(s, "")
-}
-
-// SupportsTrueColor reports whether the current terminal advertises 24-bit
-// (RGB) color support.
-func SupportsTrueColor() bool {
-	colorTerm := strings.ToLower(os.Getenv("COLORTERM"))
-	if strings.Contains(colorTerm, "truecolor") || strings.Contains(colorTerm, "24bit") {
-		return true
-	}
-
-	term := strings.ToLower(os.Getenv("TERM"))
-	if strings.Contains(term, "24bit") || strings.Contains(term, "truecolor") {
-		return true
-	}
-
-	// Windows Terminal and common GUI terminals support true color but do not
-	// always set COLORTERM.
-	if os.Getenv("WT_SESSION") != "" || os.Getenv("TERMINAL_EMULATOR") == "JetBrains-JediTerm" {
-		return true
-	}
-
-	switch os.Getenv("TERM_PROGRAM") {
-	case "iTerm.app", "Hyper", "vscode", "ghostty", "WezTerm", "Apple_Terminal":
-		return true
-	}
-
-	return false
 }

@@ -7,6 +7,24 @@ import (
 	"github.com/pterm/pterm/internal/color"
 )
 
+// rgbColorLevel returns the color depth at which RGB printers render.
+//
+// CI systems display logs in web interfaces that understand true color, so
+// they always render at full depth (the same rule the BigTextPrinter uses).
+// When color detection reports no support at all, colors were force-enabled
+// via PrintColor, so the safest portable form (the 16 base colors) is used.
+func rgbColorLevel() color.Level {
+	if internal.RunsInCi() {
+		return color.LevelTrueColor
+	}
+
+	if lvl := color.DetectLevel(); lvl != color.LevelNone {
+		return lvl
+	}
+
+	return color.LevelBasic
+}
+
 // RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors.
 // The name of the model comes from the initials of the three additive primary colors, red, green, and blue.
 // https://en.wikipedia.org/wiki/RGB_color_model
@@ -120,11 +138,13 @@ func (p RGBStyle) Sprint(a ...any) string {
 		return color.Strip(text)
 	}
 
+	lvl := rgbColorLevel()
+
 	var seq strings.Builder
-	seq.WriteString(color.ForegroundRGB(p.Foreground.R, p.Foreground.G, p.Foreground.B))
+	seq.WriteString(lvl.ForegroundRGB(p.Foreground.R, p.Foreground.G, p.Foreground.B))
 
 	if p.hasBg {
-		seq.WriteString(color.BackgroundRGB(p.Background.R, p.Background.G, p.Background.B))
+		seq.WriteString(lvl.BackgroundRGB(p.Background.R, p.Background.G, p.Background.B))
 	}
 
 	for _, opt := range p.Options {
@@ -222,10 +242,10 @@ func (p RGB) Sprint(a ...any) string {
 
 	if p.Background {
 		// Clear to the end of the line so the background color fills the row.
-		return color.BackgroundRGB(p.R, p.G, p.B) + text + resetSequence + color.ClearToEOL
+		return rgbColorLevel().BackgroundRGB(p.R, p.G, p.B) + text + resetSequence + color.ClearToEOL
 	}
 
-	return color.ForegroundRGB(p.R, p.G, p.B) + text + resetSequence
+	return rgbColorLevel().ForegroundRGB(p.R, p.G, p.B) + text + resetSequence
 }
 
 // Sprintln formats using the default formats for its operands and returns the resulting string.

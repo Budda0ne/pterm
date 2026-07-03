@@ -381,3 +381,24 @@ func TestRGBStyle_NewRGBStyle(t *testing.T) {
 		})
 	}
 }
+
+// The RGB printers degrade to the closest color the terminal can actually
+// render: 256-color palette entries on 256-color terminals, the 16 base
+// colors everywhere else. True color terminals and CI systems (checked via
+// snapshot tests) get the full 24-bit sequences.
+func TestRGBSprintDegradesToTerminalColorLevel(t *testing.T) {
+	// Scrub every variable the detection looks at, including CI, which
+	// forces true color rendering.
+	for _, name := range []string{"CI", "NO_COLOR", "FORCE_COLOR", "CLICOLOR", "CLICOLOR_FORCE", "COLORTERM", "WT_SESSION", "ConEmuANSI", "TERMINAL_EMULATOR", "TERM_PROGRAM", "ANSICON"} {
+		t.Setenv(name, "")
+	}
+
+	t.Setenv("TERM", "xterm-256color")
+	assert.Equal(t, "\x1b[38;5;196mred\x1b[0m", pterm.NewRGB(255, 0, 0).Sprint("red"))
+	assert.Equal(t, "\x1b[48;5;196mred\x1b[0m\x1b[K", pterm.NewRGB(255, 0, 0, true).Sprint("red"))
+	assert.Equal(t, "\x1b[38;5;196m\x1b[48;5;16m\x1b[1mred\x1b[0m", pterm.NewRGBStyle(pterm.RGB{R: 255}, pterm.RGB{}).AddOptions(pterm.Bold).Sprint("red"))
+
+	t.Setenv("TERM", "xterm")
+	assert.Equal(t, "\x1b[91mred\x1b[0m", pterm.NewRGB(255, 0, 0).Sprint("red"))
+	assert.Equal(t, "\x1b[101mred\x1b[0m\x1b[K", pterm.NewRGB(255, 0, 0, true).Sprint("red"))
+}

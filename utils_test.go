@@ -20,6 +20,16 @@ var terminalWidth = 80
 var terminalHeight = 60
 
 func TestMain(m *testing.M) {
+	// Make color rendering independent of the terminal (or CI runner) the
+	// tests happen to run in: colors on, detection reporting true color.
+	for _, name := range []string{"NO_COLOR", "FORCE_COLOR", "CLICOLOR", "CLICOLOR_FORCE"} {
+		os.Unsetenv(name)
+	}
+
+	_ = os.Setenv("COLORTERM", "truecolor")
+
+	pterm.EnableColor()
+
 	pterm.SetForcedTerminalSize(terminalWidth, terminalHeight)
 	setupStdoutCapture()
 

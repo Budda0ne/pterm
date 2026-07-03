@@ -3,13 +3,21 @@ package pterm
 import (
 	"fmt"
 	"strings"
+
+	"github.com/pterm/pterm/internal/color"
 )
 
 // PrintColor is false if PTerm should not print colored output.
 //
+// It defaults to true unless the environment opts out of color (NO_COLOR,
+// TERM=dumb, FORCE_COLOR=0) or the terminal cannot render ANSI sequences at
+// all (legacy Windows consoles). Initializing this variable also switches the
+// Windows console into virtual terminal mode, so colors work in classic
+// terminals like cmd.exe. Call EnableColor to force colors back on.
+//
 // Reading or writing this variable directly is not concurrency-safe; use
 // EnableColor/DisableColor from multiple goroutines.
-var PrintColor = true
+var PrintColor = color.SupportsANSI()
 
 // EnableColor enables colors.
 func EnableColor() {
