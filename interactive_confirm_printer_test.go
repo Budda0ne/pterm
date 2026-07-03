@@ -6,84 +6,84 @@ import (
 
 	"atomicgo.dev/keyboard"
 	"atomicgo.dev/keyboard/keys"
-	"github.com/MarvinJWendt/testza"
+	"github.com/stretchr/testify/assert"
 
 	"github.com/pterm/pterm"
 )
 
 func TestInteractiveConfirmPrinter_Show_yes(t *testing.T) {
 	go func() {
-		keyboard.SimulateKeyPress('y')
+		_ = keyboard.SimulateKeyPress('y')
 	}()
 
 	result, _ := pterm.DefaultInteractiveConfirm.Show()
-	testza.AssertTrue(t, result)
+	assert.True(t, result)
 }
 
 func TestInteractiveConfirmPrinter_Show_no(t *testing.T) {
 	go func() {
-		keyboard.SimulateKeyPress('n')
+		_ = keyboard.SimulateKeyPress('n')
 	}()
 
 	result, _ := pterm.DefaultInteractiveConfirm.Show()
-	testza.AssertFalse(t, result)
+	assert.False(t, result)
 }
 
 func TestInteractiveConfirmPrinter_WithDefaultValue(t *testing.T) {
 	p := pterm.DefaultInteractiveConfirm.WithDefaultValue(true)
-	testza.AssertTrue(t, p.DefaultValue)
+	assert.True(t, p.DefaultValue)
 }
 
 func TestInteractiveConfirmPrinter_WithDefaultValue_false(t *testing.T) {
 	go func() {
-		keyboard.SimulateKeyPress(keys.Enter)
+		_ = keyboard.SimulateKeyPress(keys.Enter)
 	}()
 
 	p := pterm.DefaultInteractiveConfirm.WithDefaultValue(false)
 	result, _ := p.Show()
-	testza.AssertFalse(t, result)
+	assert.False(t, result)
 }
 
 func TestInteractiveConfirmPrinter_WithDefaultValue_true(t *testing.T) {
 	go func() {
-		keyboard.SimulateKeyPress(keys.Enter)
+		_ = keyboard.SimulateKeyPress(keys.Enter)
 	}()
 
 	p := pterm.DefaultInteractiveConfirm.WithDefaultValue(true)
 	result, _ := p.Show()
-	testza.AssertTrue(t, result)
+	assert.True(t, result)
 }
 
 func TestInteractiveConfirmPrinter_WithConfirmStyle(t *testing.T) {
 	style := pterm.NewStyle(pterm.FgRed)
 	p := pterm.DefaultInteractiveConfirm.WithConfirmStyle(style)
-	testza.AssertEqual(t, p.ConfirmStyle, style)
+	assert.Equal(t, p.ConfirmStyle, style)
 }
 
 func TestInteractiveConfirmPrinter_WithConfirmText(t *testing.T) {
 	p := pterm.DefaultInteractiveConfirm.WithConfirmText("confirm")
-	testza.AssertEqual(t, p.ConfirmText, "confirm")
+	assert.Equal(t, p.ConfirmText, "confirm")
 }
 
 func TestInteractiveConfirmPrinter_WithDefaultText(t *testing.T) {
 	p := pterm.DefaultInteractiveConfirm.WithDefaultText("default")
-	testza.AssertEqual(t, p.DefaultText, "default")
+	assert.Equal(t, p.DefaultText, "default")
 }
 
 func TestInteractiveConfirmPrinter_WithDelimiter(t *testing.T) {
 	p := pterm.DefaultInteractiveConfirm.WithDelimiter(">>")
-	testza.AssertEqual(t, p.Delimiter, ">>")
+	assert.Equal(t, p.Delimiter, ">>")
 }
 
 func TestInteractiveConfirmPrinter_WithRejectStyle(t *testing.T) {
 	style := pterm.NewStyle(pterm.FgRed)
 	p := pterm.DefaultInteractiveConfirm.WithRejectStyle(style)
-	testza.AssertEqual(t, p.RejectStyle, style)
+	assert.Equal(t, p.RejectStyle, style)
 }
 
 func TestInteractiveConfirmPrinter_WithRejectText(t *testing.T) {
 	p := pterm.DefaultInteractiveConfirm.WithRejectText("reject")
-	testza.AssertEqual(t, p.RejectText, "reject")
+	assert.Equal(t, p.RejectText, "reject")
 }
 
 func TestInteractiveConfirmPrinter_CustomAnswers(t *testing.T) {
@@ -118,11 +118,11 @@ func TestInteractiveConfirmPrinter_CustomAnswers(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			go func() {
-				keyboard.SimulateKeyPress(tc.key)
+				_ = keyboard.SimulateKeyPress(tc.key)
 			}()
 
 			result, _ := p.Show()
-			testza.AssertEqual(t, result, tc.expected)
+			assert.Equal(t, result, tc.expected)
 		})
 	}
 }
@@ -130,22 +130,22 @@ func TestInteractiveConfirmPrinter_CustomAnswers(t *testing.T) {
 func TestInteractiveConfirmPrinter_WithSuffixStyle(t *testing.T) {
 	style := pterm.NewStyle(pterm.FgRed)
 	p := pterm.DefaultInteractiveConfirm.WithSuffixStyle(style)
-	testza.AssertEqual(t, p.SuffixStyle, style)
+	assert.Equal(t, p.SuffixStyle, style)
 }
 
 func TestInteractiveConfirmPrinter_WithTextStyle(t *testing.T) {
 	style := pterm.NewStyle(pterm.FgRed)
 	p := pterm.DefaultInteractiveConfirm.WithTextStyle(style)
-	testza.AssertEqual(t, p.TextStyle, style)
+	assert.Equal(t, p.TextStyle, style)
 }
 
 func TestInteractiveConfirmPrinter_WithOnInterruptFunc(t *testing.T) {
 	// OnInterrupt function defaults to nil
 	pd := pterm.InteractiveConfirmPrinter{}
-	testza.AssertNil(t, pd.OnInterruptFunc)
+	assert.Nil(t, pd.OnInterruptFunc)
 
 	// Verify OnInterrupt is set
 	exitfunc := func() {}
 	p := pterm.DefaultInteractiveConfirm.WithOnInterruptFunc(exitfunc)
-	testza.AssertEqual(t, reflect.ValueOf(p.OnInterruptFunc).Pointer(), reflect.ValueOf(exitfunc).Pointer())
+	assert.Equal(t, reflect.ValueOf(p.OnInterruptFunc).Pointer(), reflect.ValueOf(exitfunc).Pointer())
 }

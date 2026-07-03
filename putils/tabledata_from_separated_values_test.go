@@ -3,7 +3,7 @@ package putils
 import (
 	"testing"
 
-	"github.com/MarvinJWendt/testza"
+	"github.com/stretchr/testify/assert"
 
 	"github.com/pterm/pterm"
 )
@@ -16,5 +16,5 @@ func TestTableDataFromSeparatedValues(t *testing.T) {
 
 	input := "firstname;lastname;username\nMarvin;Wendt;MarvinJWendt"
 
-	testza.AssertEqualValues(t, expected, TableDataFromSeparatedValues(input, ";", "\n"))
+	assert.EqualValues(t, expected, TableDataFromSeparatedValues(input, ";", "\n"))
 }

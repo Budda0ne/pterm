@@ -4,22 +4,22 @@ import (
 	"os"
 	"testing"
 
-	"github.com/MarvinJWendt/testza"
 	"github.com/pterm/pterm"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestTreePrinterNilPrint(t *testing.T) {
-	pterm.TreePrinter{}.Render()
+	_ = pterm.TreePrinter{}.Render()
 
 	printer := pterm.TreePrinter{}.WithRoot(pterm.NewTreeFromLeveledList(pterm.LeveledList{pterm.LeveledListItem{Text: "Hello, World!", Level: 0}}))
 	content, err := printer.Srender()
 
-	testza.AssertNoError(t, err)
-	testza.AssertNotNil(t, content)
+	assert.NoError(t, err)
+	assert.NotNil(t, content)
 }
 
-func TestTreePrinter_Render(t *testing.T) {
-	pterm.DefaultTree.WithRoot(pterm.NewTreeFromLeveledList([]pterm.LeveledListItem{
+func TestTreePrinter_Render(_ *testing.T) {
+	_ = pterm.DefaultTree.WithRoot(pterm.NewTreeFromLeveledList([]pterm.LeveledListItem{
 		{Level: 0, Text: "Hello, World!"},
 		{Level: 0, Text: "0.0"},
 		{Level: 1, Text: "0.1"},
@@ -46,7 +46,7 @@ func TestTreePrinter_NewTreeFromLeveledList(t *testing.T) {
 		pterm.LeveledListItem{Level: 2, Text: "2.2.1"},
 		pterm.LeveledListItem{Level: 1, Text: "2.3"}}))
 
-	testza.AssertEqual(t, pterm.NewTreeFromLeveledList(pterm.LeveledList{
+	assert.Equal(t, pterm.NewTreeFromLeveledList(pterm.LeveledList{
 		pterm.LeveledListItem{Level: 0, Text: "0.0"},
 		pterm.LeveledListItem{Level: 1, Text: "0.1"},
 		pterm.LeveledListItem{Level: 1, Text: "0.2"},
@@ -56,7 +56,7 @@ func TestTreePrinter_NewTreeFromLeveledList(t *testing.T) {
 		pterm.LeveledListItem{Level: 1, Text: "2.2"},
 		pterm.LeveledListItem{Level: 2, Text: "2.2.1"},
 		pterm.LeveledListItem{Level: 1, Text: "2.3"}}), p2.Root)
-	testza.AssertZero(t, p.Root)
+	assert.Zero(t, p.Root)
 }
 
 func TestTreePrinter_NewTreeFromLeveledListLevelInvalidIncrease(t *testing.T) {
@@ -72,7 +72,7 @@ func TestTreePrinter_NewTreeFromLeveledListLevelInvalidIncrease(t *testing.T) {
 		pterm.LeveledListItem{Level: 2, Text: "2.2.1"},
 		pterm.LeveledListItem{Level: 10, Text: "2.3"}}))
 
-	testza.AssertEqual(t, pterm.NewTreeFromLeveledList(pterm.LeveledList{
+	assert.Equal(t, pterm.NewTreeFromLeveledList(pterm.LeveledList{
 		pterm.LeveledListItem{Level: 0, Text: "0.0"},
 		pterm.LeveledListItem{Level: 1, Text: "0.1"},
 		pterm.LeveledListItem{Level: 1, Text: "0.2"},
@@ -82,15 +82,15 @@ func TestTreePrinter_NewTreeFromLeveledListLevelInvalidIncrease(t *testing.T) {
 		pterm.LeveledListItem{Level: 1, Text: "2.2"},
 		pterm.LeveledListItem{Level: 2, Text: "2.2.1"},
 		pterm.LeveledListItem{Level: 3, Text: "2.3"}}), p2.Root)
-	testza.AssertZero(t, p.Root)
+	assert.Zero(t, p.Root)
 }
 
 func TestTreePrinter_NewTreeFromLeveledListEmptyList(t *testing.T) {
 	p := pterm.DefaultTree
 	p2 := p.WithRoot(pterm.NewTreeFromLeveledList(pterm.LeveledList{}))
 
-	testza.AssertEqual(t, pterm.NewTreeFromLeveledList(pterm.LeveledList{}), p2.Root)
-	testza.AssertZero(t, p.Root)
+	assert.Equal(t, pterm.NewTreeFromLeveledList(pterm.LeveledList{}), p2.Root)
+	assert.Zero(t, p.Root)
 }
 
 func TestTreePrinter_NewTreeFromLeveledListNegativeLevel(t *testing.T) {
@@ -106,7 +106,7 @@ func TestTreePrinter_NewTreeFromLeveledListNegativeLevel(t *testing.T) {
 		pterm.LeveledListItem{Level: 2, Text: "2.2.1"},
 		pterm.LeveledListItem{Level: -5, Text: "2.3"}}))
 
-	testza.AssertEqual(t, pterm.NewTreeFromLeveledList(pterm.LeveledList{
+	assert.Equal(t, pterm.NewTreeFromLeveledList(pterm.LeveledList{
 		pterm.LeveledListItem{Level: 0, Text: "0.0"},
 		pterm.LeveledListItem{Level: 1, Text: "0.1"},
 		pterm.LeveledListItem{Level: 1, Text: "0.2"},
@@ -116,15 +116,15 @@ func TestTreePrinter_NewTreeFromLeveledListNegativeLevel(t *testing.T) {
 		pterm.LeveledListItem{Level: 1, Text: "2.2"},
 		pterm.LeveledListItem{Level: 2, Text: "2.2.1"},
 		pterm.LeveledListItem{Level: 0, Text: "2.3"}}), p2.Root)
-	testza.AssertZero(t, p.Root)
+	assert.Zero(t, p.Root)
 }
 
 func TestTreePrinter_WithHorizontalString(t *testing.T) {
 	p := pterm.TreePrinter{}
 	p2 := p.WithHorizontalString("-")
 
-	testza.AssertEqual(t, "-", p2.HorizontalString)
-	testza.AssertZero(t, p.HorizontalString)
+	assert.Equal(t, "-", p2.HorizontalString)
+	assert.Zero(t, p.HorizontalString)
 }
 
 func TestTreePrinter_WithRoot(t *testing.T) {
@@ -134,11 +134,11 @@ func TestTreePrinter_WithRoot(t *testing.T) {
 		Text:     "Hello, World!",
 	})
 
-	testza.AssertEqual(t, pterm.TreeNode{
+	assert.Equal(t, pterm.TreeNode{
 		Children: nil,
 		Text:     "Hello, World!",
 	}, p2.Root)
-	testza.AssertZero(t, p.Root)
+	assert.Zero(t, p.Root)
 }
 
 func TestTreePrinter_WithTreeStyle(t *testing.T) {
@@ -146,8 +146,8 @@ func TestTreePrinter_WithTreeStyle(t *testing.T) {
 	s := pterm.NewStyle(pterm.FgRed, pterm.BgRed, pterm.Bold)
 	p2 := p.WithTreeStyle(s)
 
-	testza.AssertEqual(t, s, p2.TreeStyle)
-	testza.AssertZero(t, p.TreeStyle)
+	assert.Equal(t, s, p2.TreeStyle)
+	assert.Zero(t, p.TreeStyle)
 }
 
 func TestTreePrinter_WithTextStyle(t *testing.T) {
@@ -155,48 +155,48 @@ func TestTreePrinter_WithTextStyle(t *testing.T) {
 	s := pterm.NewStyle(pterm.FgRed, pterm.BgRed, pterm.Bold)
 	p2 := p.WithTextStyle(s)
 
-	testza.AssertEqual(t, s, p2.TextStyle)
-	testza.AssertZero(t, p.TextStyle)
+	assert.Equal(t, s, p2.TextStyle)
+	assert.Zero(t, p.TextStyle)
 }
 
 func TestTreePrinter_WithTopRightCornerString(t *testing.T) {
 	p := pterm.TreePrinter{}
 	p2 := p.WithTopRightCornerString("-")
 
-	testza.AssertEqual(t, "-", p2.TopRightCornerString)
-	testza.AssertZero(t, p.TopRightCornerString)
+	assert.Equal(t, "-", p2.TopRightCornerString)
+	assert.Zero(t, p.TopRightCornerString)
 }
 
 func TestTreePrinter_WithTopRightDownStringOngoing(t *testing.T) {
 	p := pterm.TreePrinter{}
 	p2 := p.WithTopRightDownStringOngoing("-")
 
-	testza.AssertEqual(t, "-", p2.TopRightDownString)
-	testza.AssertZero(t, p.TopRightDownString)
+	assert.Equal(t, "-", p2.TopRightDownString)
+	assert.Zero(t, p.TopRightDownString)
 }
 
 func TestTreePrinter_WithVerticalString(t *testing.T) {
 	p := pterm.TreePrinter{}
 	p2 := p.WithVerticalString("-")
 
-	testza.AssertEqual(t, "-", p2.VerticalString)
-	testza.AssertZero(t, p.VerticalString)
+	assert.Equal(t, "-", p2.VerticalString)
+	assert.Zero(t, p.VerticalString)
 }
 
 func TestTreePrinter_WithIndent(t *testing.T) {
 	p := pterm.TreePrinter{}
 	p2 := p.WithIndent(3)
 
-	testza.AssertEqual(t, 3, p2.Indent)
-	testza.AssertZero(t, p.Indent)
+	assert.Equal(t, 3, p2.Indent)
+	assert.Zero(t, p.Indent)
 }
 
 func TestTreePrinter_WithIndentInvalid(t *testing.T) {
 	p := pterm.TreePrinter{}
 	p2 := p.WithIndent(0)
 
-	testza.AssertEqual(t, 1, p2.Indent)
-	testza.AssertZero(t, p.Indent)
+	assert.Equal(t, 1, p2.Indent)
+	assert.Zero(t, p.Indent)
 }
 
 func TestTreePrinter_WithWriter(t *testing.T) {
@@ -204,6 +204,6 @@ func TestTreePrinter_WithWriter(t *testing.T) {
 	s := os.Stderr
 	p2 := p.WithWriter(s)
 
-	testza.AssertEqual(t, s, p2.Writer)
-	testza.AssertZero(t, p.Writer)
+	assert.Equal(t, s, p2.Writer)
+	assert.Zero(t, p.Writer)
 }
