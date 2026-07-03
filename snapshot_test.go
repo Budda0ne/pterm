@@ -189,7 +189,19 @@ func TestSnapshots(t *testing.T) {
 		logger := pterm.DefaultLogger.WithWriter(&buf).WithTime(false)
 		logger.Info("An info log", logger.Args("key", "value"))
 		logger.Warn("A warning log")
-		logger.Error("An error log", logger.Args("code", 42))
+		logger.Error("An error log", logger.Args("code", 42, "spaced", "a quoted value"))
+
+		return buf.String()
+	})
+
+	testSnapshot(t, "LoggerBlock", func(t *testing.T) string {
+		pterm.SetForcedTerminalSize(80, 24)
+		t.Cleanup(func() { pterm.SetForcedTerminalSize(0, 0) })
+
+		var buf bytes.Buffer
+		logger := pterm.DefaultLogger.WithWriter(&buf).WithTime(false).WithMaxWidth(60)
+		logger.Info("A message that is too long for a single line wraps under its own first line", logger.Args("key", "value", "another", "value with spaces"))
+		logger.Warn("Multiline and long values align under the value start", logger.Args("stack", "first line\nsecond line", "token", "averylongsingletokenthatmustbebrokenhardbecauseitdoesnotfit"))
 
 		return buf.String()
 	})
