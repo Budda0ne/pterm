@@ -21,9 +21,12 @@ var ActiveProgressBarPrinters []*ProgressbarPrinter
 
 // DefaultProgressbar is the default ProgressbarPrinter.
 var DefaultProgressbar = ProgressbarPrinter{
-	Total:                     100,
-	BarCharacter:              "█",
-	LastCharacter:             "█",
+	Total:         100,
+	BarCharacter:  "█",
+	LastCharacter: "█",
+	// Eighth-block glyphs, ordered from least to most filled, give the bar a
+	// smooth edge that advances one eighth of a cell at a time.
+	BarPartialCharacters:      []string{"▏", "▎", "▍", "▌", "▋", "▊", "▉"},
 	ElapsedTimeRoundingFactor: time.Second,
 	BarStyle:                  &ThemeDefault.ProgressbarBarStyle,
 	TitleStyle:                &ThemeDefault.ProgressbarTitleStyle,
@@ -31,7 +34,6 @@ var DefaultProgressbar = ProgressbarPrinter{
 	ShowCount:                 true,
 	ShowPercentage:            true,
 	ShowElapsedTime:           true,
-	BarFiller:                 Gray("█"),
 	MaxWidth:                  80,
 	Writer:                    os.Stderr,
 }
@@ -44,8 +46,18 @@ type ProgressbarPrinter struct {
 	BarCharacter              string
 	LastCharacter             string
 	ElapsedTimeRoundingFactor time.Duration
-	BarFiller                 string
-	MaxWidth                  int
+
+	// BarFiller is repeated to fill the unfilled portion of the bar. When
+	// empty (the default) the remaining space is left blank.
+	BarFiller string
+
+	// BarPartialCharacters holds the glyphs used to draw the leading edge of
+	// the bar at sub-character resolution, ordered from least to most filled.
+	// When empty, the bar falls back to whole-cell rendering using
+	// BarCharacter and LastCharacter.
+	BarPartialCharacters []string
+
+	MaxWidth int
 
 	ShowElapsedTime bool
 	ShowCount       bool
@@ -222,6 +234,15 @@ func (p ProgressbarPrinter) WithBarFiller(char string) *ProgressbarPrinter {
 	return &p
 }
 
+// WithBarPartialCharacters sets the glyphs used to render the leading edge of
+// the bar at sub-character resolution, ordered from least to most filled (e.g.
+// "▏" through "▉"). Passing an empty slice disables smooth rendering and falls
+// back to whole-cell rendering with BarCharacter and LastCharacter.
+func (p ProgressbarPrinter) WithBarPartialCharacters(chars []string) *ProgressbarPrinter {
+	p.BarPartialCharacters = chars
+	return &p
+}
+
 // WithWriter sets the custom Writer.
 func (p ProgressbarPrinter) WithWriter(writer io.Writer) *ProgressbarPrinter {
 	p.Writer = writer
@@ -283,7 +304,7 @@ func (p *ProgressbarPrinter) renderAndWriter() (string, io.Writer) {
 
 // getStringLocked renders the progress bar. The caller must hold p.mu.
 func (p *ProgressbarPrinter) getStringLocked() string {
-	if !p.IsActive {
+	if !p.IsActive || p.Total == 0 {
 		return ""
 	}
 
@@ -295,62 +316,135 @@ func (p *ProgressbarPrinter) getStringLocked() string {
 		p.BarStyle = NewStyle()
 	}
 
-	if p.Total == 0 {
-		return ""
+	before := p.decoratorsBeforeLocked()
+	after := p.decoratorsAfterLocked()
+
+	// The bar fills whatever horizontal space the decorators leave behind.
+	barWidth := p.lineWidthLocked() - internal.GetStringMaxWidth(before) - internal.GetStringMaxWidth(after)
+
+	return before + p.renderBar(barWidth) + after
+}
+
+// lineWidthLocked returns the total width the rendered line may occupy, clamped
+// to the terminal. The caller must hold p.mu.
+func (p *ProgressbarPrinter) lineWidthLocked() int {
+	terminalWidth := GetTerminalWidth()
+	if p.MaxWidth <= 0 || terminalWidth < p.MaxWidth {
+		return terminalWidth
 	}
 
-	var before string
-	var after string
-	var width int
+	return p.MaxWidth
+}
 
-	switch {
-	case p.MaxWidth <= 0:
-		width = GetTerminalWidth()
-
-	case GetTerminalWidth() < p.MaxWidth:
-		width = GetTerminalWidth()
-
-	default:
-		width = p.MaxWidth
-	}
+// decoratorsBeforeLocked builds the prefix shown left of the bar (title and
+// count). The caller must hold p.mu.
+func (p *ProgressbarPrinter) decoratorsBeforeLocked() string {
+	var b strings.Builder
 
 	if p.ShowTitle {
-		before += p.TitleStyle.Sprint(p.Title) + " "
+		b.WriteString(p.TitleStyle.Sprint(p.Title) + " ")
 	}
 
 	if p.ShowCount {
+		// Space-pad the current value to the width of the total so the line
+		// keeps a stable layout while the numbers grow.
 		padding := 1 + int(math.Log10(float64(p.Total)))
-		before += Gray("[") + LightWhite(fmt.Sprintf("%0*d", padding, p.Current)) + Gray("/") + LightWhite(p.Total) + Gray("]") + " "
+		b.WriteString(LightWhite(fmt.Sprintf("%*d", padding, p.Current)) + Gray(fmt.Sprintf("/%d", p.Total)) + " ")
 	}
 
-	after += " "
+	return b.String()
+}
+
+// decoratorsAfterLocked builds the suffix shown right of the bar (percentage
+// and elapsed time). The caller must hold p.mu.
+func (p *ProgressbarPrinter) decoratorsAfterLocked() string {
+	var b strings.Builder
+
+	b.WriteString(" ")
 
 	if p.ShowPercentage {
-		currentPercentage := int(internal.PercentageRound(float64(int64(p.Total)), float64(int64(p.Current))))
-		r, g, b := NewRGB(255, 0, 0).Fade(0, float32(p.Total), float32(p.Current), NewRGB(0, 255, 0)).GetValues()
-		decoratorCurrentPercentage := NewRGB(r, g, b).Sprintf("%3d%%", currentPercentage)
-		after += decoratorCurrentPercentage + " "
+		percentage := int(internal.PercentageRound(float64(int64(p.Total)), float64(int64(p.Current))))
+
+		text := fmt.Sprintf("%3d%%", percentage)
+		if p.Current >= p.Total {
+			text = Green(text)
+		} else {
+			text = LightWhite(text)
+		}
+
+		b.WriteString(text + " ")
 	}
 
 	if p.ShowElapsedTime {
-		after += "| " + p.parseElapsedTimeLocked()
+		b.WriteString(Gray("· " + p.parseElapsedTimeLocked()))
 	}
 
-	barMaxLength := width - len(RemoveColorFromString(before)) - len(RemoveColorFromString(after)) - 1
+	return b.String()
+}
 
-	barCurrentLength := (p.Current * barMaxLength) / p.Total
-
-	var barFiller string
-	if barMaxLength-barCurrentLength > 0 {
-		barFiller = strings.Repeat(p.BarFiller, barMaxLength-barCurrentLength)
+// renderBar draws the filled/unfilled bar to exactly width display cells.
+// The default block bar is drawn with sub-character resolution for a smooth
+// edge; a custom BarCharacter falls back to whole-cell rendering.
+func (p *ProgressbarPrinter) renderBar(width int) string {
+	if width <= 0 {
+		return ""
 	}
 
-	bar := barFiller
-	if barCurrentLength > 0 {
-		bar = p.BarStyle.Sprint(strings.Repeat(p.BarCharacter, barCurrentLength)+p.LastCharacter) + bar
+	filler := p.BarFiller
+	if filler == "" {
+		filler = " "
 	}
 
-	return before + bar + after
+	ratio := float64(p.Current) / float64(p.Total)
+	switch {
+	case ratio > 1:
+		ratio = 1
+	case ratio < 0:
+		ratio = 0
+	}
+
+	if len(p.BarPartialCharacters) > 0 {
+		return p.renderSmoothBar(ratio, width, filler)
+	}
+
+	full := int(ratio * float64(width))
+
+	var bar string
+	if full > 0 {
+		bar = p.BarStyle.Sprint(strings.Repeat(p.BarCharacter, full-1) + p.LastCharacter)
+	}
+
+	if full < width {
+		bar += strings.Repeat(filler, width-full)
+	}
+
+	return bar
+}
+
+// renderSmoothBar draws the bar using a partial-block glyph for the leading
+// edge so the fill grows a fraction of a cell at a time.
+func (p *ProgressbarPrinter) renderSmoothBar(ratio float64, width int, filler string) string {
+	exact := ratio * float64(width)
+	full := int(exact)
+
+	// Map the fractional remainder to a partial glyph. Slot 0 means the fill
+	// lands exactly on a cell boundary, so no partial edge is drawn.
+	var partial string
+	if slot := int((exact - float64(full)) * float64(len(p.BarPartialCharacters)+1)); slot > 0 {
+		partial = p.BarPartialCharacters[slot-1]
+	}
+
+	cells := full
+	if partial != "" {
+		cells++
+	}
+
+	bar := p.BarStyle.Sprint(strings.Repeat(p.BarCharacter, full) + partial)
+	if cells < width {
+		bar += strings.Repeat(filler, width-cells)
+	}
+
+	return bar
 }
 
 // Add to current value.

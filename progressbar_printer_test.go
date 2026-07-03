@@ -236,6 +236,14 @@ func TestProgressbarPrinter_WithBarFiller(t *testing.T) {
 	assert.Equal(t, "-", p2.BarFiller)
 }
 
+func TestProgressbarPrinter_WithBarPartialCharacters(t *testing.T) {
+	chars := []string{".", ":", "-"}
+	p := pterm.ProgressbarPrinter{}
+	p2 := p.WithBarPartialCharacters(chars)
+
+	assert.Equal(t, chars, p2.BarPartialCharacters)
+}
+
 func TestProgressbarPrinter_UpdateTitle(t *testing.T) {
 	p := pterm.ProgressbarPrinter{}
 	p2 := p.WithTitle("test")
