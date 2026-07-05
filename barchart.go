@@ -245,6 +245,12 @@ func (p BarChartPrinter) Srender() (string, error) {
 		return p.getRawOutput(), nil
 	}
 
+	// Work on a copy of the bars: rendering must not mutate the caller's
+	// Bars slice (the receiver copy still shares its backing array).
+	bars := make(Bars, len(p.Bars))
+	copy(bars, p.Bars)
+	p.Bars = bars
+
 	for i, bar := range p.Bars {
 		if bar.Style == nil {
 			p.Bars[i].Style = &ThemeDefault.BarStyle

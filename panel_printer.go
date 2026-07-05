@@ -101,6 +101,16 @@ func (p PanelPrinter) Srender() (string, error) {
 		return p.getRawOutput(), nil
 	}
 
+	// Work on a copy of the panels: rendering must not mutate the caller's
+	// Panels (the receiver copy still shares the backing arrays, and the
+	// loops below write trimmed/boxed/padded data back into the cells).
+	panels := make(Panels, len(p.Panels))
+	for i, row := range p.Panels {
+		panels[i] = append([]Panel(nil), row...)
+	}
+
+	p.Panels = panels
+
 	for i := range p.Panels {
 		for i2 := range p.Panels[i] {
 			p.Panels[i][i2].Data = strings.TrimSuffix(p.Panels[i][i2].Data, "\n")

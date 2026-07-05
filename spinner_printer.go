@@ -187,11 +187,17 @@ func (s *SpinnerPrinter) SetWriter(writer io.Writer) {
 
 // ResetTimer resets the timer of the SpinnerPrinter.
 func (s *SpinnerPrinter) ResetTimer() {
+	s.lock()
+	defer s.unlock()
+
 	s.startedAt = time.Now()
 }
 
 // SetStartedAt sets the time when the SpinnerPrinter started.
 func (s *SpinnerPrinter) SetStartedAt(t time.Time) {
+	s.lock()
+	defer s.unlock()
+
 	s.startedAt = t
 }
 

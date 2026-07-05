@@ -76,3 +76,72 @@ func TestLevelString(t *testing.T) {
 	assert.Equal(t, "256", color.Level256.String())
 	assert.Equal(t, "truecolor", color.LevelTrueColor.String())
 }
+
+// Every color of the 6x6x6 cube must map back to its own palette index.
+func TestRGBTo256CubeIdentity(t *testing.T) {
+	steps := []uint8{0, 95, 135, 175, 215, 255}
+
+	for ri, r := range steps {
+		for gi, g := range steps {
+			for bi, b := range steps {
+				want := uint8(16 + 36*ri + 6*gi + bi) //nolint:gosec // 16 + 36*5 + 6*5 + 5 = 231 always fits.
+
+				assert.Equal(t, want, color.RGBTo256(r, g, b), "RGBTo256(%d, %d, %d)", r, g, b)
+			}
+		}
+	}
+}
+
+// Every gray of the grayscale ramp must map back to its own palette index.
+func TestRGBTo256GrayRampIdentity(t *testing.T) {
+	for i := range 24 {
+		gray := uint8(8 + 10*i)
+		want := uint8(232 + i)
+
+		assert.Equal(t, want, color.RGBTo256(gray, gray, gray), "RGBTo256(%d, %d, %d)", gray, gray, gray)
+	}
+}
+
+// Every base color of the xterm default palette must map back to its own SGR
+// code.
+func TestRGBToBasicPaletteIdentity(t *testing.T) {
+	palette := [16][3]uint8{
+		{0, 0, 0},       // 30: black
+		{205, 0, 0},     // 31: red
+		{0, 205, 0},     // 32: green
+		{205, 205, 0},   // 33: yellow
+		{0, 0, 238},     // 34: blue
+		{205, 0, 205},   // 35: magenta
+		{0, 205, 205},   // 36: cyan
+		{229, 229, 229}, // 37: white
+		{127, 127, 127}, // 90: bright black
+		{255, 0, 0},     // 91: bright red
+		{0, 255, 0},     // 92: bright green
+		{255, 255, 0},   // 93: bright yellow
+		{92, 92, 255},   // 94: bright blue
+		{255, 0, 255},   // 95: bright magenta
+		{0, 255, 255},   // 96: bright cyan
+		{255, 255, 255}, // 97: bright white
+	}
+
+	for i, rgb := range palette {
+		want := uint8(30 + i)
+		if i >= 8 {
+			want = uint8(90 + i - 8)
+		}
+
+		assert.Equal(t, want, color.RGBToBasic(rgb[0], rgb[1], rgb[2]), "RGBToBasic(%d, %d, %d)", rgb[0], rgb[1], rgb[2])
+	}
+}
+
+// RGBTo256 must always return a color index (16-255), never one of the 16
+// base colors, so the result renders identically in every terminal.
+func TestRGBTo256NeverReturnsBaseColors(t *testing.T) {
+	for _, c := range [][3]uint8{{0, 0, 0}, {1, 1, 1}, {50, 50, 50}, {255, 255, 255}, {12, 34, 56}, {200, 100, 0}} {
+		assert.GreaterOrEqual(t, color.RGBTo256(c[0], c[1], c[2]), uint8(16), "RGBTo256(%d, %d, %d)", c[0], c[1], c[2])
+	}
+}
+
+func TestLevelStringUnknown(t *testing.T) {
+	assert.Equal(t, "unknown", color.Level(99).String())
+}

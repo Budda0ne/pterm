@@ -55,6 +55,30 @@ func TestWrapText(t *testing.T) {
 			expected: []string{"aaa bbb", "ccc"},
 		},
 		{
+			name:     "Negative width disables wrapping",
+			input:    "aaa bbb\nccc",
+			width:    -5,
+			expected: []string{"aaa bbb", "ccc"},
+		},
+		{
+			name:     "Word exactly as wide as the line",
+			input:    "abcd efgh",
+			width:    4,
+			expected: []string{"abcd", "efgh"},
+		},
+		{
+			name:     "Trailing spaces on wrapped lines are trimmed",
+			input:    "a  b",
+			width:    3,
+			expected: []string{"a", "b"},
+		},
+		{
+			name:     "Mixed narrow and wide runes",
+			input:    "Go 言語 rocks",
+			width:    5,
+			expected: []string{"Go", "言語", "rocks"},
+		},
+		{
 			name:     "Ignores escape codes when measuring",
 			input:    "\x1b[31mred\x1b[0m and blue",
 			width:    8,

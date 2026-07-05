@@ -3,42 +3,32 @@ package pterm_test
 import (
 	"testing"
 
-	"github.com/pterm/pterm"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/pterm/pterm"
 )
 
-func TestBar_WithLabel(t *testing.T) {
-	p := pterm.Bar{}
-	s := "X"
-	p2 := p.WithLabel(s)
-
-	assert.Equal(t, s, p2.Label)
-	assert.Zero(t, p.Label)
+// The default checkmark must render the well-known glyphs (the styling around
+// them depends on the environment at package init, the glyphs must not).
+func TestThemeDefaultCheckmarkGlyphs(t *testing.T) {
+	assert.Equal(t, "✓", stripANSI(pterm.ThemeDefault.Checkmark.Checked))
+	assert.Equal(t, "✗", stripANSI(pterm.ThemeDefault.Checkmark.Unchecked))
 }
 
-func TestBar_WithStyle(t *testing.T) {
-	p := pterm.Bar{}
-	s := pterm.NewStyle(pterm.FgRed, pterm.BgBlue, pterm.Bold)
-	p2 := p.WithStyle(s)
+// Bar is not part of the printer builder contract (it is a data atom), so its
+// With* methods are verified here: chaining must accumulate all fields and
+// never mutate the value it was derived from.
+func TestBarBuilderMethods(t *testing.T) {
+	style := pterm.NewStyle(pterm.FgRed)
+	labelStyle := pterm.NewStyle(pterm.FgCyan, pterm.Bold)
 
-	assert.Equal(t, s, p2.Style)
-	assert.Zero(t, p.Style)
-}
+	original := pterm.Bar{}
+	modified := original.
+		WithLabel("cpu").
+		WithValue(42).
+		WithStyle(style).
+		WithLabelStyle(labelStyle)
 
-func TestBar_WithValue(t *testing.T) {
-	p := pterm.Bar{}
-	s := 1337
-	p2 := p.WithValue(s)
-
-	assert.Equal(t, s, p2.Value)
-	assert.Zero(t, p.Value)
-}
-
-func TestBar_WithLabelStyle(t *testing.T) {
-	p := pterm.Bar{}
-	s := pterm.NewStyle(pterm.FgRed, pterm.BgBlue, pterm.Bold)
-	p2 := p.WithLabelStyle(s)
-
-	assert.Equal(t, s, p2.LabelStyle)
-	assert.Zero(t, p.LabelStyle)
+	assert.Equal(t, pterm.Bar{Label: "cpu", Value: 42, Style: style, LabelStyle: labelStyle}, *modified)
+	assert.Equal(t, pterm.Bar{}, original, "With* must not mutate the original Bar")
 }

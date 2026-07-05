@@ -2,261 +2,228 @@ package pterm_test
 
 import (
 	"os"
-	"reflect"
 	"testing"
-	"time"
 
-	"atomicgo.dev/keyboard"
 	"atomicgo.dev/keyboard/keys"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/pterm/pterm"
 	"github.com/pterm/pterm/internal"
 )
 
-func TestInteractiveTextInputPrinter_WithDefaultText(t *testing.T) {
-	p := pterm.DefaultInteractiveTextInput.WithDefaultText("default")
-	assert.Equal(t, p.DefaultText, "default")
+// showTextInput runs the given text input prompt (which must terminate
+// through the key presses simulated beforehand) and returns the entered text.
+func showTextInput(t *testing.T, printer *pterm.InteractiveTextInputPrinter, text ...string) string {
+	t.Helper()
+
+	result, err := showInteractive(t, func() (string, error) {
+		return printer.Show(text...)
+	})
+	require.NoError(t, err)
+
+	return result
 }
 
-func TestInteractiveTextInputPrinter_WithDefaultValue(t *testing.T) {
-	p := pterm.DefaultInteractiveTextInput.WithDefaultValue("default")
-	assert.Equal(t, p.DefaultValue, "default")
+func TestInteractiveTextInputPrinter_TypeAndSubmit(t *testing.T) {
+	simulateKeys(t, "hi", keys.Enter)
+
+	result := showTextInput(t, &pterm.DefaultInteractiveTextInput)
+
+	assert.Equal(t, "hi", result)
 }
 
-func TestInteractiveTextInputPrinter_WithDelimiter(t *testing.T) {
-	p := pterm.DefaultInteractiveTextInput.WithDelimiter(">>")
-	assert.Equal(t, p.Delimiter, ">>")
+func TestInteractiveTextInputPrinter_SpacesArePartOfTheInput(t *testing.T) {
+	simulateKeys(t, "hello", keys.Space, "world", keys.Enter)
+
+	result := showTextInput(t, &pterm.DefaultInteractiveTextInput)
+
+	assert.Equal(t, "hello world", result)
 }
 
-func TestInteractiveTextInputPrinter_WithMultiLine_true(t *testing.T) {
-	p := pterm.DefaultInteractiveTextInput.WithMultiLine()
-	assert.True(t, p.MultiLine)
+func TestInteractiveTextInputPrinter_RendersPromptAndTypedText(t *testing.T) {
+	var result string
+
+	output := captureUserFacingStdout(t, func() {
+		simulateKeys(t, "hello", keys.Enter)
+
+		result = showTextInput(t, &pterm.DefaultInteractiveTextInput, "Your name")
+	})
+
+	assert.Equal(t, "hello", result)
+	assert.Contains(t, stripANSI(output), "Your name: ", "the prompt and delimiter must be rendered")
+	assert.Contains(t, stripANSI(output), "hello", "the typed text must be rendered")
 }
 
-func TestInteractiveTextInputPrinter_WithMultiLine_false(t *testing.T) {
-	p := pterm.DefaultInteractiveTextInput.WithMultiLine(false)
-	assert.False(t, p.MultiLine)
+func TestInteractiveTextInputPrinter_BackspaceRemovesLastRune(t *testing.T) {
+	simulateKeys(t, "hix", keys.Backspace, keys.Enter)
+
+	result := showTextInput(t, &pterm.DefaultInteractiveTextInput)
+
+	assert.Equal(t, "hi", result)
 }
 
-func TestInteractiveTextInputPrinter_WithTextStyle(t *testing.T) {
-	style := pterm.NewStyle(pterm.FgRed)
-	p := pterm.DefaultInteractiveTextInput.WithTextStyle(style)
-	assert.Equal(t, p.TextStyle, style)
+func TestInteractiveTextInputPrinter_CursorMovementEditsAtPosition(t *testing.T) {
+	t.Run("left moves the insert position back", func(t *testing.T) {
+		simulateKeys(t, "ac", keys.Left, 'b', keys.Enter)
+
+		result := showTextInput(t, &pterm.DefaultInteractiveTextInput)
+
+		assert.Equal(t, "abc", result)
+	})
+
+	t.Run("right moves the insert position forward again", func(t *testing.T) {
+		simulateKeys(t, "ab", keys.Left, keys.Left, keys.Right, 'c', keys.Enter)
+
+		result := showTextInput(t, &pterm.DefaultInteractiveTextInput)
+
+		assert.Equal(t, "acb", result)
+	})
+
+	t.Run("delete removes the rune under the cursor", func(t *testing.T) {
+		simulateKeys(t, "abc", keys.Left, keys.Left, keys.Delete, keys.Enter)
+
+		result := showTextInput(t, &pterm.DefaultInteractiveTextInput)
+
+		assert.Equal(t, "ac", result)
+	})
 }
 
-func TestInteractiveTextInputPrinter_WithMask(t *testing.T) {
-	go func() {
-		time.Sleep(1 * time.Millisecond)
+func TestInteractiveTextInputPrinter_DefaultValue(t *testing.T) {
+	t.Run("enter submits the default value", func(t *testing.T) {
+		simulateKeys(t, keys.Enter)
 
-		_ = keyboard.SimulateKeyPress('a')
-		_ = keyboard.SimulateKeyPress('b')
-		_ = keyboard.SimulateKeyPress('c')
-		_ = keyboard.SimulateKeyPress(keys.Enter)
-	}()
+		result := showTextInput(t, pterm.DefaultInteractiveTextInput.WithDefaultValue("pterm"))
 
-	result, _ := pterm.DefaultInteractiveTextInput.WithMask("*").Show()
+		assert.Equal(t, "pterm", result)
+	})
+
+	t.Run("typing appends to the default value", func(t *testing.T) {
+		simulateKeys(t, 'd', keys.Enter)
+
+		result := showTextInput(t, pterm.DefaultInteractiveTextInput.WithDefaultValue("abc"))
+
+		assert.Equal(t, "abcd", result)
+	})
+
+	t.Run("delete discards the default value", func(t *testing.T) {
+		simulateKeys(t, keys.Delete, 'x', keys.Enter)
+
+		result := showTextInput(t, pterm.DefaultInteractiveTextInput.WithDefaultValue("abc"))
+
+		assert.Equal(t, "x", result)
+	})
+
+	t.Run("backspace edits the default value", func(t *testing.T) {
+		simulateKeys(t, keys.Backspace, keys.Enter)
+
+		result := showTextInput(t, pterm.DefaultInteractiveTextInput.WithDefaultValue("abc"))
+
+		assert.Equal(t, "ab", result)
+	})
+}
+
+func TestInteractiveTextInputPrinter_MaskRendersMaskButReturnsText(t *testing.T) {
+	var result string
+
+	output := captureUserFacingStdout(t, func() {
+		simulateKeys(t, "abc", keys.Enter)
+
+		result = showTextInput(t, pterm.DefaultInteractiveTextInput.WithMask("*"))
+	})
+
+	assert.Equal(t, "abc", result, "the returned text must be the real input, not the mask")
+	assert.Contains(t, stripANSI(output), "***", "the rendered input must be masked")
+	assert.NotContains(t, output, "abc", "the real input must never be rendered")
+}
+
+func TestInteractiveTextInputPrinter_MultiLine(t *testing.T) {
+	t.Run("enter inserts a newline and tab submits", func(t *testing.T) {
+		var result string
+
+		output := captureUserFacingStdout(t, func() {
+			simulateKeys(t, "a", keys.Enter, "b", keys.Tab)
+
+			result = showTextInput(t, pterm.DefaultInteractiveTextInput.WithMultiLine())
+		})
+
+		assert.Equal(t, "a\nb", result)
+		assert.Contains(t, stripANSI(output), "[Press tab to submit]", "the multi-line hint must be rendered")
+	})
+
+	t.Run("up navigates to the previous line", func(t *testing.T) {
+		simulateKeys(t, keys.Enter, "second", keys.Up, "first", keys.Tab)
+
+		result := showTextInput(t, pterm.DefaultInteractiveTextInput.WithMultiLine())
+
+		assert.Equal(t, "first\nsecond", result)
+	})
+
+	t.Run("down navigates to the next line", func(t *testing.T) {
+		simulateKeys(t, "a", keys.Enter, keys.Enter, keys.Up, "b", keys.Down, "c", keys.Tab)
+
+		result := showTextInput(t, pterm.DefaultInteractiveTextInput.WithMultiLine())
+
+		assert.Equal(t, "a\nb\nc", result)
+	})
+
+	t.Run("backspace joins lines", func(t *testing.T) {
+		simulateKeys(t, "a", keys.Enter, "b", keys.Backspace, keys.Backspace, 'c', keys.Tab)
+
+		result := showTextInput(t, pterm.DefaultInteractiveTextInput.WithMultiLine())
+
+		assert.Equal(t, "ac", result)
+	})
+
+	t.Run("delete joins with the next line", func(t *testing.T) {
+		simulateKeys(t, "a", keys.Enter, "b", keys.Up, keys.Delete, keys.Tab)
+
+		result := showTextInput(t, pterm.DefaultInteractiveTextInput.WithMultiLine())
+
+		assert.Equal(t, "ab", result)
+	})
+
+	t.Run("tab submits an untouched default value", func(t *testing.T) {
+		simulateKeys(t, keys.Tab)
+
+		result := showTextInput(t, pterm.DefaultInteractiveTextInput.WithMultiLine().WithDefaultValue("keep"))
+
+		assert.Equal(t, "keep", result)
+	})
+
+	t.Run("enter submits an untouched default value", func(t *testing.T) {
+		simulateKeys(t, keys.Enter)
+
+		result := showTextInput(t, pterm.DefaultInteractiveTextInput.WithMultiLine().WithDefaultValue("keep"))
+
+		assert.Equal(t, "keep", result)
+	})
+}
+
+func TestInteractiveTextInputPrinter_InterruptCallsOnInterruptFunc(t *testing.T) {
+	interrupted := false
+	printer := pterm.DefaultInteractiveTextInput.WithOnInterruptFunc(func() { interrupted = true })
+
+	simulateKeys(t, "abc", keys.CtrlC)
+
+	result := showTextInput(t, printer)
+
+	assert.True(t, interrupted, "Ctrl+C must invoke the OnInterruptFunc")
+	// The printer returns the partial input on interrupt; aborting is the
+	// OnInterruptFunc's responsibility (the default one exits the process).
 	assert.Equal(t, "abc", result)
 }
 
-func TestInteractiveTextInputPrinter_WithCancel(t *testing.T) {
-	exitCalled := false
-	internal.DefaultExitFunc = func(_ int) {
-		exitCalled = true
-	}
+func TestInteractiveTextInputPrinter_InterruptExitsByDefault(t *testing.T) {
+	exitCode := -1
+	internal.DefaultExitFunc = func(code int) { exitCode = code }
 
-	defer func() { internal.DefaultExitFunc = os.Exit }()
+	t.Cleanup(func() { internal.DefaultExitFunc = os.Exit })
 
-	go func() {
-		time.Sleep(1 * time.Millisecond)
+	simulateKeys(t, keys.CtrlC)
 
-		_ = keyboard.SimulateKeyPress(keys.CtrlC)
-	}()
+	result := showTextInput(t, &pterm.DefaultInteractiveTextInput)
 
-	result, _ := pterm.DefaultInteractiveTextInput.WithMask("*").Show()
-	assert.Equal(t, "", result)
-
-	if !exitCalled {
-		t.Errorf("Expected exit to be called on Ctrl+C")
-	}
-}
-
-func TestInteractiveTextInputPrinter_OnEnter(t *testing.T) {
-	go func() {
-		_ = keyboard.SimulateKeyPress(keys.Enter)
-	}()
-
-	result, _ := pterm.DefaultInteractiveTextInput.WithDefaultValue("default").Show()
-	assert.Equal(t, "default", result)
-}
-
-func TestInteractiveTextInputPrinter_Editable(t *testing.T) {
-	go func() {
-		// change `default` to `deffaultt` by simulating cursor moves `left`, `right` and inserting
-		// keys on current cursor positions.
-		_ = keyboard.SimulateKeyPress(keys.Left)
-		_ = keyboard.SimulateKeyPress(keys.Left)
-		_ = keyboard.SimulateKeyPress(keys.Left)
-		_ = keyboard.SimulateKeyPress(keys.Left)
-		_ = keyboard.SimulateKeyPress(keys.Key{Code: keys.RuneKey, Runes: []rune{'f'}})
-		_ = keyboard.SimulateKeyPress(keys.Right)
-		_ = keyboard.SimulateKeyPress(keys.Right)
-		_ = keyboard.SimulateKeyPress(keys.Right)
-		_ = keyboard.SimulateKeyPress(keys.Key{Code: keys.RuneKey, Runes: []rune{'t'}})
-		_ = keyboard.SimulateKeyPress(keys.Enter)
-	}()
-
-	result, _ := pterm.DefaultInteractiveTextInput.WithDefaultValue("default").Show()
-	assert.Equal(t, "deffaultt", result)
-}
-
-func TestInteractiveTextInputPrinter_WithMultiLineOnTab(t *testing.T) {
-	go func() {
-		_ = keyboard.SimulateKeyPress(keys.Tab)
-	}()
-
-	result, _ := pterm.DefaultInteractiveTextInput.
-		WithMultiLine(true).
-		WithDefaultValue("default").Show()
-	assert.Equal(t, "default", result)
-}
-
-func TestInteractiveTextInputPrinter_WithMultiLineOnUp(t *testing.T) {
-	go func() {
-		time.Sleep(1 * time.Millisecond)
-
-		_ = keyboard.SimulateKeyPress(keys.Backspace)
-		_ = keyboard.SimulateKeyPress(keys.Enter)
-		_ = keyboard.SimulateKeyPress("second line")
-		_ = keyboard.SimulateKeyPress(keys.Up)
-		_ = keyboard.SimulateKeyPress("first line")
-		_ = keyboard.SimulateKeyPress(keys.Tab)
-	}()
-
-	result, _ := pterm.DefaultInteractiveTextInput.
-		WithMultiLine(true).Show()
-	assert.Equal(t, "first line\nsecond line", result)
-}
-
-func TestInteractiveTextInputPrinter_WithMultiLineOnDown(t *testing.T) {
-	go func() {
-		time.Sleep(1 * time.Millisecond)
-
-		_ = keyboard.SimulateKeyPress("a")
-		_ = keyboard.SimulateKeyPress(keys.Enter)
-		_ = keyboard.SimulateKeyPress(keys.Enter)
-		_ = keyboard.SimulateKeyPress(keys.Up)
-		_ = keyboard.SimulateKeyPress("b")
-		_ = keyboard.SimulateKeyPress(keys.Down)
-		_ = keyboard.SimulateKeyPress("c")
-		_ = keyboard.SimulateKeyPress(keys.Tab)
-	}()
-
-	result, _ := pterm.DefaultInteractiveTextInput.
-		WithMultiLine(true).Show()
-	assert.Equal(t, "a\nb\nc", result)
-}
-
-func TestInteractiveTextInputPrinter_WithMultiLineOnLeft(t *testing.T) {
-	go func() {
-		time.Sleep(1 * time.Millisecond)
-
-		_ = keyboard.SimulateKeyPress(keys.Backspace)
-		_ = keyboard.SimulateKeyPress(keys.Enter)
-		_ = keyboard.SimulateKeyPress("a")
-		_ = keyboard.SimulateKeyPress(keys.Left)
-		_ = keyboard.SimulateKeyPress(keys.Left)
-		_ = keyboard.SimulateKeyPress("b")
-		_ = keyboard.SimulateKeyPress(keys.Tab)
-	}()
-
-	result, _ := pterm.DefaultInteractiveTextInput.
-		WithMultiLine(true).Show()
-	assert.Equal(t, "b\na", result)
-}
-
-func TestInteractiveTextInputPrinter_WithMultiLineOnRight(t *testing.T) {
-	go func() {
-		time.Sleep(1 * time.Millisecond)
-
-		_ = keyboard.SimulateKeyPress('a')
-		_ = keyboard.SimulateKeyPress(keys.Enter)
-		_ = keyboard.SimulateKeyPress(keys.Up)
-		_ = keyboard.SimulateKeyPress(keys.Right)
-		_ = keyboard.SimulateKeyPress(keys.Right)
-		_ = keyboard.SimulateKeyPress("b")
-		_ = keyboard.SimulateKeyPress(keys.Tab)
-	}()
-
-	result, _ := pterm.DefaultInteractiveTextInput.
-		WithMultiLine(true).Show()
-	assert.Equal(t, "a\nb", result)
-}
-
-func TestInteractiveTextInputPrinter_OnBackspace(t *testing.T) {
-	go func() {
-		_ = keyboard.SimulateKeyPress(keys.Backspace)
-		_ = keyboard.SimulateKeyPress(keys.Enter)
-	}()
-
-	result, _ := pterm.DefaultInteractiveTextInput.
-		WithDefaultValue("a").Show()
-	assert.Equal(t, "", result)
-}
-
-func TestInteractiveTextInputPrinter_WithMultiLineOnDelete(t *testing.T) {
-	go func() {
-		_ = keyboard.SimulateKeyPress(keys.Backspace)
-		_ = keyboard.SimulateKeyPress(keys.Enter)
-		_ = keyboard.SimulateKeyPress('a')
-		_ = keyboard.SimulateKeyPress(keys.Up)
-		_ = keyboard.SimulateKeyPress(keys.Delete)
-		_ = keyboard.SimulateKeyPress(keys.Tab)
-	}()
-
-	result, _ := pterm.DefaultInteractiveTextInput.
-		WithMultiLine(true).
-		WithDefaultValue("a").Show()
-	assert.Equal(t, "a", result)
-}
-
-func TestInteractiveTextInputPrinter_WithMultiLineOnBackspace(t *testing.T) {
-	go func() {
-		_ = keyboard.SimulateKeyPress(keys.Backspace)
-		_ = keyboard.SimulateKeyPress(keys.Enter)
-		_ = keyboard.SimulateKeyPress(keys.Backspace)
-		_ = keyboard.SimulateKeyPress(keys.Tab)
-	}()
-
-	result, _ := pterm.DefaultInteractiveTextInput.
-		WithMultiLine(true).
-		WithDefaultValue("a").Show()
-	assert.Equal(t, "", result)
-}
-
-func TestInteractiveTextInputPrinter_WithMultiLineOnLeftRight(t *testing.T) {
-	go func() {
-		time.Sleep(1 * time.Millisecond)
-
-		_ = keyboard.SimulateKeyPress("a")
-		_ = keyboard.SimulateKeyPress(keys.Enter)
-		_ = keyboard.SimulateKeyPress("b")
-		_ = keyboard.SimulateKeyPress(keys.Tab)
-	}()
-
-	result, _ := pterm.DefaultInteractiveTextInput.
-		WithMultiLine(true).
-		Show("Enter")
-	assert.Equal(t, "a\nb", result)
-}
-
-func TestInteractiveTextInputPrinter_WithOnInterruptFunc(t *testing.T) {
-	// OnInterrupt function defaults to nil
-	pd := pterm.InteractiveTextInputPrinter{}
-	assert.Nil(t, pd.OnInterruptFunc)
-
-	// Verify OnInterrupt is set
-	exitfunc := func() {}
-	p := pterm.DefaultInteractiveTextInput.WithOnInterruptFunc(exitfunc)
-	assert.Equal(t, reflect.ValueOf(p.OnInterruptFunc).Pointer(), reflect.ValueOf(exitfunc).Pointer())
+	assert.Empty(t, result)
+	assert.Equal(t, 1, exitCode, "without an OnInterruptFunc, Ctrl+C must exit with code 1")
 }

@@ -1,62 +1,69 @@
 package pterm_test
 
 import (
+	"io"
 	"testing"
 
-	"github.com/pterm/pterm"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/pterm/pterm"
 )
 
-func TestDisableDebugMessages(t *testing.T) {
-	pterm.EnableDebugMessages()
+// EnableStyling/DisableStyling must flip both RawOutput and PrintColor
+// coherently, observable through the actual output.
+func TestStylingToggle(t *testing.T) {
+	restoreGlobalStyling(t)
+
+	pterm.DisableStyling()
+
+	assert.True(t, pterm.RawOutput)
+	assert.False(t, pterm.PrintColor)
+
+	// No color codes in raw mode ...
+	assert.Equal(t, "x", pterm.FgRed.Sprint("x"))
+	// ... and no line-overwriting control characters either.
+	assert.Equal(t, "raw", captureStdout(func(_ io.Writer) { pterm.Printo("raw") }))
+
+	pterm.EnableStyling()
+
+	assert.False(t, pterm.RawOutput)
+	assert.True(t, pterm.PrintColor)
+	assert.Equal(t, "\x1b[31mx\x1b[0m", pterm.FgRed.Sprint("x"))
+	assert.Equal(t, "\rstyled", captureStdout(func(_ io.Writer) { pterm.Printo("styled") }))
+}
+
+// The debug toggle must control whether the Debug printer produces output.
+func TestDebugMessagesToggle(t *testing.T) {
+	t.Cleanup(pterm.DisableDebugMessages)
 
 	pterm.DisableDebugMessages()
-	assert.False(t, pterm.PrintDebugMessages)
-}
+	assert.Empty(t, captureStdout(func(_ io.Writer) { pterm.Debug.Println("hidden") }),
+		"Debug must print nothing while debug messages are disabled")
 
-func TestEnableDebugMessages(t *testing.T) {
 	pterm.EnableDebugMessages()
-	assert.True(t, pterm.PrintDebugMessages)
+
+	out := captureStdout(func(_ io.Writer) { pterm.Debug.Println("visible") })
+	assert.Contains(t, stripANSI(out), "visible")
 }
 
-func TestDisableOutput(t *testing.T) {
-	pterm.DisableOutput()
-	assert.False(t, pterm.Output)
-}
-
-func TestEnableOutput(t *testing.T) {
-	pterm.DisableOutput()
-	pterm.EnableOutput()
-	assert.True(t, pterm.Output)
-}
-
-func TestDisableStyling(t *testing.T) {
-	pterm.EnableStyling()
-
-	pterm.DisableStyling()
-	assert.True(t, pterm.RawOutput)
-}
-
-func TestEnableStyling(t *testing.T) {
-	pterm.DisableStyling()
-
-	pterm.EnableStyling()
-	assert.False(t, pterm.RawOutput)
-}
-
+// RecalculateTerminalSize must derive the default printer dimensions from the
+// (forced) terminal size.
 func TestRecalculateTerminalSize(t *testing.T) {
-	// save existing values
-	prevBarChartWidth := pterm.DefaultBarChart.Width
-	prevBarChartHeight := pterm.DefaultBarChart.Height
-	prevParagraphMaxWidth := pterm.DefaultParagraph.MaxWidth
-	w := pterm.GetTerminalWidth()
-	h := pterm.GetTerminalHeight()
-	// double the terminal size
-	pterm.SetForcedTerminalSize(w*2, h*2)
-	// assert the values doubled
-	assert.Equal(t, prevBarChartWidth*2, pterm.DefaultBarChart.Width)
-	assert.Equal(t, prevBarChartHeight*2, pterm.DefaultBarChart.Height)
-	assert.Equal(t, prevParagraphMaxWidth*2, pterm.DefaultParagraph.MaxWidth)
-	// revert the terminal size
-	pterm.SetForcedTerminalSize(w, h)
+	t.Cleanup(func() { pterm.SetForcedTerminalSize(terminalWidth, terminalHeight) })
+
+	// SetForcedTerminalSize recalculates internally.
+	pterm.SetForcedTerminalSize(120, 30)
+
+	assert.Equal(t, 120*2/3, pterm.DefaultBarChart.Width)
+	assert.Equal(t, 30*2/3, pterm.DefaultBarChart.Height)
+	assert.Equal(t, 120, pterm.DefaultParagraph.MaxWidth)
+
+	// A direct call must restore dimensions that were changed out-of-band.
+	pterm.DefaultBarChart.Width = 0
+	pterm.DefaultParagraph.MaxWidth = 0
+
+	pterm.RecalculateTerminalSize()
+
+	assert.Equal(t, 120*2/3, pterm.DefaultBarChart.Width)
+	assert.Equal(t, 120, pterm.DefaultParagraph.MaxWidth)
 }

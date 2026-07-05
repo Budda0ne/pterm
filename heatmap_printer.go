@@ -492,7 +492,7 @@ func (p HeatmapPrinter) renderData(buffer *bytes.Buffer, colWidth int, xAmount i
 					fgColor = complementaryColors[color]
 				}
 
-				buffer.WriteString(fgColor.Sprint(ct))
+				buffer.WriteString(fgColor.Sprint(color.Sprint(ct)))
 			}
 
 			if j < xAmount {
@@ -579,7 +579,7 @@ func (p HeatmapPrinter) generateColorLegend(buffer *bytes.Buffer, legendColWidth
 			fgColor = complementaryColors[color]
 		}
 
-		buffer.WriteString(fgColor.Sprint(centerAndShorten(f, legendColWidth, p.LegendOnlyColoredCells)))
+		buffer.WriteString(fgColor.Sprint(color.Sprint(centerAndShorten(f, legendColWidth, p.LegendOnlyColoredCells))))
 
 		if p.Grid && i < len(p.Colors)-1 && !p.LegendOnlyColoredCells {
 			buffer.WriteString(p.SeparatorStyle.Sprintf("%s", p.VerticalSeparator))

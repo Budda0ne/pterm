@@ -44,6 +44,20 @@ func TestDetectLevelFromEnvironment(t *testing.T) {
 		{name: "FORCE_COLOR wins over NO_COLOR", env: map[string]string{"FORCE_COLOR": "3", "NO_COLOR": "1"}, want: LevelTrueColor},
 		{name: "CLICOLOR_FORCE wins over TERM=dumb", env: map[string]string{"CLICOLOR_FORCE": "1", "TERM": "dumb"}, want: LevelBasic},
 		{name: "CLICOLOR_FORCE=0 does not force", env: map[string]string{"CLICOLOR_FORCE": "0", "TERM": "xterm"}, want: LevelBasic},
+		{name: "CLICOLOR_FORCE keeps richer detected colors", env: map[string]string{"CLICOLOR_FORCE": "1", "TERM": "xterm-256color"}, want: Level256},
+		{name: "CLICOLOR=1 does not disable colors", env: map[string]string{"CLICOLOR": "1", "TERM": "xterm"}, want: LevelBasic},
+		{name: "FORCE_COLOR=false disables colors", env: map[string]string{"FORCE_COLOR": "false", "COLORTERM": "truecolor"}, want: LevelNone},
+		{name: "FORCE_COLOR=none disables colors", env: map[string]string{"FORCE_COLOR": "none", "COLORTERM": "truecolor"}, want: LevelNone},
+		{name: "FORCE_COLOR=true forces at least basic colors", env: map[string]string{"FORCE_COLOR": "true", "TERM": "dumb"}, want: LevelBasic},
+		{name: "FORCE_COLOR=2 caps a truecolor environment", env: map[string]string{"FORCE_COLOR": "2", "COLORTERM": "truecolor"}, want: Level256},
+		{name: "COLORTERM is case-insensitive", env: map[string]string{"COLORTERM": "TrueColor"}, want: LevelTrueColor},
+		{name: "TERM containing truecolor", env: map[string]string{"TERM": "xterm-truecolor"}, want: LevelTrueColor},
+		{name: "TERM=screen-256color", env: map[string]string{"TERM": "screen-256color"}, want: Level256},
+		{name: "vscode terminal", env: map[string]string{"TERM_PROGRAM": "vscode"}, want: LevelTrueColor},
+		{name: "ghostty terminal", env: map[string]string{"TERM_PROGRAM": "ghostty"}, want: LevelTrueColor},
+		{name: "Apple Terminal", env: map[string]string{"TERM_PROGRAM": "Apple_Terminal"}, want: LevelTrueColor},
+		{name: "Unknown TERM_PROGRAM falls back to basic colors", env: map[string]string{"TERM_PROGRAM": "SomeTerm"}, want: LevelBasic},
+		{name: "256color TERM wins over unknown TERM_PROGRAM", env: map[string]string{"TERM_PROGRAM": "SomeTerm", "TERM": "xterm-256color"}, want: Level256},
 	}
 
 	for _, test := range tests {

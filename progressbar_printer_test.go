@@ -1,308 +1,413 @@
 package pterm_test
 
 import (
-	"os"
+	"fmt"
+	"regexp"
 	"strings"
 	"testing"
 	"time"
 
-	"github.com/pterm/pterm"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+
+	"github.com/pterm/pterm"
 )
 
-func TestProgressbarPrinter_Add(t *testing.T) {
-	proxyToDevNull()
+// terminalEscapeRegexp matches any CSI escape sequence (colors, cursor
+// movement, line clearing, ...). stripANSI (contract_test.go) only removes
+// SGR color codes, but live printers also emit cursor-control sequences.
+var terminalEscapeRegexp = regexp.MustCompile(`\x1b\[[0-9;?]*[A-Za-z]`)
 
-	p := pterm.DefaultProgressbar.WithTotal(2000)
-	p.Add(1337)
-	assert.Equal(t, 1337, p.Current)
-	_, _ = p.Stop()
+// stripTerminalEscapes removes every terminal escape sequence from s, leaving
+// only the text a user would actually see.
+func stripTerminalEscapes(s string) string {
+	return stripANSI(terminalEscapeRegexp.ReplaceAllString(s, ""))
 }
 
-func TestProgressbarPrinter_Add_With(t *testing.T) {
-	proxyToDevNull()
+// lastFrame returns the visible content of the last carriage-return frame in
+// s. Live printers overwrite their line by emitting "\r" followed by the new
+// frame, so the content after the final "\r" is what stays on screen.
+func lastFrame(s string) string {
+	frames := strings.Split(s, "\r")
 
-	w := pterm.GetTerminalWidth()
-	h := pterm.GetTerminalHeight()
-
-	pterm.SetForcedTerminalSize(1, 1)
-
-	p := pterm.DefaultProgressbar.WithTotal(2000)
-	p.Add(1337)
-	assert.Equal(t, 1337, p.Current)
-	_, _ = p.Stop()
-
-	pterm.SetForcedTerminalSize(w, h)
+	return stripTerminalEscapes(frames[len(frames)-1])
 }
 
-func TestProgressbarPrinter_AddWithNoStyle(t *testing.T) {
-	proxyToDevNull()
-
-	p := pterm.ProgressbarPrinter{}.WithTotal(2000)
-	p.Add(1337)
-	assert.Equal(t, 1337, p.Current)
-	_, _ = p.Stop()
-}
-
-func TestProgressbarPrinter_AddWithTotalOfZero(t *testing.T) {
-	proxyToDevNull()
-
-	p := pterm.ProgressbarPrinter{}.WithTotal(0)
-	p.Add(1337)
-	assert.Equal(t, 0, p.Current)
-	_, _ = p.Stop()
-}
-
-func TestProgressbarPrinter_AddTotalEqualsCurrent(t *testing.T) {
-	proxyToDevNull()
-
-	// Start returns the started instance; using the original would leak the
-	// started bar's goroutine and pollute the output of later tests.
-	p, err := pterm.DefaultProgressbar.WithTotal(1).Start()
-	assert.NoError(t, err)
-
-	defer p.Stop()
-
-	p.Add(1)
-	assert.Equal(t, 1, p.Current)
-	assert.False(t, p.IsActive, "the progressbar should auto-stop when reaching its total")
-}
-
-func TestProgressbarPrinter_RemoveWhenDone(t *testing.T) {
-	proxyToDevNull()
-
-	p, err := pterm.DefaultProgressbar.WithTotal(2).WithRemoveWhenDone().Start()
-	assert.NoError(t, err)
-
-	_, _ = p.Stop()
-	p.Add(1)
-	assert.Equal(t, 1, p.Current)
-	assert.False(t, p.IsActive)
-}
-
-func TestProgressbarPrinter_StartWithTitle(t *testing.T) {
-	p := pterm.DefaultProgressbar
-	p2, _ := p.Start("Title")
-	assert.Equal(t, "Title", p2.Title)
-	_, _ = p2.Stop()
-}
-
-func TestProgressbarPrinter_GenericStart(_ *testing.T) {
-	p := pterm.DefaultProgressbar
-
-	lp, _ := p.GenericStart()
-	if lp != nil {
-		_, _ = (*lp).GenericStop()
-	}
-}
-
-func TestProgressbarPrinter_GenericStartRawOutput(_ *testing.T) {
-	pterm.DisableStyling()
-
-	p := pterm.DefaultProgressbar
-
-	lp, _ := p.GenericStart()
-	if lp != nil {
-		_, _ = (*lp).GenericStop()
-	}
-
-	pterm.EnableStyling()
-}
-
-func TestProgressbarPrinter_GenericStop(t *testing.T) {
-	p, err := pterm.DefaultProgressbar.Start()
-	assert.NoError(t, err)
-
-	_, _ = p.GenericStop()
-}
-
-func TestProgressbarPrinter_GetElapsedTime(t *testing.T) {
-	p := pterm.DefaultProgressbar
-	p2, _ := p.Start()
-	_, _ = p2.Stop()
-	assert.NotZero(t, p2.GetElapsedTime())
-}
-
-func TestProgressbarPrinter_Increment(t *testing.T) {
-	p := pterm.DefaultProgressbar.WithTotal(2000)
-	p.Increment()
-	assert.Equal(t, 1, p.Current)
-}
-
-func TestProgressbarPrinter_WithBarStyle(t *testing.T) {
-	s := pterm.NewStyle(pterm.FgRed, pterm.BgBlue, pterm.Bold)
-	p := pterm.ProgressbarPrinter{}
-	p2 := p.WithBarStyle(s)
-
-	assert.Equal(t, s, p2.BarStyle)
-}
-
-func TestProgressbarPrinter_WithCurrent(t *testing.T) {
-	p := pterm.ProgressbarPrinter{}
-	p2 := p.WithCurrent(10)
-
-	assert.Equal(t, 10, p2.Current)
-}
-
-func TestProgressbarPrinter_WithElapsedTimeRoundingFactor(t *testing.T) {
-	p := pterm.ProgressbarPrinter{}
-	p2 := p.WithElapsedTimeRoundingFactor(time.Hour)
-
-	assert.Equal(t, time.Hour, p2.ElapsedTimeRoundingFactor)
-}
-
-func TestProgressbarPrinter_WithLastCharacter(t *testing.T) {
-	p := pterm.ProgressbarPrinter{}
-	p2 := p.WithLastCharacter(">")
-
-	assert.Equal(t, ">", p2.LastCharacter)
-}
-
-func TestProgressbarPrinter_WithBarCharacter(t *testing.T) {
-	p := pterm.ProgressbarPrinter{}
-	p2 := p.WithBarCharacter("-")
-
-	assert.Equal(t, "-", p2.BarCharacter)
-}
-
-func TestProgressbarPrinter_WithRemoveWhenDone(t *testing.T) {
-	p := pterm.ProgressbarPrinter{}
-	p2 := p.WithRemoveWhenDone()
-
-	assert.True(t, p2.RemoveWhenDone)
-}
-
-func TestProgressbarPrinter_WithShowCount(t *testing.T) {
-	p := pterm.ProgressbarPrinter{}
-	p2 := p.WithShowCount()
-
-	assert.True(t, p2.ShowCount)
-}
-
-func TestProgressbarPrinter_WithShowElapsedTime(t *testing.T) {
-	p := pterm.ProgressbarPrinter{}
-	p2 := p.WithShowElapsedTime()
-
-	assert.True(t, p2.ShowElapsedTime)
-}
-
-func TestProgressbarPrinter_WithShowPercentage(t *testing.T) {
-	p := pterm.ProgressbarPrinter{}
-	p2 := p.WithShowPercentage()
-
-	assert.True(t, p2.ShowPercentage)
-}
-
-func TestProgressbarPrinter_WithShowTitle(t *testing.T) {
-	p := pterm.ProgressbarPrinter{}
-	p2 := p.WithShowTitle()
-
-	assert.True(t, p2.ShowTitle)
-}
-
-func TestProgressbarPrinter_WithTitle(t *testing.T) {
-	p := pterm.ProgressbarPrinter{}
-	p2 := p.WithTitle("test")
-
-	assert.Equal(t, "test", p2.Title)
-}
-
-func TestProgressbarPrinter_WithTitleStyle(t *testing.T) {
-	s := pterm.NewStyle(pterm.FgRed, pterm.BgBlue, pterm.Bold)
-	p := pterm.ProgressbarPrinter{}
-	p2 := p.WithTitleStyle(s)
-
-	assert.Equal(t, s, p2.TitleStyle)
-}
-
-func TestProgressbarPrinter_WithTotal(t *testing.T) {
-	p := pterm.ProgressbarPrinter{}
-	p2 := p.WithTotal(1337)
-
-	assert.Equal(t, 1337, p2.Total)
-}
-
-func TestProgressbarPrinter_WithMaxWidth(t *testing.T) {
-	p := pterm.ProgressbarPrinter{}
-	p2 := p.WithMaxWidth(1337)
-
-	assert.Equal(t, 1337, p2.MaxWidth)
-}
-
-func TestProgressbarPrinter_WithBarFiller(t *testing.T) {
-	p := pterm.ProgressbarPrinter{}
-	p2 := p.WithBarFiller("-")
-
-	assert.Equal(t, "-", p2.BarFiller)
-}
-
-func TestProgressbarPrinter_WithBarPartialCharacters(t *testing.T) {
-	chars := []string{".", ":", "-"}
-	p := pterm.ProgressbarPrinter{}
-	p2 := p.WithBarPartialCharacters(chars)
-
-	assert.Equal(t, chars, p2.BarPartialCharacters)
-}
-
-func TestProgressbarPrinter_UpdateTitle(t *testing.T) {
-	p := pterm.ProgressbarPrinter{}
-	p2 := p.WithTitle("test")
-	p2.UpdateTitle("test2")
-
-	assert.Equal(t, "test2", p2.Title)
-}
-
-func TestProgressbarPrinter_WithWriter(t *testing.T) {
-	p := pterm.ProgressbarPrinter{}
-	s := os.Stderr
-	p2 := p.WithWriter(s)
-
-	assert.Equal(t, s, p2.Writer)
-	assert.Zero(t, p.Writer)
-}
-
-func TestProgressbarPrinter_OutputToWriters(t *testing.T) {
-	testCases := map[string]struct {
-		action                func(*pterm.ProgressbarPrinter)
-		expectOutputToContain string
-	}{
-		"ExpectUpdatedTitleToBeWrittenToStderr": {
-			action: func(pb *pterm.ProgressbarPrinter) {
-				pb.UpdateTitle("Updated text")
-			},
-			expectOutputToContain: "Updated text",
-		},
-	}
-
-	for testTitle, testCase := range testCases {
-		t.Run(testTitle, func(t *testing.T) {
-			buf := &syncBuffer{}
-			pb, err := pterm.DefaultProgressbar.WithTitle("Hello world").WithWriter(buf).Start()
-			assert.NoError(t, err)
-
-			defer pb.Stop()
-
-			waitForOutput(t, buf, "Hello world")
-			testCase.action(pb)
-			waitForOutput(t, buf, testCase.expectOutputToContain)
-		})
-	}
-}
-
-// waitForOutput polls buf until it contains want, failing the test after a
-// generous timeout. Polling keeps the test fast in the common case without
-// relying on fixed sleeps that get flaky under -race.
-func waitForOutput(t *testing.T, buf *syncBuffer, want string) {
+// waitFor polls cond until it returns true, failing the test with failMsg
+// after a generous deadline. Polling keeps tests fast in the common case
+// without relying on fixed sleeps that get flaky under -race.
+func waitFor(t *testing.T, cond func() bool, failMsg func() string) {
 	t.Helper()
 
 	deadline := time.Now().Add(10 * time.Second)
 	for time.Now().Before(deadline) {
-		if strings.Contains(buf.String(), want) {
+		if cond() {
 			return
 		}
 
-		time.Sleep(10 * time.Millisecond)
+		time.Sleep(5 * time.Millisecond)
 	}
 
-	t.Errorf("output did not contain %q within timeout, got:\n%s", want, buf.String())
+	t.Fatal(failMsg())
+}
+
+// waitForOutput polls buf until its visible content (escape sequences
+// stripped) contains want.
+func waitForOutput(t *testing.T, buf fmt.Stringer, want string) {
+	t.Helper()
+
+	waitFor(t, func() bool {
+		return strings.Contains(stripTerminalEscapes(buf.String()), want)
+	}, func() string {
+		return fmt.Sprintf("output did not contain %q within the timeout, got:\n%s", want, buf.String())
+	})
+}
+
+// plainHalfBar returns a half-full progressbar with all decorators disabled
+// and simple ASCII bar characters, so the bar geometry can be asserted
+// exactly: MaxWidth 21 leaves 20 cells for the bar (one cell is reserved by
+// the decorator separator), of which 10 must be filled at 50%.
+func plainHalfBar() *pterm.ProgressbarPrinter {
+	return pterm.DefaultProgressbar.
+		WithTotal(10).
+		WithCurrent(5).
+		WithMaxWidth(21).
+		WithShowTitle(false).
+		WithShowCount(false).
+		WithShowPercentage(false).
+		WithShowElapsedTime(false).
+		WithBarCharacter("#").
+		WithLastCharacter("#").
+		WithBarFiller("-").
+		WithBarPartialCharacters(nil)
+}
+
+func TestProgressbarPrinter_BarIsHalfFilledAtFiftyPercent(t *testing.T) {
+	buf := &syncBuffer{}
+
+	p, err := plainHalfBar().WithWriter(buf).Start()
+	require.NoError(t, err)
+
+	defer p.Stop()
+
+	frame := lastFrame(buf.String())
+	assert.Equal(t, 10, strings.Count(frame, "#"), "10 of 20 bar cells must be filled at 5/10")
+	assert.Equal(t, 10, strings.Count(frame, "-"), "10 of 20 bar cells must remain unfilled at 5/10")
+	assert.Equal(t, "##########----------", strings.TrimRight(frame, " "), "filled cells must come first, unfilled cells last")
+}
+
+func TestProgressbarPrinter_SmoothBarRendersPartialEdge(t *testing.T) {
+	buf := &syncBuffer{}
+
+	// 1/3 of a 20-cell bar is 6.66 cells: 6 full blocks plus a partial glyph
+	// covering 2/3 of the next cell (slot 5 of the 7 eighth-block glyphs).
+	p, err := pterm.DefaultProgressbar.
+		WithTotal(3).
+		WithCurrent(1).
+		WithMaxWidth(21).
+		WithShowTitle(false).
+		WithShowCount(false).
+		WithShowPercentage(false).
+		WithShowElapsedTime(false).
+		WithWriter(buf).
+		Start()
+	require.NoError(t, err)
+
+	defer p.Stop()
+
+	frame := lastFrame(buf.String())
+	assert.Contains(t, frame, strings.Repeat("█", 6)+"▋", "the bar edge must be drawn with a partial block glyph")
+}
+
+func TestProgressbarPrinter_ShowPercentage(t *testing.T) {
+	buf := &syncBuffer{}
+
+	p, err := plainHalfBar().WithShowPercentage(true).WithWriter(buf).Start()
+	require.NoError(t, err)
+
+	defer p.Stop()
+
+	assert.Contains(t, lastFrame(buf.String()), "50%")
+}
+
+func TestProgressbarPrinter_ShowCount(t *testing.T) {
+	buf := &syncBuffer{}
+
+	p, err := plainHalfBar().WithShowCount(true).WithWriter(buf).Start()
+	require.NoError(t, err)
+
+	defer p.Stop()
+
+	assert.Contains(t, lastFrame(buf.String()), "5/10")
+}
+
+func TestProgressbarPrinter_StartWithCurrentAboveZero(t *testing.T) {
+	buf := &syncBuffer{}
+
+	p, err := plainHalfBar().
+		WithCurrent(3).
+		WithShowCount(true).
+		WithShowPercentage(true).
+		WithMaxWidth(60).
+		WithWriter(buf).
+		Start()
+	require.NoError(t, err)
+
+	defer p.Stop()
+
+	frame := lastFrame(buf.String())
+	assert.Contains(t, frame, "3/10", "the initial frame must reflect the preset current value")
+	assert.Contains(t, frame, "30%")
+}
+
+func TestProgressbarPrinter_StartWithTitleRendersTitle(t *testing.T) {
+	buf := &syncBuffer{}
+
+	p, err := pterm.DefaultProgressbar.WithTotal(10).WithShowElapsedTime(false).WithWriter(buf).Start("My Title")
+	require.NoError(t, err)
+
+	defer p.Stop()
+
+	assert.Equal(t, "My Title", p.Title)
+	assert.Contains(t, lastFrame(buf.String()), "My Title")
+}
+
+func TestProgressbarPrinter_UpdateTitleRerenders(t *testing.T) {
+	buf := &syncBuffer{}
+
+	p, err := pterm.DefaultProgressbar.
+		WithTotal(10).
+		WithTitle("before title").
+		WithShowElapsedTime(false).
+		WithWriter(buf).
+		Start()
+	require.NoError(t, err)
+
+	defer p.Stop()
+
+	assert.Contains(t, lastFrame(buf.String()), "before title")
+
+	p.UpdateTitle("after title")
+
+	frame := lastFrame(buf.String())
+	assert.Contains(t, frame, "after title", "the new title must be rendered immediately")
+	assert.NotContains(t, frame, "before title", "the old title must be gone from the current frame")
+	assert.Equal(t, "after title", p.Title)
+}
+
+func TestProgressbarPrinter_AddClampsAtTotalAndAutoStops(t *testing.T) {
+	buf := &syncBuffer{}
+
+	p, err := pterm.DefaultProgressbar.
+		WithTotal(3).
+		WithShowElapsedTime(false).
+		WithWriter(buf).
+		Start()
+	require.NoError(t, err)
+
+	defer p.Stop()
+
+	p.Add(5)
+
+	assert.Equal(t, 5, p.Current)
+	assert.Equal(t, p.Current, p.Total, "overshooting Add must clamp the total to the current value")
+	assert.False(t, p.IsActive, "the progressbar must auto-stop when reaching its total")
+	assert.Contains(t, lastFrame(buf.String()), "100%")
+}
+
+func TestProgressbarPrinter_IncrementAutoStopsAtTotal(t *testing.T) {
+	buf := &syncBuffer{}
+
+	p, err := pterm.DefaultProgressbar.
+		WithTotal(2).
+		WithShowElapsedTime(false).
+		WithWriter(buf).
+		Start()
+	require.NoError(t, err)
+
+	defer p.Stop()
+
+	p.Increment()
+	assert.Equal(t, 1, p.Current)
+	assert.True(t, p.IsActive, "the progressbar must keep running below its total")
+	assert.Contains(t, lastFrame(buf.String()), "50%")
+
+	p.Increment()
+	assert.Equal(t, 2, p.Current)
+	assert.False(t, p.IsActive, "the progressbar must auto-stop when reaching its total")
+	assert.Contains(t, lastFrame(buf.String()), "100%")
+}
+
+func TestProgressbarPrinter_AddWithTotalZeroIsNoop(t *testing.T) {
+	buf := &syncBuffer{}
+	p := pterm.ProgressbarPrinter{}.WithTotal(0).WithWriter(buf)
+
+	assert.Nil(t, p.Add(1337), "Add must bail out on a zero total")
+	assert.Equal(t, 0, p.Current)
+	assert.Empty(t, buf.String(), "nothing must be rendered for a zero total")
+}
+
+func TestProgressbarPrinter_RemoveWhenDoneClearsLine(t *testing.T) {
+	buf := &syncBuffer{}
+
+	p, err := plainHalfBar().WithRemoveWhenDone().WithWriter(buf).Start()
+	require.NoError(t, err)
+
+	_, err = p.Stop()
+	require.NoError(t, err)
+
+	out := buf.String()
+	assert.True(t, strings.HasSuffix(out, "\r"+strings.Repeat(" ", 80)+"\r"),
+		"stopping must blank the line and return the cursor to its start, got:\n%q", out)
+	assert.Empty(t, lastFrame(out), "no bar content may remain visible after Stop")
+}
+
+func TestProgressbarPrinter_StopWithoutRemoveKeepsLine(t *testing.T) {
+	buf := &syncBuffer{}
+
+	p, err := plainHalfBar().WithWriter(buf).Start()
+	require.NoError(t, err)
+
+	_, err = p.Stop()
+	require.NoError(t, err)
+
+	out := buf.String()
+	assert.True(t, strings.HasSuffix(out, "\n"), "stopping must finish the bar line with a newline")
+	assert.Contains(t, lastFrame(out), "#####", "the final bar must stay visible")
+}
+
+func TestProgressbarPrinter_ElapsedTimeIsRoundedToFactor(t *testing.T) {
+	buf := &syncBuffer{}
+
+	p, err := plainHalfBar().
+		WithShowElapsedTime(true).
+		WithElapsedTimeRoundingFactor(time.Second).
+		WithMaxWidth(60).
+		WithWriter(buf).
+		Start()
+	require.NoError(t, err)
+
+	defer p.Stop()
+
+	p.SetStartedAt(time.Now().Add(-90 * time.Second))
+	p.Add(1)
+
+	visible := stripTerminalEscapes(buf.String())
+	assert.Regexp(t, `1m3[01]s`, visible, "the elapsed time must be rendered rounded to full seconds")
+	assert.NotContains(t, visible, ".", "a rounded elapsed time must not contain fractional seconds")
+}
+
+// TestProgressbarPrinter_ZeroElapsedTimeRoundingFactor pins the regression
+// where a rounding factor of zero must not blow up the elapsed time rendering;
+// instead the raw, unrounded duration is shown.
+func TestProgressbarPrinter_ZeroElapsedTimeRoundingFactor(t *testing.T) {
+	buf := &syncBuffer{}
+
+	p, err := plainHalfBar().
+		WithShowElapsedTime(true).
+		WithElapsedTimeRoundingFactor(0).
+		WithMaxWidth(60).
+		WithWriter(buf).
+		Start()
+	require.NoError(t, err)
+
+	defer p.Stop()
+
+	p.SetStartedAt(time.Now().Add(-90 * time.Second))
+
+	assert.NotPanics(t, func() { p.Add(1) })
+	assert.Contains(t, stripTerminalEscapes(buf.String()), "1m30.", "the unrounded elapsed time must be rendered")
+}
+
+func TestProgressbarPrinter_GetElapsedTime(t *testing.T) {
+	buf := &syncBuffer{}
+
+	p, err := plainHalfBar().WithWriter(buf).Start()
+	require.NoError(t, err)
+
+	defer p.Stop()
+
+	p.SetStartedAt(time.Now().Add(-time.Minute))
+
+	assert.GreaterOrEqual(t, p.GetElapsedTime(), time.Minute)
+}
+
+func TestProgressbarPrinter_PrintWhileActiveReprintsBar(t *testing.T) {
+	buf := &syncBuffer{}
+
+	p, err := pterm.DefaultProgressbar.
+		WithTotal(10).
+		WithCurrent(5).
+		WithTitle("interplay title").
+		WithShowElapsedTime(false).
+		WithWriter(buf).
+		Start()
+	require.NoError(t, err)
+
+	defer p.Stop()
+
+	pterm.Fprintln(buf, "regular text")
+
+	out := buf.String()
+	frames := strings.Split(out, "\r")
+	assert.Contains(t, frames, "regular text\n", "the printed text must end up intact on its own line")
+
+	visible := stripTerminalEscapes(out)
+	assert.Greater(t, strings.LastIndex(visible, "interplay title"), strings.Index(visible, "regular text"),
+		"the bar must be re-rendered after the printed text")
+
+	frame := lastFrame(out)
+	assert.Contains(t, frame, "interplay title", "the re-rendered bar must be the last frame")
+	assert.Contains(t, frame, "50%")
+}
+
+func TestProgressbarPrinter_MaxWidthIsClampedToTerminal(t *testing.T) {
+	buf := &syncBuffer{}
+
+	// A MaxWidth wider than the (forced 80 column) terminal must be clamped,
+	// so a full bar line occupies exactly the terminal width.
+	p, err := plainHalfBar().WithCurrent(10).WithMaxWidth(200).WithWriter(buf).Start()
+	require.NoError(t, err)
+
+	defer p.Stop()
+
+	assert.Len(t, lastFrame(buf.String()), 80, "the rendered line must be clamped to the terminal width")
+}
+
+func TestProgressbarPrinter_TinyTerminalStillShowsDecorators(t *testing.T) {
+	pterm.SetForcedTerminalSize(1, 1)
+	t.Cleanup(func() { pterm.SetForcedTerminalSize(terminalWidth, terminalHeight) })
+
+	buf := &syncBuffer{}
+
+	p, err := pterm.DefaultProgressbar.WithTotal(2).WithShowElapsedTime(false).WithWriter(buf).Start()
+	require.NoError(t, err)
+
+	defer p.Stop()
+
+	p.Add(1)
+
+	assert.Equal(t, 1, p.Current)
+	assert.Contains(t, lastFrame(buf.String()), "1/2", "decorators must render even when no space is left for the bar")
+}
+
+func TestProgressbarPrinter_RawOutputPrintsPlainTitle(t *testing.T) {
+	restoreGlobalStyling(t)
+	pterm.DisableStyling()
+
+	buf := &syncBuffer{}
+
+	p, err := pterm.DefaultProgressbar.
+		WithTotal(10).
+		WithTitle("raw title").
+		WithShowElapsedTime(false).
+		WithWriter(buf).
+		Start()
+	require.NoError(t, err)
+
+	defer p.Stop()
+
+	out := buf.String()
+	assert.Contains(t, out, "raw title\n", "raw output must print the title as a plain line")
+	assert.NotContains(t, out, "\x1b[", "raw output must not contain escape codes")
 }

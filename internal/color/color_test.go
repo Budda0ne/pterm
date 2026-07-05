@@ -46,6 +46,19 @@ func TestStrip(t *testing.T) {
 	assert.Equal(t, "hi", color.Strip("\x1b[31mhi\x1b[0m"))
 	assert.Equal(t, "plain", color.Strip("plain"))
 	assert.Equal(t, "ab", color.Strip("\x1b[38;2;1;2;3ma\x1b[0m\x1b[1mb\x1b[0m"))
+	assert.Equal(t, "", color.Strip(""))
+	assert.Equal(t, "x", color.Strip(color.Foreground256(196)+"x"+color.Reset))
+	assert.Equal(t, "x", color.Strip(color.Background256(196)+"x"+color.Reset))
+	assert.Equal(t, "x", color.Strip(color.BackgroundRGB(1, 2, 3)+"x"+color.Reset))
+	assert.Equal(t, "reset only", color.Strip("\x1b[mreset only")) // bare reset sequence without a code
+}
+
+func TestStripEveryLevelSequence(t *testing.T) {
+	// Whatever level a color was downsampled to, Strip must remove it again.
+	for _, level := range []color.Level{color.LevelNone, color.LevelBasic, color.Level256, color.LevelTrueColor} {
+		assert.Equal(t, "x", color.Strip(level.ForegroundRGB(12, 34, 56)+"x"), "level %s", level)
+		assert.Equal(t, "x", color.Strip(level.BackgroundRGB(12, 34, 56)+"x"), "level %s", level)
+	}
 }
 
 func TestStripKeepsNonSGRSequences(t *testing.T) {

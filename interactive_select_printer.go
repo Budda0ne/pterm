@@ -176,9 +176,11 @@ func (p *InteractiveSelectPrinter) Show(text ...string) (string, error) {
 			}
 
 		case keys.Space:
-			p.fuzzySearchString += " "
-			p.selectedOption = 0
-			area.Update(p.renderSelectMenu())
+			if p.Filter {
+				p.fuzzySearchString += " "
+				p.selectedOption = 0
+				area.Update(p.renderSelectMenu())
+			}
 
 		case keys.Backspace:
 			// Remove last character from fuzzy search string

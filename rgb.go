@@ -88,7 +88,7 @@ func (p RGBStyle) Println(a ...any) *TextPrinter {
 // Printf formats according to a format specifier and writes to standard output.
 // It returns the number of bytes written and any write error encountered.
 func (p RGBStyle) Printf(format string, a ...any) *TextPrinter {
-	Printf(format, p.Sprint(a...))
+	Print(p.Sprintf(format, a...))
 	tp := TextPrinter(p)
 
 	return &tp
@@ -98,7 +98,7 @@ func (p RGBStyle) Printf(format string, a ...any) *TextPrinter {
 // Spaces are always added between operands and a newline is appended.
 // It returns the number of bytes written and any write error encountered.
 func (p RGBStyle) Printfln(format string, a ...any) *TextPrinter {
-	Printf(format, p.Sprint(a...))
+	Print(p.Sprintfln(format, a...))
 	tp := TextPrinter(p)
 
 	return &tp

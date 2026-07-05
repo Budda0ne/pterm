@@ -1,209 +1,202 @@
 package pterm_test
 
+// Behavioral tests for TreePrinter: exact connector layout (corner vs. tee
+// connectors, vertical continuation lines), indentation math, custom connector
+// strings and the LeveledList conversion. The builder/contract plumbing is
+// covered in contract_test.go, one representative output in snapshot_test.go.
+
 import (
-	"os"
 	"testing"
 
-	"github.com/pterm/pterm"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+
+	"github.com/pterm/pterm"
 )
 
-func TestTreePrinterNilPrint(t *testing.T) {
-	_ = pterm.TreePrinter{}.Render()
+func TestTreePrinter_ConnectorLayout(t *testing.T) {
+	printer := pterm.DefaultTree.WithRoot(pterm.TreeNode{
+		Text: "root",
+		Children: []pterm.TreeNode{
+			{Text: "a"},
+			{Text: "b", Children: []pterm.TreeNode{
+				{Text: "b1"},
+				{Text: "b2"},
+			}},
+			{Text: "c", Children: []pterm.TreeNode{
+				{Text: "c1", Children: []pterm.TreeNode{
+					{Text: "c1a"},
+				}},
+			}},
+		},
+	})
 
-	printer := pterm.TreePrinter{}.WithRoot(pterm.NewTreeFromLeveledList(pterm.LeveledList{pterm.LeveledListItem{Text: "Hello, World!", Level: 0}}))
-	content, err := printer.Srender()
+	// - non-last leaf:            ├──
+	// - non-last with children:   ├─┬ and a │ continuation for its subtree
+	// - last child:               └── / └─┬ with plain-space continuation
+	expected := "" +
+		"root\n" +
+		"├──a\n" +
+		"├─┬b\n" +
+		"│ ├──b1\n" +
+		"│ └──b2\n" +
+		"└─┬c\n" +
+		"  └─┬c1\n" +
+		"    └──c1a\n"
 
-	assert.NoError(t, err)
-	assert.NotNil(t, content)
+	assert.Equal(t, expected, srenderPlain(t, printer))
 }
 
-func TestTreePrinter_Render(_ *testing.T) {
-	_ = pterm.DefaultTree.WithRoot(pterm.NewTreeFromLeveledList([]pterm.LeveledListItem{
-		{Level: 0, Text: "Hello, World!"},
-		{Level: 0, Text: "0.0"},
-		{Level: 1, Text: "0.1"},
-		{Level: 1, Text: "0.2"},
-		{Level: 0, Text: "1.0"},
-		{Level: 0, Text: "2.0"},
-		{Level: 1, Text: "2.1"},
-		{Level: 1, Text: "2.2"},
-		{Level: 2, Text: "2.2.1"},
-		{Level: 1, Text: "2.3"},
-	})).Render()
+func TestTreePrinter_SingleRootWithoutChildren(t *testing.T) {
+	printer := pterm.DefaultTree.WithRoot(pterm.TreeNode{Text: "root"})
+
+	assert.Equal(t, "root\n", srenderPlain(t, printer))
+}
+
+func TestTreePrinter_EmptyRootTextOmitsRootLine(t *testing.T) {
+	printer := pterm.DefaultTree.WithRoot(pterm.TreeNode{
+		Children: []pterm.TreeNode{{Text: "only child"}},
+	})
+
+	assert.Equal(t, "└──only child\n", srenderPlain(t, printer))
+}
+
+func TestTreePrinter_IndentControlsConnectorAndPrefixWidth(t *testing.T) {
+	printer := pterm.DefaultTree.WithIndent(4).WithRoot(pterm.TreeNode{
+		Children: []pterm.TreeNode{
+			{Text: "p", Children: []pterm.TreeNode{
+				{Text: "q"},
+			}},
+			{Text: "r"},
+		},
+	})
+
+	// Indent 4: three horizontals before the ┬ of a parent, four before leaf
+	// text, and continuation prefixes that are exactly four cells wide.
+	expected := "" +
+		"├───┬p\n" +
+		"│   └────q\n" +
+		"└────r\n"
+
+	assert.Equal(t, expected, srenderPlain(t, printer))
+}
+
+func TestTreePrinter_CustomConnectorStrings(t *testing.T) {
+	printer := pterm.DefaultTree.
+		WithTopRightDownStringOngoing("Y").
+		WithTopRightCornerString("X").
+		WithHorizontalString("_").
+		WithRoot(pterm.TreeNode{
+			Children: []pterm.TreeNode{
+				{Text: "a"},
+				{Text: "b"},
+			},
+		})
+
+	expected := "" +
+		"Y__a\n" +
+		"X__b\n"
+
+	assert.Equal(t, expected, srenderPlain(t, printer))
+}
+
+func TestTreePrinter_TextStyleAppliedToNodeText(t *testing.T) {
+	style := pterm.NewStyle(pterm.FgRed)
+	printer := pterm.DefaultTree.WithTextStyle(style).WithRoot(pterm.TreeNode{
+		Text:     "root",
+		Children: []pterm.TreeNode{{Text: "leaf"}},
+	})
+
+	styled, err := printer.Srender()
+	require.NoError(t, err)
+
+	assert.Contains(t, styled, style.Sprint("root"))
+	assert.Contains(t, styled, style.Sprint("leaf"))
 }
 
 func TestTreePrinter_NewTreeFromLeveledList(t *testing.T) {
-	p := pterm.DefaultTree
-	p2 := p.WithRoot(pterm.NewTreeFromLeveledList(pterm.LeveledList{
-		pterm.LeveledListItem{Level: 0, Text: "0.0"},
-		pterm.LeveledListItem{Level: 1, Text: "0.1"},
-		pterm.LeveledListItem{Level: 1, Text: "0.2"},
-		pterm.LeveledListItem{Level: 0, Text: "1.0"},
-		pterm.LeveledListItem{Level: 0, Text: "2.0"},
-		pterm.LeveledListItem{Level: 1, Text: "2.1"},
-		pterm.LeveledListItem{Level: 1, Text: "2.2"},
-		pterm.LeveledListItem{Level: 2, Text: "2.2.1"},
-		pterm.LeveledListItem{Level: 1, Text: "2.3"}}))
+	// Note: the (deprecated) converter sets the root's Text to the first
+	// item's text and gives leaves empty, non-nil Children slices.
+	leaf := func(text string) pterm.TreeNode {
+		return pterm.TreeNode{Text: text, Children: []pterm.TreeNode{}}
+	}
 
-	assert.Equal(t, pterm.NewTreeFromLeveledList(pterm.LeveledList{
-		pterm.LeveledListItem{Level: 0, Text: "0.0"},
-		pterm.LeveledListItem{Level: 1, Text: "0.1"},
-		pterm.LeveledListItem{Level: 1, Text: "0.2"},
-		pterm.LeveledListItem{Level: 0, Text: "1.0"},
-		pterm.LeveledListItem{Level: 0, Text: "2.0"},
-		pterm.LeveledListItem{Level: 1, Text: "2.1"},
-		pterm.LeveledListItem{Level: 1, Text: "2.2"},
-		pterm.LeveledListItem{Level: 2, Text: "2.2.1"},
-		pterm.LeveledListItem{Level: 1, Text: "2.3"}}), p2.Root)
-	assert.Zero(t, p.Root)
-}
+	t.Run("builds nested nodes from levels", func(t *testing.T) {
+		root := pterm.NewTreeFromLeveledList(pterm.LeveledList{
+			{Level: 0, Text: "a"},
+			{Level: 1, Text: "a1"},
+			{Level: 1, Text: "a2"},
+			{Level: 0, Text: "b"},
+		})
 
-func TestTreePrinter_NewTreeFromLeveledListLevelInvalidIncrease(t *testing.T) {
-	p := pterm.DefaultTree
-	p2 := p.WithRoot(pterm.NewTreeFromLeveledList(pterm.LeveledList{
-		pterm.LeveledListItem{Level: 0, Text: "0.0"},
-		pterm.LeveledListItem{Level: 1, Text: "0.1"},
-		pterm.LeveledListItem{Level: 1, Text: "0.2"},
-		pterm.LeveledListItem{Level: 0, Text: "1.0"},
-		pterm.LeveledListItem{Level: 0, Text: "2.0"},
-		pterm.LeveledListItem{Level: 1, Text: "2.1"},
-		pterm.LeveledListItem{Level: 1, Text: "2.2"},
-		pterm.LeveledListItem{Level: 2, Text: "2.2.1"},
-		pterm.LeveledListItem{Level: 10, Text: "2.3"}}))
-
-	assert.Equal(t, pterm.NewTreeFromLeveledList(pterm.LeveledList{
-		pterm.LeveledListItem{Level: 0, Text: "0.0"},
-		pterm.LeveledListItem{Level: 1, Text: "0.1"},
-		pterm.LeveledListItem{Level: 1, Text: "0.2"},
-		pterm.LeveledListItem{Level: 0, Text: "1.0"},
-		pterm.LeveledListItem{Level: 0, Text: "2.0"},
-		pterm.LeveledListItem{Level: 1, Text: "2.1"},
-		pterm.LeveledListItem{Level: 1, Text: "2.2"},
-		pterm.LeveledListItem{Level: 2, Text: "2.2.1"},
-		pterm.LeveledListItem{Level: 3, Text: "2.3"}}), p2.Root)
-	assert.Zero(t, p.Root)
-}
-
-func TestTreePrinter_NewTreeFromLeveledListEmptyList(t *testing.T) {
-	p := pterm.DefaultTree
-	p2 := p.WithRoot(pterm.NewTreeFromLeveledList(pterm.LeveledList{}))
-
-	assert.Equal(t, pterm.NewTreeFromLeveledList(pterm.LeveledList{}), p2.Root)
-	assert.Zero(t, p.Root)
-}
-
-func TestTreePrinter_NewTreeFromLeveledListNegativeLevel(t *testing.T) {
-	p := pterm.DefaultTree
-	p2 := p.WithRoot(pterm.NewTreeFromLeveledList(pterm.LeveledList{
-		pterm.LeveledListItem{Level: 0, Text: "0.0"},
-		pterm.LeveledListItem{Level: 1, Text: "0.1"},
-		pterm.LeveledListItem{Level: 1, Text: "0.2"},
-		pterm.LeveledListItem{Level: 0, Text: "1.0"},
-		pterm.LeveledListItem{Level: 0, Text: "2.0"},
-		pterm.LeveledListItem{Level: 1, Text: "2.1"},
-		pterm.LeveledListItem{Level: 1, Text: "2.2"},
-		pterm.LeveledListItem{Level: 2, Text: "2.2.1"},
-		pterm.LeveledListItem{Level: -5, Text: "2.3"}}))
-
-	assert.Equal(t, pterm.NewTreeFromLeveledList(pterm.LeveledList{
-		pterm.LeveledListItem{Level: 0, Text: "0.0"},
-		pterm.LeveledListItem{Level: 1, Text: "0.1"},
-		pterm.LeveledListItem{Level: 1, Text: "0.2"},
-		pterm.LeveledListItem{Level: 0, Text: "1.0"},
-		pterm.LeveledListItem{Level: 0, Text: "2.0"},
-		pterm.LeveledListItem{Level: 1, Text: "2.1"},
-		pterm.LeveledListItem{Level: 1, Text: "2.2"},
-		pterm.LeveledListItem{Level: 2, Text: "2.2.1"},
-		pterm.LeveledListItem{Level: 0, Text: "2.3"}}), p2.Root)
-	assert.Zero(t, p.Root)
-}
-
-func TestTreePrinter_WithHorizontalString(t *testing.T) {
-	p := pterm.TreePrinter{}
-	p2 := p.WithHorizontalString("-")
-
-	assert.Equal(t, "-", p2.HorizontalString)
-	assert.Zero(t, p.HorizontalString)
-}
-
-func TestTreePrinter_WithRoot(t *testing.T) {
-	p := pterm.TreePrinter{}
-	p2 := p.WithRoot(pterm.TreeNode{
-		Children: nil,
-		Text:     "Hello, World!",
+		assert.Equal(t, pterm.TreeNode{
+			Text: "a",
+			Children: []pterm.TreeNode{
+				{Text: "a", Children: []pterm.TreeNode{
+					leaf("a1"),
+					leaf("a2"),
+				}},
+				leaf("b"),
+			},
+		}, root)
 	})
 
+	t.Run("clamps level jumps to one below the previous item", func(t *testing.T) {
+		root := pterm.NewTreeFromLeveledList(pterm.LeveledList{
+			{Level: 0, Text: "a"},
+			{Level: 10, Text: "b"}, // invalid jump, must become level 1
+		})
+
+		assert.Equal(t, pterm.TreeNode{
+			Text: "a",
+			Children: []pterm.TreeNode{
+				{Text: "a", Children: []pterm.TreeNode{
+					leaf("b"),
+				}},
+			},
+		}, root)
+	})
+
+	t.Run("clamps negative levels to zero", func(t *testing.T) {
+		root := pterm.NewTreeFromLeveledList(pterm.LeveledList{
+			{Level: 0, Text: "a"},
+			{Level: -5, Text: "b"},
+		})
+
+		assert.Equal(t, pterm.TreeNode{
+			Text: "a",
+			Children: []pterm.TreeNode{
+				leaf("a"),
+				leaf("b"),
+			},
+		}, root)
+	})
+
+	t.Run("empty list yields an empty root", func(t *testing.T) {
+		assert.Zero(t, pterm.NewTreeFromLeveledList(pterm.LeveledList{}))
+	})
+}
+
+func TestTreePrinter_SrenderIsPure(t *testing.T) {
+	root := pterm.TreeNode{
+		Text: "root",
+		Children: []pterm.TreeNode{
+			{Text: "a", Children: []pterm.TreeNode{{Text: "a1"}}},
+		},
+	}
+	printer := pterm.DefaultTree.WithRoot(root)
+
+	first, err := printer.Srender()
+	require.NoError(t, err)
+
+	second, err := printer.Srender()
+	require.NoError(t, err)
+
+	assert.Equal(t, first, second, "rendering twice must yield identical output")
 	assert.Equal(t, pterm.TreeNode{
-		Children: nil,
-		Text:     "Hello, World!",
-	}, p2.Root)
-	assert.Zero(t, p.Root)
-}
-
-func TestTreePrinter_WithTreeStyle(t *testing.T) {
-	p := pterm.TreePrinter{}
-	s := pterm.NewStyle(pterm.FgRed, pterm.BgRed, pterm.Bold)
-	p2 := p.WithTreeStyle(s)
-
-	assert.Equal(t, s, p2.TreeStyle)
-	assert.Zero(t, p.TreeStyle)
-}
-
-func TestTreePrinter_WithTextStyle(t *testing.T) {
-	p := pterm.TreePrinter{}
-	s := pterm.NewStyle(pterm.FgRed, pterm.BgRed, pterm.Bold)
-	p2 := p.WithTextStyle(s)
-
-	assert.Equal(t, s, p2.TextStyle)
-	assert.Zero(t, p.TextStyle)
-}
-
-func TestTreePrinter_WithTopRightCornerString(t *testing.T) {
-	p := pterm.TreePrinter{}
-	p2 := p.WithTopRightCornerString("-")
-
-	assert.Equal(t, "-", p2.TopRightCornerString)
-	assert.Zero(t, p.TopRightCornerString)
-}
-
-func TestTreePrinter_WithTopRightDownStringOngoing(t *testing.T) {
-	p := pterm.TreePrinter{}
-	p2 := p.WithTopRightDownStringOngoing("-")
-
-	assert.Equal(t, "-", p2.TopRightDownString)
-	assert.Zero(t, p.TopRightDownString)
-}
-
-func TestTreePrinter_WithVerticalString(t *testing.T) {
-	p := pterm.TreePrinter{}
-	p2 := p.WithVerticalString("-")
-
-	assert.Equal(t, "-", p2.VerticalString)
-	assert.Zero(t, p.VerticalString)
-}
-
-func TestTreePrinter_WithIndent(t *testing.T) {
-	p := pterm.TreePrinter{}
-	p2 := p.WithIndent(3)
-
-	assert.Equal(t, 3, p2.Indent)
-	assert.Zero(t, p.Indent)
-}
-
-func TestTreePrinter_WithIndentInvalid(t *testing.T) {
-	p := pterm.TreePrinter{}
-	p2 := p.WithIndent(0)
-
-	assert.Equal(t, 1, p2.Indent)
-	assert.Zero(t, p.Indent)
-}
-
-func TestTreePrinter_WithWriter(t *testing.T) {
-	p := pterm.TreePrinter{}
-	s := os.Stderr
-	p2 := p.WithWriter(s)
-
-	assert.Equal(t, s, p2.Writer)
-	assert.Zero(t, p.Writer)
+		Text: "root",
+		Children: []pterm.TreeNode{
+			{Text: "a", Children: []pterm.TreeNode{{Text: "a1"}}},
+		},
+	}, root, "rendering must not modify the input tree")
 }

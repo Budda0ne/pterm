@@ -113,6 +113,12 @@ func (p InteractiveContinuePrinter) WithSuffixStyle(style *Style) *InteractiveCo
 	return &p
 }
 
+// WithOnInterruptFunc sets the function to execute on exit of the input reader.
+func (p InteractiveContinuePrinter) WithOnInterruptFunc(exitFunc func()) *InteractiveContinuePrinter {
+	p.OnInterruptFunc = exitFunc
+	return &p
+}
+
 // WithDelimiter sets the delimiter between the message and the input.
 func (p InteractiveContinuePrinter) WithDelimiter(delimiter string) *InteractiveContinuePrinter {
 	p.Delimiter = delimiter

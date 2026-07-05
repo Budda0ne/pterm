@@ -171,8 +171,10 @@ func Printo(a ...any) {
 		return
 	}
 
+	// In raw output mode lines cannot be overwritten, so the text is printed
+	// like with pterm.Print instead of being lost.
 	if rawOutput() {
-		Sprint(a...)
+		Print(a...)
 		return
 	}
 

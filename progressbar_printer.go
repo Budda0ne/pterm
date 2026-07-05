@@ -256,11 +256,17 @@ func (p *ProgressbarPrinter) SetWriter(writer io.Writer) {
 
 // SetStartedAt sets the time when the ProgressbarPrinter started.
 func (p *ProgressbarPrinter) SetStartedAt(t time.Time) {
+	p.lock()
+	defer p.unlock()
+
 	p.startedAt = t
 }
 
 // ResetTimer resets the timer of the ProgressbarPrinter.
 func (p *ProgressbarPrinter) ResetTimer() {
+	p.lock()
+	defer p.unlock()
+
 	p.startedAt = time.Now()
 }
 
