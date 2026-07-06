@@ -36,7 +36,7 @@ func TestPrefixPrinterPlainOutput(t *testing.T) {
 		printer  pterm.PrefixPrinter
 		expected string
 	}{
-		{"Info", pterm.Info, " INFO  message"},
+		{"Info", pterm.Info, "  INFO    message"},
 		{"Success", pterm.Success, " SUCCESS  message"},
 		{"Warning", pterm.Warning, " WARNING  message"},
 		{"Error", pterm.Error, "  ERROR   message"},
@@ -54,30 +54,30 @@ func TestPrefixPrinterPlainOutput(t *testing.T) {
 func TestPrefixPrinterStyledOutput(t *testing.T) {
 	// Exact ANSI for one representative case: the Info prefix is FgBlack(30)
 	// on BgCyan(46), the message is FgLightCyan(96).
-	assert.Equal(t, "\x1b[30;46m INFO \x1b[0m \x1b[96mx\x1b[0m", pterm.Info.Sprint("x"))
+	assert.Equal(t, "\x1b[30;46m  INFO   \x1b[0m \x1b[96mx\x1b[0m", pterm.Info.Sprint("x"))
 }
 
 func TestPrefixPrinterMultilineIndentsContinuationLines(t *testing.T) {
 	// Continuation lines are indented with len(prefix)+2 spaces plus the
 	// separating space, so the message column stays aligned under the first
 	// line.
-	assert.Equal(t, " INFO  first\n       second", stripANSI(pterm.Info.Sprint("first\nsecond")))
+	assert.Equal(t, "  INFO    first\n          second", stripANSI(pterm.Info.Sprint("first\nsecond")))
 	assert.Equal(t, "  ERROR   first\n          second", stripANSI(pterm.Error.Sprint("first\nsecond")))
 }
 
 func TestPrefixPrinterSprintlnAppendsNewline(t *testing.T) {
-	assert.Equal(t, " INFO  message\n", stripANSI(pterm.Info.Sprintln("message")))
+	assert.Equal(t, "  INFO    message\n", stripANSI(pterm.Info.Sprintln("message")))
 }
 
 func TestPrefixPrinterCollapsesTrailingNewlines(t *testing.T) {
 	// Any number of trailing newlines in the input collapses into exactly one.
-	assert.Equal(t, " INFO  a\n", stripANSI(pterm.Info.Sprint("a\n\n\n")))
+	assert.Equal(t, "  INFO    a\n", stripANSI(pterm.Info.Sprint("a\n\n\n")))
 }
 
 func TestPrefixPrinterScopeIsRenderedBetweenPrefixAndMessage(t *testing.T) {
 	p := pterm.Info.WithScope(pterm.Scope{Text: "myscope"})
 
-	assert.Equal(t, " INFO   (myscope) message", stripANSI(p.Sprint("message")))
+	assert.Equal(t, "  INFO     (myscope) message", stripANSI(p.Sprint("message")))
 }
 
 func TestPrefixPrinterRawOutput(t *testing.T) {
@@ -146,7 +146,7 @@ func TestPrefixPrinterShowLineNumberReportsTheCallSite(t *testing.T) {
 		pterm.Info.WithShowLineNumber().Println("message") // keep exactly 4 lines below runtime.Caller(0)
 	})
 
-	assert.Equal(t, fmt.Sprintf(" INFO  message\n└ (%s:%d)\n", file, line+4), stripANSI(out))
+	assert.Equal(t, fmt.Sprintf("  INFO    message\n└ (%s:%d)\n", file, line+4), stripANSI(out))
 }
 
 func TestPrefixPrinterZeroValueDoesNotPanic(t *testing.T) {

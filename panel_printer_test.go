@@ -77,10 +77,10 @@ func TestPanelPrinter_BoxedPanelsAlign(t *testing.T) {
 	// Each panel is boxed individually; the shorter box is padded with
 	// spaces so the columns stay aligned.
 	expected := "" +
-		"┌───┐ ┌───┐ \n" +
+		"╭───╮ ╭───╮ \n" +
 		"│ a │ │ b │ \n" +
-		"└───┘ │ c │ \n" +
-		"      └───┘ \n"
+		"╰───╯ │ c │ \n" +
+		"      ╰───╯ \n"
 
 	assert.Equal(t, expected, srenderPlain(t, printer))
 }

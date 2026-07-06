@@ -17,32 +17,34 @@ var (
 		ErrorMessageStyle:       Style{FgLightRed},
 		ErrorPrefixStyle:        Style{FgBlack, BgLightRed},
 		FatalMessageStyle:       Style{FgLightRed},
-		FatalPrefixStyle:        Style{FgBlack, BgLightRed},
+		FatalPrefixStyle:        Style{FgLightWhite, BgRed, Bold},
 		DescriptionMessageStyle: Style{FgDefault},
 		DescriptionPrefixStyle:  Style{FgLightWhite, BgDarkGray},
 		ScopeStyle:              Style{FgGray},
 		ProgressbarBarStyle:     Style{FgCyan},
 		ProgressbarTitleStyle:   Style{FgLightCyan},
-		HeaderTextStyle:         Style{FgLightWhite, Bold},
-		HeaderBackgroundStyle:   Style{BgGray},
+		ProgressbarFillerStyle:  Style{FgDarkGray},
+		HeaderTextStyle:         Style{FgBlack, Bold},
+		HeaderBackgroundStyle:   Style{BgCyan},
 		SpinnerStyle:            Style{FgLightCyan},
 		SpinnerTextStyle:        Style{FgLightWhite},
 		TableStyle:              Style{FgDefault},
-		TableHeaderStyle:        Style{FgLightCyan},
+		TableHeaderStyle:        Style{Bold, FgLightCyan},
 		TableSeparatorStyle:     Style{FgGray},
 		HeatmapStyle:            Style{FgDefault},
 		HeatmapHeaderStyle:      Style{FgLightCyan},
-		HeatmapSeparatorStyle:   Style{FgDefault},
-		SectionStyle:            Style{Bold, FgYellow},
+		HeatmapSeparatorStyle:   Style{FgGray},
+		SectionStyle:            Style{Bold, FgLightMagenta},
 		BulletListTextStyle:     Style{FgDefault},
-		BulletListBulletStyle:   Style{FgGray},
+		BulletListBulletStyle:   Style{FgCyan},
 		TreeStyle:               Style{FgGray},
 		TreeTextStyle:           Style{FgDefault},
 		LetterStyle:             Style{FgDefault},
 		DebugMessageStyle:       Style{FgGray},
 		DebugPrefixStyle:        Style{FgBlack, BgGray},
-		BoxStyle:                Style{FgDefault},
+		BoxStyle:                Style{FgGray},
 		BoxTextStyle:            Style{FgDefault},
+		BoxTitleStyle:           Style{Bold, FgLightCyan},
 		BarLabelStyle:           Style{FgLightCyan},
 		BarStyle:                Style{FgCyan},
 		TimerStyle:              Style{FgGray},
@@ -90,29 +92,34 @@ type Theme struct {
 	ScopeStyle              Style
 	ProgressbarBarStyle     Style
 	ProgressbarTitleStyle   Style
-	HeaderTextStyle         Style
-	HeaderBackgroundStyle   Style
-	SpinnerStyle            Style
-	SpinnerTextStyle        Style
-	TimerStyle              Style
-	TableStyle              Style
-	TableHeaderStyle        Style
-	TableSeparatorStyle     Style
-	HeatmapStyle            Style
-	HeatmapHeaderStyle      Style
-	HeatmapSeparatorStyle   Style
-	SectionStyle            Style
-	BulletListTextStyle     Style
-	BulletListBulletStyle   Style
-	TreeStyle               Style
-	TreeTextStyle           Style
-	LetterStyle             Style
-	DebugMessageStyle       Style
-	DebugPrefixStyle        Style
-	BoxStyle                Style
-	BoxTextStyle            Style
-	BarLabelStyle           Style
-	BarStyle                Style
+	// ProgressbarFillerStyle styles the unfilled track of the Progressbar
+	// (the BarFiller characters).
+	ProgressbarFillerStyle Style
+	HeaderTextStyle        Style
+	HeaderBackgroundStyle  Style
+	SpinnerStyle           Style
+	SpinnerTextStyle       Style
+	TimerStyle             Style
+	TableStyle             Style
+	TableHeaderStyle       Style
+	TableSeparatorStyle    Style
+	HeatmapStyle           Style
+	HeatmapHeaderStyle     Style
+	HeatmapSeparatorStyle  Style
+	SectionStyle           Style
+	BulletListTextStyle    Style
+	BulletListBulletStyle  Style
+	TreeStyle              Style
+	TreeTextStyle          Style
+	LetterStyle            Style
+	DebugMessageStyle      Style
+	DebugPrefixStyle       Style
+	BoxStyle               Style
+	BoxTextStyle           Style
+	// BoxTitleStyle styles the title of a BoxPrinter.
+	BoxTitleStyle Style
+	BarLabelStyle Style
+	BarStyle      Style
 	// LoggerTraceStyle till LoggerPrintStyle style the level prefix of the
 	// Logger, one field per LogLevel.
 	LoggerTraceStyle Style

@@ -11,13 +11,16 @@ import (
 
 // BoxPrinter is able to render a box around printables.
 type BoxPrinter struct {
-	Title                   string
-	TitleTopLeft            bool
-	TitleTopRight           bool
-	TitleTopCenter          bool
-	TitleBottomLeft         bool
-	TitleBottomRight        bool
-	TitleBottomCenter       bool
+	Title             string
+	TitleTopLeft      bool
+	TitleTopRight     bool
+	TitleTopCenter    bool
+	TitleBottomLeft   bool
+	TitleBottomRight  bool
+	TitleBottomCenter bool
+	// TitleStyle styles the Title. When nil, the theme's BoxTitleStyle is
+	// used.
+	TitleStyle              *Style
 	TextStyle               *Style
 	VerticalString          string
 	BoxStyle                *Style
@@ -36,13 +39,14 @@ type BoxPrinter struct {
 // DefaultBox is the default BoxPrinter.
 var DefaultBox = BoxPrinter{
 	VerticalString:          "│",
-	TopRightCornerString:    "└",
-	TopLeftCornerString:     "┘",
-	BottomLeftCornerString:  "┐",
-	BottomRightCornerString: "┌",
+	TopRightCornerString:    "╰",
+	TopLeftCornerString:     "╯",
+	BottomLeftCornerString:  "╮",
+	BottomRightCornerString: "╭",
 	HorizontalString:        "─",
 	BoxStyle:                &ThemeDefault.BoxStyle,
 	TextStyle:               &ThemeDefault.BoxTextStyle,
+	TitleStyle:              &ThemeDefault.BoxTitleStyle,
 	RightPadding:            1,
 	LeftPadding:             1,
 	TopPadding:              0,
@@ -53,6 +57,12 @@ var DefaultBox = BoxPrinter{
 // WithTitle returns a new box with a specific Title.
 func (p BoxPrinter) WithTitle(str string) *BoxPrinter {
 	p.Title = str
+	return &p
+}
+
+// WithTitleStyle returns a new box with a specific TitleStyle.
+func (p BoxPrinter) WithTitleStyle(style *Style) *BoxPrinter {
+	p.TitleStyle = style
 	return &p
 }
 
@@ -281,6 +291,10 @@ func (p BoxPrinter) Sprint(a ...any) string {
 		p.TextStyle = &ThemeDefault.BoxTextStyle
 	}
 
+	if p.TitleStyle == nil {
+		p.TitleStyle = &ThemeDefault.BoxTitleStyle
+	}
+
 	maxWidth := internal.GetStringMaxWidth(Sprint(a...))
 
 	var topLine string
@@ -296,6 +310,8 @@ func (p BoxPrinter) Sprint(a ...any) string {
 		if (maxWidth + p.RightPadding + p.LeftPadding - 4) < internal.GetStringMaxWidth(p.Title) {
 			p.RightPadding = internal.GetStringMaxWidth(p.Title) - (maxWidth + p.RightPadding + p.LeftPadding - 5)
 		}
+
+		p.Title = p.TitleStyle.Sprint(p.Title)
 
 		switch {
 		case p.TitleTopLeft:

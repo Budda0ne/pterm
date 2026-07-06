@@ -22,7 +22,7 @@ var (
 		OptionStyle:            &ThemeDefault.DefaultText,
 		DefaultOption:          "",
 		MaxHeight:              5,
-		Selector:               ">",
+		Selector:               "❯",
 		SelectorStyle:          &ThemeDefault.SecondaryStyle,
 		Filter:                 true,
 		FilterInputPlaceholder: "[type to search]",

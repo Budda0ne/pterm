@@ -31,17 +31,17 @@ func TestHeatmapPrinter_GridAxisAndLegendLayout(t *testing.T) {
 	// One grid cell per data value, Y axis labels in the first column, X axis
 	// labels in the last row, and a boxed legend from min (0) to max (3).
 	expected := "" +
-		"┌─┬─┬─┐\n" +
+		"╭─┬─┬─╮\n" +
 		"│c│0│1│\n" +
 		"├─┼─┼─┤\n" +
 		"│d│2│3│\n" +
 		"├─┼─┼─┤\n" +
 		"│ │a│b│\n" +
-		"└─┴─┴─┘\n" +
+		"╰─┴─┴─╯\n" +
 		"\n" +
-		"┌──────┬───┬───┬───┬───┬───┬───┐\n" +
+		"╭──────┬───┬───┬───┬───┬───┬───╮\n" +
 		"│Legend│ 0 │0.6│1.2│1.8│2.4│ 3 │\n" +
-		"└──────┴───┴───┴───┴───┴───┴───┘\n"
+		"╰──────┴───┴───┴───┴───┴───┴───╯\n"
 
 	assert.Equal(t, expected, srenderPlain(t, printer))
 }
@@ -74,11 +74,11 @@ func TestHeatmapPrinter_OnlyColoredCellsRenderCellSizedBlanks(t *testing.T) {
 
 	// Without a header the cells are CellSize wide and contain no values.
 	expected := "" +
-		"┌───┬───┐\n" +
+		"╭───┬───╮\n" +
 		"│   │   │\n" +
 		"├───┼───┤\n" +
 		"│   │   │\n" +
-		"└───┴───┘\n"
+		"╰───┴───╯\n"
 
 	assert.Equal(t, expected, srenderPlain(t, printer))
 

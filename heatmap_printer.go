@@ -14,18 +14,14 @@ import (
 const rgbLegendSteps = 10
 
 // DefaultHeatmap contains standards, which can be used to print a HeatmapPrinter.
-//
-// Note: the four corner separator fields are historically mislabeled — e.g.
-// BottomRightCornerSeparator holds the top-left glyph "┌". The names are kept
-// for API compatibility; the assignments below are internally consistent.
 var DefaultHeatmap = HeatmapPrinter{
 	AxisStyle:                  &ThemeDefault.HeatmapHeaderStyle,
 	SeparatorStyle:             &ThemeDefault.HeatmapSeparatorStyle,
 	VerticalSeparator:          "│",
-	TopRightCornerSeparator:    "└",
-	TopLeftCornerSeparator:     "┘",
-	BottomLeftCornerSeparator:  "┐",
-	BottomRightCornerSeparator: "┌",
+	TopRightCornerSeparator:    "╰",
+	TopLeftCornerSeparator:     "╯",
+	BottomLeftCornerSeparator:  "╮",
+	BottomRightCornerSeparator: "╭",
 	HorizontalSeparator:        "─",
 	TSeparator:                 "┬",
 	TReverseSeparator:          "┴",

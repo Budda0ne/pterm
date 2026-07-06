@@ -16,11 +16,13 @@ var (
 
 var (
 	// Info returns a PrefixPrinter, which can be used to print text with an "info" Prefix.
+	// The prefix text is padded so all default prefix badges share the same width
+	// and messages line up when different printers are mixed.
 	Info = PrefixPrinter{
 		MessageStyle: &ThemeDefault.InfoMessageStyle,
 		Prefix: Prefix{
 			Style: &ThemeDefault.InfoPrefixStyle,
-			Text:  "INFO",
+			Text:  " INFO  ",
 		},
 	}
 

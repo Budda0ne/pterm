@@ -21,12 +21,12 @@ func TestBulletListPrinter_IndentationAndBullets(t *testing.T) {
 		{Level: 3, Text: "three"},
 	})
 
-	// Indentation is exactly Level spaces; items without their own bullet use
-	// the printer's default bullet.
+	// Indentation is exactly two spaces per Level; items without their own
+	// bullet use the printer's default bullet.
 	expected := "" +
 		"• zero\n" +
-		" - one\n" +
-		"   • three\n"
+		"  - one\n" +
+		"      • three\n"
 
 	assert.Equal(t, expected, srenderPlain(t, printer))
 }
@@ -52,8 +52,8 @@ func TestBulletListPrinter_MultilineItemContinuationLines(t *testing.T) {
 	// Continuation lines keep the item's indentation and align under the
 	// text, not under the bullet.
 	expected := "" +
-		" • first\n" +
-		"   second\n"
+		"  • first\n" +
+		"    second\n"
 
 	assert.Equal(t, expected, srenderPlain(t, printer))
 }

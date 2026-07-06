@@ -147,24 +147,24 @@ func walkOverTree(list []TreeNode, p TreePrinter, prefix string) string {
 	var ret strings.Builder
 
 	for i, item := range list {
-		if len(list) > i+1 { // if not last in list
-			if len(item.Children) == 0 { // if there are no children
-				ret.WriteString(prefix + p.TreeStyle.Sprint(p.TopRightDownString) + strings.Repeat(p.TreeStyle.Sprint(p.HorizontalString), p.Indent) +
-					p.TextStyle.Sprint(item.Text) + "\n")
-			} else { // if there are children
-				ret.WriteString(prefix + p.TreeStyle.Sprint(p.TopRightDownString) + strings.Repeat(p.TreeStyle.Sprint(p.HorizontalString), p.Indent-1) +
-					p.TreeStyle.Sprint(p.RightDownLeftString) + p.TextStyle.Sprint(item.Text) + "\n")
-				ret.WriteString(walkOverTree(item.Children, p, prefix+p.TreeStyle.Sprint(p.VerticalString)+strings.Repeat(" ", p.Indent-1)))
-			}
-		} else if len(list) == i+1 { // if last in list
-			if len(item.Children) == 0 { // if there are no children
-				ret.WriteString(prefix + p.TreeStyle.Sprint(p.TopRightCornerString) + strings.Repeat(p.TreeStyle.Sprint(p.HorizontalString), p.Indent) +
-					p.TextStyle.Sprint(item.Text) + "\n")
-			} else { // if there are children
-				ret.WriteString(prefix + p.TreeStyle.Sprint(p.TopRightCornerString) + strings.Repeat(p.TreeStyle.Sprint(p.HorizontalString), p.Indent-1) +
-					p.TreeStyle.Sprint(p.RightDownLeftString) + p.TextStyle.Sprint(item.Text) + "\n")
-				ret.WriteString(walkOverTree(item.Children, p, prefix+strings.Repeat(" ", p.Indent)))
-			}
+		last := i == len(list)-1
+
+		connector := p.TopRightDownString
+		childPrefix := prefix + p.TreeStyle.Sprint(p.VerticalString) + strings.Repeat(" ", p.Indent+1)
+
+		if last {
+			connector = p.TopRightCornerString
+			childPrefix = prefix + strings.Repeat(" ", p.Indent+2)
+		}
+
+		ret.WriteString(prefix)
+		ret.WriteString(p.TreeStyle.Sprint(connector + strings.Repeat(p.HorizontalString, p.Indent)))
+		ret.WriteByte(' ')
+		ret.WriteString(p.TextStyle.Sprint(item.Text))
+		ret.WriteByte('\n')
+
+		if len(item.Children) > 0 {
+			ret.WriteString(walkOverTree(item.Children, p, childPrefix))
 		}
 	}
 

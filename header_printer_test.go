@@ -108,8 +108,8 @@ func TestHeaderPrinterRawOutputPassesTextThrough(t *testing.T) {
 
 func TestHeaderPrinterAppliesBackgroundStyle(t *testing.T) {
 	// Every line of the block, including the blank ones, is wrapped in the
-	// background style (BgGray = SGR 100).
+	// background style (BgCyan = SGR 46).
 	for i, line := range strings.SplitAfter(strings.TrimSuffix(pterm.DefaultHeader.Sprint("Hi"), "\n"), "\n") {
-		assert.Truef(t, strings.HasPrefix(line, "\x1b[100m"), "line %d %q must start with the background style", i, line)
+		assert.Truef(t, strings.HasPrefix(line, "\x1b[46m"), "line %d %q must start with the background style", i, line)
 	}
 }

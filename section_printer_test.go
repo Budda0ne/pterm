@@ -15,14 +15,14 @@ import (
 )
 
 func TestSectionPrinterDefaultLayout(t *testing.T) {
-	// Level 1, one line of top and bottom padding, "#" indent character.
-	assert.Equal(t, "\n# Title\n", stripANSI(pterm.DefaultSection.Sprint("Title")))
+	// Level 1, one line of top and bottom padding, "»" indent character.
+	assert.Equal(t, "\n» Title\n", stripANSI(pterm.DefaultSection.Sprint("Title")))
 }
 
 func TestSectionPrinterLevelRepeatsIndentCharacter(t *testing.T) {
-	assert.Equal(t, "\n# Title\n", stripANSI(pterm.DefaultSection.WithLevel(1).Sprint("Title")))
-	assert.Equal(t, "\n## Title\n", stripANSI(pterm.DefaultSection.WithLevel(2).Sprint("Title")))
-	assert.Equal(t, "\n### Title\n", stripANSI(pterm.DefaultSection.WithLevel(3).Sprint("Title")))
+	assert.Equal(t, "\n» Title\n", stripANSI(pterm.DefaultSection.WithLevel(1).Sprint("Title")))
+	assert.Equal(t, "\n»» Title\n", stripANSI(pterm.DefaultSection.WithLevel(2).Sprint("Title")))
+	assert.Equal(t, "\n»»» Title\n", stripANSI(pterm.DefaultSection.WithLevel(3).Sprint("Title")))
 }
 
 func TestSectionPrinterLevelZeroOmitsIndent(t *testing.T) {
@@ -39,19 +39,19 @@ func TestSectionPrinterCustomIndentCharacter(t *testing.T) {
 func TestSectionPrinterPaddingAddsExactNewlines(t *testing.T) {
 	p := pterm.DefaultSection.WithTopPadding(3).WithBottomPadding(2)
 
-	assert.Equal(t, "\n\n\n# Title\n\n", stripANSI(p.Sprint("Title")))
+	assert.Equal(t, "\n\n\n» Title\n\n", stripANSI(p.Sprint("Title")))
 }
 
 func TestSectionPrinterZeroPadding(t *testing.T) {
 	p := pterm.DefaultSection.WithTopPadding(0).WithBottomPadding(0)
 
-	assert.Equal(t, "# Title", stripANSI(p.Sprint("Title")))
+	assert.Equal(t, "» Title", stripANSI(p.Sprint("Title")))
 }
 
 func TestSectionPrinterStylesOnlyTheTitle(t *testing.T) {
-	// The indent characters and padding stay unstyled; only the title text is
-	// wrapped in the section style (Bold=1, FgYellow=33).
-	assert.Equal(t, "\n# \x1b[1;33mT\x1b[0m\n", pterm.DefaultSection.Sprint("T"))
+	// The indent characters and the title are wrapped in the section style
+	// (Bold=1, FgLightMagenta=95); the padding newlines stay unstyled.
+	assert.Equal(t, "\n\x1b[1;95m»\x1b[0m \x1b[1;95mT\x1b[0m\n", pterm.DefaultSection.Sprint("T"))
 }
 
 func TestSectionPrinterZeroValueRendersBareText(t *testing.T) {

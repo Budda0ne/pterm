@@ -12,7 +12,7 @@ var DefaultSection = SectionPrinter{
 	Level:           1,
 	TopPadding:      1,
 	BottomPadding:   1,
-	IndentCharacter: "#",
+	IndentCharacter: "»",
 }
 
 // SectionPrinter prints a new section title.
@@ -76,7 +76,7 @@ func (p SectionPrinter) Sprint(a ...any) string {
 	}
 
 	if p.Level > 0 {
-		ret.WriteString(strings.Repeat(p.IndentCharacter, p.Level))
+		ret.WriteString(p.Style.Sprint(strings.Repeat(p.IndentCharacter, p.Level)))
 		ret.WriteByte(' ')
 	}
 

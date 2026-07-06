@@ -37,7 +37,7 @@ func TestInteractiveSelectPrinter_NavigateAndSelect(t *testing.T) {
 
 	frames := area.frames(selectPrompt)
 	require.NotEmpty(t, frames)
-	assert.Contains(t, frames[len(frames)-1], "> c", "the finished menu must show the chosen option next to the selector")
+	assert.Contains(t, frames[len(frames)-1], "❯ c", "the finished menu must show the chosen option next to the selector")
 }
 
 func TestInteractiveSelectPrinter_NavigationWrapsAroundEnds(t *testing.T) {
@@ -85,7 +85,7 @@ func TestInteractiveSelectPrinter_DefaultOptionStartsSelection(t *testing.T) {
 
 	frames := area.frames(selectPrompt)
 	require.NotEmpty(t, frames)
-	assert.Contains(t, frames[0], "> b", "the first frame must highlight the default option")
+	assert.Contains(t, frames[0], "❯ b", "the first frame must highlight the default option")
 	assert.Contains(t, frames[0], "  a", "other options must be rendered without the selector")
 }
 
@@ -110,7 +110,7 @@ func TestInteractiveSelectPrinter_MaxHeightScrollsWindow(t *testing.T) {
 	lastMenu := frames[len(frames)-2]
 	assert.Contains(t, lastMenu, "  b\n")
 	assert.Contains(t, lastMenu, "  c\n")
-	assert.Contains(t, lastMenu, "> d\n")
+	assert.Contains(t, lastMenu, "❯ d\n")
 	assert.NotContains(t, lastMenu, "  a\n", "options scrolled out at the top must not be rendered")
 	assert.NotContains(t, lastMenu, "  e\n", "options below the window must not be rendered")
 }
@@ -132,7 +132,7 @@ func TestInteractiveSelectPrinter_DefaultOptionScrollsWindow(t *testing.T) {
 	frames := area.frames(selectPrompt)
 	require.NotEmpty(t, frames)
 	assert.Contains(t, frames[0], "  d\n")
-	assert.Contains(t, frames[0], "> e\n")
+	assert.Contains(t, frames[0], "❯ e\n")
 	assert.Contains(t, frames[0], "  f\n")
 	assert.NotContains(t, frames[0], "  a\n", "the window must scroll to make the default option visible")
 }
@@ -153,7 +153,7 @@ func TestInteractiveSelectPrinter_FilterNarrowsOptions(t *testing.T) {
 
 	filtered := frames[len(frames)-2]
 	assert.Contains(t, filtered, "[type to search]: ban", "the typed filter must be rendered next to the prompt")
-	assert.Contains(t, filtered, "> banana")
+	assert.Contains(t, filtered, "❯ banana")
 	assert.NotContains(t, filtered, "apple", "options that do not match the filter must disappear")
 	assert.NotContains(t, filtered, "cherry")
 }

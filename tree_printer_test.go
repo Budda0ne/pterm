@@ -31,18 +31,17 @@ func TestTreePrinter_ConnectorLayout(t *testing.T) {
 		},
 	})
 
-	// - non-last leaf:            ├──
-	// - non-last with children:   ├─┬ and a │ continuation for its subtree
-	// - last child:               └── / └─┬ with plain-space continuation
+	// - non-last node: ├── and a │ continuation line for its subtree
+	// - last node:     └── with a plain-space continuation for its subtree
 	expected := "" +
 		"root\n" +
-		"├──a\n" +
-		"├─┬b\n" +
-		"│ ├──b1\n" +
-		"│ └──b2\n" +
-		"└─┬c\n" +
-		"  └─┬c1\n" +
-		"    └──c1a\n"
+		"├── a\n" +
+		"├── b\n" +
+		"│   ├── b1\n" +
+		"│   └── b2\n" +
+		"└── c\n" +
+		"    └── c1\n" +
+		"        └── c1a\n"
 
 	assert.Equal(t, expected, srenderPlain(t, printer))
 }
@@ -58,7 +57,7 @@ func TestTreePrinter_EmptyRootTextOmitsRootLine(t *testing.T) {
 		Children: []pterm.TreeNode{{Text: "only child"}},
 	})
 
-	assert.Equal(t, "└──only child\n", srenderPlain(t, printer))
+	assert.Equal(t, "└── only child\n", srenderPlain(t, printer))
 }
 
 func TestTreePrinter_IndentControlsConnectorAndPrefixWidth(t *testing.T) {
@@ -71,12 +70,12 @@ func TestTreePrinter_IndentControlsConnectorAndPrefixWidth(t *testing.T) {
 		},
 	})
 
-	// Indent 4: three horizontals before the ┬ of a parent, four before leaf
-	// text, and continuation prefixes that are exactly four cells wide.
+	// Indent 4: four horizontals plus a separating space before the text, and
+	// continuation prefixes that are exactly six cells wide.
 	expected := "" +
-		"├───┬p\n" +
-		"│   └────q\n" +
-		"└────r\n"
+		"├──── p\n" +
+		"│     └──── q\n" +
+		"└──── r\n"
 
 	assert.Equal(t, expected, srenderPlain(t, printer))
 }
@@ -94,8 +93,8 @@ func TestTreePrinter_CustomConnectorStrings(t *testing.T) {
 		})
 
 	expected := "" +
-		"Y__a\n" +
-		"X__b\n"
+		"Y__ a\n" +
+		"X__ b\n"
 
 	assert.Equal(t, expected, srenderPlain(t, printer))
 }

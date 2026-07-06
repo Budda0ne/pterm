@@ -38,18 +38,18 @@ func assertUniformVisibleWidth(t *testing.T, out string) {
 }
 
 func TestBoxPrinterDefaultBox(t *testing.T) {
-	expected := "┌───────┐\n" +
+	expected := "╭───────╮\n" +
 		"│ Hello │\n" +
-		"└───────┘"
+		"╰───────╯"
 
 	assert.Equal(t, expected, stripANSI(pterm.DefaultBox.Sprint("Hello")))
 }
 
 func TestBoxPrinterMultilinePadsToWidestLine(t *testing.T) {
-	expected := "┌──────────────┐\n" +
+	expected := "╭──────────────╮\n" +
 		"│ longest line │\n" +
 		"│ short        │\n" +
-		"└──────────────┘"
+		"╰──────────────╯"
 
 	out := pterm.DefaultBox.Sprint("longest line\nshort")
 
@@ -60,9 +60,9 @@ func TestBoxPrinterMultilinePadsToWidestLine(t *testing.T) {
 func TestBoxPrinterUnicodeContentKeepsBordersAligned(t *testing.T) {
 	t.Run("CJK", func(t *testing.T) {
 		// "汉字" is 4 terminal cells wide, not 6 bytes.
-		expected := "┌──────┐\n" +
+		expected := "╭──────╮\n" +
 			"│ 汉字 │\n" +
-			"└──────┘"
+			"╰──────╯"
 
 		out := pterm.DefaultBox.Sprint("汉字")
 
@@ -71,9 +71,9 @@ func TestBoxPrinterUnicodeContentKeepsBordersAligned(t *testing.T) {
 	})
 
 	t.Run("emoji", func(t *testing.T) {
-		expected := "┌──────────┐\n" +
+		expected := "╭──────────╮\n" +
 			"│ 🦄 emoji │\n" +
-			"└──────────┘"
+			"╰──────────╯"
 
 		out := pterm.DefaultBox.Sprint("🦄 emoji")
 
@@ -104,44 +104,44 @@ func TestBoxPrinterTitlePlacement(t *testing.T) {
 		{
 			name:    "top left (default)",
 			printer: box,
-			expected: "┌─ Title ─────┐\n" +
+			expected: "╭─ Title ─────╮\n" +
 				"│ Hello World │\n" +
-				"└─────────────┘",
+				"╰─────────────╯",
 		},
 		{
 			name:    "top right",
 			printer: box.WithTitleTopRight(),
-			expected: "┌───── Title ─┐\n" +
+			expected: "╭───── Title ─╮\n" +
 				"│ Hello World │\n" +
-				"└─────────────┘",
+				"╰─────────────╯",
 		},
 		{
 			name:    "top center",
 			printer: box.WithTitleTopCenter(),
-			expected: "┌─── Title ───┐\n" +
+			expected: "╭─── Title ───╮\n" +
 				"│ Hello World │\n" +
-				"└─────────────┘",
+				"╰─────────────╯",
 		},
 		{
 			name:    "bottom left",
 			printer: box.WithTitleBottomLeft(),
-			expected: "┌─────────────┐\n" +
+			expected: "╭─────────────╮\n" +
 				"│ Hello World │\n" +
-				"└─ Title ─────┘",
+				"╰─ Title ─────╯",
 		},
 		{
 			name:    "bottom right",
 			printer: box.WithTitleBottomRight(),
-			expected: "┌─────────────┐\n" +
+			expected: "╭─────────────╮\n" +
 				"│ Hello World │\n" +
-				"└───── Title ─┘",
+				"╰───── Title ─╯",
 		},
 		{
 			name:    "bottom center",
 			printer: box.WithTitleBottomCenter(),
-			expected: "┌─────────────┐\n" +
+			expected: "╭─────────────╮\n" +
 				"│ Hello World │\n" +
-				"└─── Title ───┘",
+				"╰─── Title ───╯",
 		},
 	}
 
@@ -156,9 +156,9 @@ func TestBoxPrinterTitlePlacement(t *testing.T) {
 }
 
 func TestBoxPrinterTitleWiderThanContentGrowsTheBox(t *testing.T) {
-	expected := "┌─ A very long title ─┐\n" +
+	expected := "╭─ A very long title ─╮\n" +
 		"│ Hi                  │\n" +
-		"└─────────────────────┘"
+		"╰─────────────────────╯"
 
 	out := pterm.DefaultBox.WithTitle("A very long title").Sprint("Hi")
 
@@ -175,21 +175,21 @@ func TestBoxPrinterTitleNewlinesAreReplacedBySpaces(t *testing.T) {
 
 func TestBoxPrinterPadding(t *testing.T) {
 	t.Run("all sides", func(t *testing.T) {
-		expected := "┌──────┐\n" +
+		expected := "╭──────╮\n" +
 			"│      │\n" +
 			"│      │\n" +
 			"│  Hi  │\n" +
 			"│      │\n" +
 			"│      │\n" +
-			"└──────┘"
+			"╰──────╯"
 
 		assert.Equal(t, expected, stripANSI(pterm.DefaultBox.WithPadding(2).Sprint("Hi")))
 	})
 
 	t.Run("asymmetric horizontal", func(t *testing.T) {
-		expected := "┌──────┐\n" +
+		expected := "╭──────╮\n" +
 			"│   Hi │\n" +
-			"└──────┘"
+			"╰──────╯"
 
 		p := pterm.DefaultBox.WithLeftPadding(3).WithRightPadding(1)
 
@@ -201,7 +201,7 @@ func TestBoxPrinterPadding(t *testing.T) {
 // BottomRightCornerString is rendered at the TOP LEFT, BottomLeftCornerString
 // at the top right, TopRightCornerString at the bottom left and
 // TopLeftCornerString at the bottom right (DefaultBox compensates by holding
-// the visually matching glyphs, e.g. TopLeftCornerString = "┘"). Existing
+// the visually matching glyphs, e.g. TopLeftCornerString = "╯"). Existing
 // consumers — including _examples/demo — rely on this mapping, so it is locked
 // here as-is instead of being "fixed".
 func TestBoxPrinterCustomBorderStrings(t *testing.T) {
@@ -221,18 +221,18 @@ func TestBoxPrinterCustomBorderStrings(t *testing.T) {
 }
 
 func TestBoxPrinterSprintlnAppendsNewline(t *testing.T) {
-	expected := "┌────┐\n" +
+	expected := "╭────╮\n" +
 		"│ Hi │\n" +
-		"└────┘\n"
+		"╰────╯\n"
 
 	assert.Equal(t, expected, stripANSI(pterm.DefaultBox.Sprintln("Hi")))
 }
 
 func TestBoxPrinterEmptyInput(t *testing.T) {
 	// An empty string still renders a (collapsed) box.
-	expected := "┌──┐\n" +
+	expected := "╭──╮\n" +
 		"│  │\n" +
-		"└──┘"
+		"╰──╯"
 
 	assert.Equal(t, expected, stripANSI(pterm.DefaultBox.Sprint("")))
 }

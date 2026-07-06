@@ -13,9 +13,9 @@ var activeSpinnerPrinters []*SpinnerPrinter
 
 // DefaultSpinner is the default SpinnerPrinter.
 var DefaultSpinner = SpinnerPrinter{
-	Sequence:            []string{"▀ ", " ▀", " ▄", "▄ "},
+	Sequence:            []string{"⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"},
 	Style:               &ThemeDefault.SpinnerStyle,
-	Delay:               time.Millisecond * 200,
+	Delay:               time.Millisecond * 100,
 	ShowTimer:           true,
 	TimerRoundingFactor: time.Second,
 	TimerStyle:          &ThemeDefault.TimerStyle,

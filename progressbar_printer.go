@@ -27,6 +27,8 @@ var DefaultProgressbar = ProgressbarPrinter{
 	// Eighth-block glyphs, ordered from least to most filled, give the bar a
 	// smooth edge that advances one eighth of a cell at a time.
 	BarPartialCharacters:      []string{"▏", "▎", "▍", "▌", "▋", "▊", "▉"},
+	BarFiller:                 "░",
+	BarFillerStyle:            &ThemeDefault.ProgressbarFillerStyle,
 	ElapsedTimeRoundingFactor: time.Second,
 	BarStyle:                  &ThemeDefault.ProgressbarBarStyle,
 	TitleStyle:                &ThemeDefault.ProgressbarTitleStyle,
@@ -48,8 +50,12 @@ type ProgressbarPrinter struct {
 	ElapsedTimeRoundingFactor time.Duration
 
 	// BarFiller is repeated to fill the unfilled portion of the bar. When
-	// empty (the default) the remaining space is left blank.
+	// empty the remaining space is left blank.
 	BarFiller string
+
+	// BarFillerStyle styles the unfilled portion of the bar. When nil, the
+	// theme's ProgressbarFillerStyle is used.
+	BarFillerStyle *Style
 
 	// BarPartialCharacters holds the glyphs used to draw the leading edge of
 	// the bar at sub-character resolution, ordered from least to most filled.
@@ -231,6 +237,12 @@ func (p ProgressbarPrinter) WithRemoveWhenDone(b ...bool) *ProgressbarPrinter {
 // WithBarFiller sets the filler character for the ProgressbarPrinter.
 func (p ProgressbarPrinter) WithBarFiller(char string) *ProgressbarPrinter {
 	p.BarFiller = char
+	return &p
+}
+
+// WithBarFillerStyle sets the style of the unfilled portion of the bar.
+func (p ProgressbarPrinter) WithBarFillerStyle(style *Style) *ProgressbarPrinter {
+	p.BarFillerStyle = style
 	return &p
 }
 
@@ -421,10 +433,26 @@ func (p *ProgressbarPrinter) renderBar(width int) string {
 	}
 
 	if full < width {
-		bar += strings.Repeat(filler, width-full)
+		bar += p.sprintFiller(filler, width-full)
 	}
 
 	return bar
+}
+
+// sprintFiller renders n cells of the unfilled bar track. Blank fillers are
+// returned unstyled to keep the output free of redundant escape codes.
+func (p *ProgressbarPrinter) sprintFiller(filler string, n int) string {
+	s := strings.Repeat(filler, n)
+	if strings.TrimSpace(s) == "" {
+		return s
+	}
+
+	style := p.BarFillerStyle
+	if style == nil {
+		style = &ThemeDefault.ProgressbarFillerStyle
+	}
+
+	return style.Sprint(s)
 }
 
 // renderSmoothBar draws the bar using a partial-block glyph for the leading
@@ -447,7 +475,7 @@ func (p *ProgressbarPrinter) renderSmoothBar(ratio float64, width int, filler st
 
 	bar := p.BarStyle.Sprint(strings.Repeat(p.BarCharacter, full) + partial)
 	if cells < width {
-		bar += strings.Repeat(filler, width-cells)
+		bar += p.sprintFiller(filler, width-cells)
 	}
 
 	return bar

@@ -22,7 +22,7 @@ var (
 		OptionStyle:            &ThemeDefault.DefaultText,
 		DefaultOptions:         []string{},
 		MaxHeight:              5,
-		Selector:               ">",
+		Selector:               "❯",
 		SelectorStyle:          &ThemeDefault.SecondaryStyle,
 		Filter:                 true,
 		KeySelect:              keys.Enter,

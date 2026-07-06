@@ -52,7 +52,7 @@ func TestInteractiveMultiselectPrinter_SelectAndConfirm(t *testing.T) {
 
 	lastMenu := frames[len(frames)-2]
 	assert.Contains(t, lastMenu, checked("a"), "selected options must show the checked checkmark")
-	assert.Contains(t, lastMenu, "> "+checked("b"), "the highlighted row must show the selector")
+	assert.Contains(t, lastMenu, "❯ "+checked("b"), "the highlighted row must show the selector")
 	assert.Contains(t, lastMenu, unchecked("c"), "unselected options must show the unchecked checkmark")
 	assert.Contains(t, lastMenu, "select")
 	assert.Contains(t, lastMenu, "confirm")
@@ -71,7 +71,7 @@ func TestInteractiveMultiselectPrinter_SelectKeyTogglesSelection(t *testing.T) {
 
 	frames := area.frames(multiselectPrompt)
 	require.GreaterOrEqual(t, len(frames), 2)
-	assert.Contains(t, frames[len(frames)-2], "> "+unchecked("a"), "a toggled-off option must render unchecked")
+	assert.Contains(t, frames[len(frames)-2], "❯ "+unchecked("a"), "a toggled-off option must render unchecked")
 }
 
 func TestInteractiveMultiselectPrinter_DefaultOptionsArePreselected(t *testing.T) {
@@ -135,7 +135,7 @@ func TestInteractiveMultiselectPrinter_MaxHeightScrollsWindow(t *testing.T) {
 	lastMenu := frames[len(frames)-2]
 	assert.Contains(t, lastMenu, unchecked("b"))
 	assert.Contains(t, lastMenu, unchecked("c"))
-	assert.Contains(t, lastMenu, "> "+checked("d"))
+	assert.Contains(t, lastMenu, "❯ "+checked("d"))
 	assert.NotContains(t, lastMenu, unchecked("a"), "options scrolled out at the top must not be rendered")
 	assert.NotContains(t, lastMenu, unchecked("e"), "options below the window must not be rendered")
 }

@@ -49,9 +49,9 @@ func TestTablePrinter_ColumnsPaddedToWidestCell(t *testing.T) {
 	// Column 0 is padded to "Alice" (5), column 1 to "Age" (3); the last
 	// column is padded too, so every separator lines up across all rows.
 	expected := "" +
-		"Name  | Age\n" +
-		"Alice | 1  \n" +
-		"Bob   | 22 \n"
+		"Name  │ Age\n" +
+		"Alice │ 1  \n" +
+		"Bob   │ 22 \n"
 
 	assert.Equal(t, expected, srenderPlain(t, printer))
 }
@@ -64,8 +64,8 @@ func TestTablePrinter_WideUnicodeCellsAlign(t *testing.T) {
 
 	// "汉字" occupies 4 terminal cells, so "abc" gets one space of padding.
 	expected := "" +
-		"汉字 | x\n" +
-		"abc  | y\n"
+		"汉字 │ x\n" +
+		"abc  │ y\n"
 
 	assert.Equal(t, expected, srenderPlain(t, printer))
 }
@@ -79,8 +79,8 @@ func TestTablePrinter_ANSICodesInCellsDoNotAffectPadding(t *testing.T) {
 	// The styled "a" is much longer in bytes than "cc", but only its visible
 	// width (1) may count for the column width.
 	expected := "" +
-		"a  | b\n" +
-		"cc | d\n"
+		"a  │ b\n" +
+		"cc │ d\n"
 
 	assert.Equal(t, expected, srenderPlain(t, printer))
 }
@@ -93,9 +93,9 @@ func TestTablePrinter_RightAlignment(t *testing.T) {
 	})
 
 	expected := "" +
-		" Name | Age\n" +
-		"Alice |   1\n" +
-		"  Bob |  22\n"
+		" Name │ Age\n" +
+		"Alice │   1\n" +
+		"  Bob │  22\n"
 
 	assert.Equal(t, expected, srenderPlain(t, printer))
 }
@@ -109,9 +109,9 @@ func TestTablePrinter_MultilineCellsStayInTheirColumn(t *testing.T) {
 	// The second line of the multiline cell stays in column 0; column 1 is
 	// padded with spaces on that line.
 	expected := "" +
-		"a | x\n" +
-		"b |  \n" +
-		"c | y\n"
+		"a │ x\n" +
+		"b │  \n" +
+		"c │ y\n"
 
 	assert.Equal(t, expected, srenderPlain(t, printer))
 }
@@ -123,9 +123,9 @@ func TestTablePrinter_HeaderRowSeparatorSpansTableWidth(t *testing.T) {
 	})
 
 	expected := "" +
-		"Name | Age\n" +
+		"Name │ Age\n" +
 		"==========\n" +
-		"Bob  | 1  \n"
+		"Bob  │ 1  \n"
 
 	assert.Equal(t, expected, srenderPlain(t, printer))
 }
@@ -157,9 +157,13 @@ func TestTablePrinter_HasHeaderStylesOnlyFirstRow(t *testing.T) {
 	assert.Contains(t, styled, prefix+"Name", "header row must be wrapped in the header style")
 	assert.NotContains(t, styled, prefix+"Alice", "data rows must not get the header style")
 
-	// The header style must not change the visible layout.
-	plain := srenderPlain(t, pterm.DefaultTable.WithData(data))
-	assert.Equal(t, plain, stripANSI(styled))
+	// Apart from the header separator line, the header style must not change
+	// the visible layout.
+	expected := "" +
+		"Name  │ Age\n" +
+		"───────────\n" +
+		"Alice │ 1  \n"
+	assert.Equal(t, expected, stripANSI(styled))
 }
 
 func TestTablePrinter_AlternateRowStyleOnEverySecondRow(t *testing.T) {
@@ -187,10 +191,10 @@ func TestTablePrinter_BoxedWrapsTableInAlignedBox(t *testing.T) {
 	})
 
 	expected := "" +
-		"┌─────────┐\n" +
-		"│ a  | b  │\n" +
-		"│ cc | dd │\n" +
-		"└─────────┘"
+		"╭─────────╮\n" +
+		"│ a  │ b  │\n" +
+		"│ cc │ dd │\n" +
+		"╰─────────╯"
 
 	assert.Equal(t, expected, srenderPlain(t, printer))
 }
