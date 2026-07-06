@@ -73,6 +73,32 @@ func TestThemeDefaultStylesFlowIntoPrinters(t *testing.T) {
 	assert.Contains(t, stripANSI(out), "Title")
 }
 
+// TestThemeLoggerStylesFlowIntoLogger verifies that the logger's level styles
+// come from ThemeDefault: changing a logger theme style changes the escape
+// codes the logger emits.
+func TestThemeLoggerStylesFlowIntoLogger(t *testing.T) {
+	restoreGlobalStyling(t)
+
+	original := pterm.ThemeDefault.LoggerInfoStyle
+	pterm.ThemeDefault.LoggerInfoStyle = pterm.Style{pterm.FgMagenta}
+
+	t.Cleanup(func() { pterm.ThemeDefault.LoggerInfoStyle = original })
+
+	var buf strings.Builder
+
+	pterm.DefaultLogger.WithWriter(&buf).WithTime(false).Info("hello")
+	assert.Contains(t, buf.String(), "\x1b[35m", "the logger must render INFO with the (changed) ThemeDefault.LoggerInfoStyle")
+}
+
+// TestThemeHeatmapColorsFlowIntoDefaultHeatmap verifies that the default
+// heatmap colors are defined by the theme.
+func TestThemeHeatmapColorsFlowIntoDefaultHeatmap(t *testing.T) {
+	assert.Equal(t, pterm.ThemeDefault.HeatmapColors, pterm.DefaultHeatmap.Colors)
+	assert.Equal(t, pterm.ThemeDefault.HeatmapTextColor, pterm.DefaultHeatmap.TextColor)
+	assert.Equal(t, pterm.ThemeDefault.HeatmapRGBRange, pterm.DefaultHeatmap.RGBRange)
+	assert.Equal(t, pterm.ThemeDefault.HeatmapTextRGB, pterm.DefaultHeatmap.TextRGB)
+}
+
 // TestPrinterWithCustomStyleEmitsItsCodes verifies that a printer constructed
 // with an explicit style renders exactly that style's codes, independent of
 // the theme.

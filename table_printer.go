@@ -222,21 +222,22 @@ func (p TablePrinter) Srender() (string, error) {
 		t.rows = append(t.rows, r)
 	}
 
+	// Render every row once and reuse the result for measuring and output.
+	renderedRows := make([]string, len(t.rows))
+
 	var maxRowWidth int
 
-	for _, r := range t.rows {
-		rowWidth := internal.GetStringMaxWidth(p.renderRow(t, r))
-		if rowWidth > maxRowWidth {
-			maxRowWidth = rowWidth
-		}
+	for i, r := range t.rows {
+		renderedRows[i] = p.renderRow(t, r)
+		maxRowWidth = max(maxRowWidth, internal.GetStringMaxWidth(renderedRows[i]))
 	}
 
 	// render table
 	var ret strings.Builder
 
-	for i, r := range t.rows {
+	for i, renderedRow := range renderedRows {
 		if i == 0 && p.HasHeader {
-			ret.WriteString(p.HeaderStyle.Sprint(p.renderRow(t, r)))
+			ret.WriteString(p.HeaderStyle.Sprint(renderedRow))
 
 			if p.HeaderRowSeparator != "" {
 				ret.WriteString(strings.Repeat(p.HeaderRowSeparatorStyle.Sprint(p.HeaderRowSeparator), maxRowWidth))
@@ -248,9 +249,9 @@ func (p TablePrinter) Srender() (string, error) {
 
 		// Apply AlternateRowStyle if needed
 		if i%2 == 1 && p.AlternateRowStyle != nil {
-			ret.WriteString(p.AlternateRowStyle.Sprint(p.renderRow(t, r)))
+			ret.WriteString(p.AlternateRowStyle.Sprint(renderedRow))
 		} else {
-			ret.WriteString(p.renderRow(t, r))
+			ret.WriteString(renderedRow)
 		}
 
 		if p.RowSeparator != "" && i < len(t.rows)-1 {
@@ -314,7 +315,11 @@ func (p TablePrinter) renderRow(t table, r row) string {
 
 // Render prints the TablePrinter to the terminal.
 func (p TablePrinter) Render() error {
-	s, _ := p.Srender()
+	s, err := p.Srender()
+	if err != nil {
+		return err
+	}
+
 	Fprintln(p.Writer, s)
 
 	return nil

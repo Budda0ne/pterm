@@ -46,6 +46,20 @@ var (
 		BarLabelStyle:           Style{FgLightCyan},
 		BarStyle:                Style{FgCyan},
 		TimerStyle:              Style{FgGray},
+		LoggerTraceStyle:        Style{Bold, FgGray},
+		LoggerDebugStyle:        Style{Bold, FgBlue},
+		LoggerInfoStyle:         Style{Bold, FgCyan},
+		LoggerWarnStyle:         Style{Bold, FgYellow},
+		LoggerErrorStyle:        Style{Bold, FgRed},
+		LoggerFatalStyle:        Style{Bold, FgLightWhite, BgRed},
+		LoggerPrintStyle:        Style{Bold, FgWhite},
+		LoggerFatalKeyStyle:     Style{FgRed, Bold},
+		LoggerTimestampStyle:    Style{FgGray},
+		LoggerCallerStyle:       Style{FgGray},
+		HeatmapTextColor:        FgBlack,
+		HeatmapColors:           []Color{BgRed, BgLightRed, BgYellow, BgLightYellow, BgLightGreen, BgGreen},
+		HeatmapTextRGB:          RGB{0, 0, 0, false},
+		HeatmapRGBRange:         []RGB{{R: 255, G: 0, B: 0, Background: true}, {R: 255, G: 165, B: 0, Background: true}, {R: 0, G: 255, B: 0, Background: true}},
 		Checkmark: Checkmark{
 			Checked:   Green("✓"),
 			Unchecked: Red("✗"),
@@ -99,7 +113,27 @@ type Theme struct {
 	BoxTextStyle            Style
 	BarLabelStyle           Style
 	BarStyle                Style
-	Checkmark               Checkmark
+	// LoggerTraceStyle till LoggerPrintStyle style the level prefix of the
+	// Logger, one field per LogLevel.
+	LoggerTraceStyle Style
+	LoggerDebugStyle Style
+	LoggerInfoStyle  Style
+	LoggerWarnStyle  Style
+	LoggerErrorStyle Style
+	LoggerFatalStyle Style
+	LoggerPrintStyle Style
+	// LoggerFatalKeyStyle styles the argument keys of fatal logs, whose level
+	// style (background) would be too heavy to repeat on every key.
+	LoggerFatalKeyStyle  Style
+	LoggerTimestampStyle Style
+	LoggerCallerStyle    Style
+	// HeatmapTextColor, HeatmapColors, HeatmapTextRGB and HeatmapRGBRange are
+	// the default cell colors of the HeatmapPrinter.
+	HeatmapTextColor Color
+	HeatmapColors    []Color
+	HeatmapTextRGB   RGB
+	HeatmapRGBRange  []RGB
+	Checkmark        Checkmark
 }
 
 // WithPrimaryStyle returns a new theme with overridden value.

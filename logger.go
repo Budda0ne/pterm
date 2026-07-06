@@ -18,28 +18,26 @@ import (
 // LogLevel is the severity level used by the Logger.
 type LogLevel int
 
-// Style returns the style of the log level.
+// Style returns the style of the log level, as configured in ThemeDefault.
 func (l LogLevel) Style() Style {
-	baseStyle := NewStyle(Bold)
-
 	switch l {
 	case LogLevelTrace:
-		return baseStyle.Add(*FgGray.ToStyle())
+		return ThemeDefault.LoggerTraceStyle
 	case LogLevelDebug:
-		return baseStyle.Add(*FgBlue.ToStyle())
+		return ThemeDefault.LoggerDebugStyle
 	case LogLevelInfo:
-		return baseStyle.Add(*FgCyan.ToStyle())
+		return ThemeDefault.LoggerInfoStyle
 	case LogLevelWarn:
-		return baseStyle.Add(*FgYellow.ToStyle())
+		return ThemeDefault.LoggerWarnStyle
 	case LogLevelError:
-		return baseStyle.Add(*FgRed.ToStyle())
+		return ThemeDefault.LoggerErrorStyle
 	case LogLevelFatal:
-		return baseStyle.Add(*FgLightWhite.ToStyle(), *BgRed.ToStyle())
+		return ThemeDefault.LoggerFatalStyle
 	case LogLevelPrint:
-		return baseStyle.Add(*FgWhite.ToStyle())
+		return ThemeDefault.LoggerPrintStyle
 	}
 
-	return baseStyle.Add(*FgWhite.ToStyle())
+	return ThemeDefault.LoggerPrintStyle
 }
 
 func (l LogLevel) String() string {
@@ -346,7 +344,7 @@ func (l Logger) renderColorful(level LogLevel, msg string, args []LoggerArgument
 	var prefix string
 
 	if l.ShowTime {
-		prefix += Gray(time.Now().Format(l.TimeFormat)) + " "
+		prefix += ThemeDefault.LoggerTimestampStyle.Sprint(time.Now().Format(l.TimeFormat)) + " "
 	}
 
 	prefix += level.Style().Sprintf("%-*s", loggerLevelWidth, level.String()) + " "
@@ -355,7 +353,7 @@ func (l Logger) renderColorful(level LogLevel, msg string, args []LoggerArgument
 		path, line := l.getCallerInfo()
 		args = append(args, LoggerArgument{
 			Key:   "caller",
-			Value: FgGray.Sprintf("%s:%d", path, line),
+			Value: ThemeDefault.LoggerCallerStyle.Sprintf("%s:%d", path, line),
 		})
 	}
 
@@ -366,7 +364,7 @@ func (l Logger) renderColorful(level LogLevel, msg string, args []LoggerArgument
 	// on every key, so its keys fall back to plain red.
 	keyStyle := level.Style()
 	if level == LogLevelFatal {
-		keyStyle = *NewStyle(FgRed, Bold)
+		keyStyle = ThemeDefault.LoggerFatalKeyStyle
 	}
 
 	var multilineValues bool
@@ -387,10 +385,18 @@ func (l Logger) renderColorful(level LogLevel, msg string, args []LoggerArgument
 
 	width := l.lineWidth()
 
-	inline := prefix + msg
+	var inlineBuilder strings.Builder
+
+	inlineBuilder.WriteString(prefix)
+	inlineBuilder.WriteString(msg)
+
 	for i := range keys {
-		inline += " " + keys[i] + l.quoteValue(values[i])
+		inlineBuilder.WriteString(" ")
+		inlineBuilder.WriteString(keys[i])
+		inlineBuilder.WriteString(l.quoteValue(values[i]))
 	}
+
+	inline := inlineBuilder.String()
 
 	// Raw output always stays on a single line, so it remains grep-friendly
 	// when piped into files or other tools.
@@ -415,10 +421,7 @@ func (l Logger) renderBlock(prefix, msg string, keys, values []string, width int
 
 	contentWidth := 0
 	if width > 0 {
-		contentWidth = width - prefixWidth
-		if contentWidth < loggerMinContentWidth {
-			contentWidth = loggerMinContentWidth
-		}
+		contentWidth = max(width-prefixWidth, loggerMinContentWidth)
 	}
 
 	var sb strings.Builder

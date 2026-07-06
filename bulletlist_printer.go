@@ -92,7 +92,11 @@ func (l BulletListPrinter) WithWriter(writer io.Writer) *BulletListPrinter {
 
 // Render prints the list to the terminal.
 func (l BulletListPrinter) Render() error {
-	s, _ := l.Srender()
+	s, err := l.Srender()
+	if err != nil {
+		return err
+	}
+
 	Fprintln(l.Writer, s)
 
 	return nil

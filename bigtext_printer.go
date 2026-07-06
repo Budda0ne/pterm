@@ -134,7 +134,11 @@ func (p BigTextPrinter) Srender() (string, error) {
 
 // Render prints the BigText to the terminal.
 func (p BigTextPrinter) Render() error {
-	s, _ := p.Srender()
+	s, err := p.Srender()
+	if err != nil {
+		return err
+	}
+
 	Fprintln(p.Writer, s)
 
 	return nil

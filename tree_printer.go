@@ -109,7 +109,11 @@ func (p TreePrinter) WithWriter(writer io.Writer) *TreePrinter {
 
 // Render prints the list to the terminal.
 func (p TreePrinter) Render() error {
-	s, _ := p.Srender()
+	s, err := p.Srender()
+	if err != nil {
+		return err
+	}
+
 	Fprintln(p.Writer, s)
 
 	return nil
