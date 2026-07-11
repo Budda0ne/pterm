@@ -104,59 +104,6 @@
 
 
 ────────────────────────────────────────────────────────────────────────────────
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-────────────────────────────────────────────────────────────────────────────────
 >
 
 
@@ -316,8 +263,44 @@
 
 
 ────────────────────────────────────────────────────────────────────────────────
-               Current count: %d
-               Areas can update their content dynamically! 0
+>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -333,8 +316,25 @@
 
 
 ────────────────────────────────────────────────────────────────────────────────
-               Current count: %d
-               Areas can update their content dynamically! 4
+                Current count: 0
+                Areas can update their content dynamically!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+                Current count: 4
+                Areas can update their content dynamically!
 
 >
 
@@ -350,8 +350,8 @@
 
 
 ────────────────────────────────────────────────────────────────────────────────
-               Current count: %d
-               Areas can update their content dynamically! 4
+                Current count: 4
+                Areas can update their content dynamically!
 
 >
 

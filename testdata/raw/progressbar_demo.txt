@@ -317,7 +317,7 @@
 
 ────────────────────────────────────────────────────────────────────────────────
  SUCCESS  Downloading pseudo-excel
-Downloading pseudo-excel  1/12 ██▊                                  8% · 0s
+Downloading pseudo-excel  1/12 ██▊░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   8% · 0s
 
 
 
