@@ -99,6 +99,27 @@ func TestTreePrinter_CustomConnectorStrings(t *testing.T) {
 	assert.Equal(t, expected, srenderPlain(t, printer))
 }
 
+func TestTreePrinter_RightDownLeftStringMarksNodesWithChildren(t *testing.T) {
+	printer := pterm.DefaultTree.
+		WithRightDownLeftString("┬").
+		WithRoot(pterm.TreeNode{
+			Children: []pterm.TreeNode{
+				{Text: "a", Children: []pterm.TreeNode{
+					{Text: "a1"},
+				}},
+				{Text: "b"},
+			},
+		})
+
+	// The tee replaces the last horizontal only in front of nodes with children.
+	expected := "" +
+		"├─┬ a\n" +
+		"│   └── a1\n" +
+		"└── b\n"
+
+	assert.Equal(t, expected, srenderPlain(t, printer))
+}
+
 func TestTreePrinter_TextStyleAppliedToNodeText(t *testing.T) {
 	style := pterm.NewStyle(pterm.FgRed)
 	printer := pterm.DefaultTree.WithTextStyle(style).WithRoot(pterm.TreeNode{

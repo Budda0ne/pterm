@@ -29,7 +29,7 @@ var DefaultTree = TreePrinter{
 	HorizontalString:     "─",
 	TopRightDownString:   "├",
 	VerticalString:       "│",
-	RightDownLeftString:  "┬",
+	RightDownLeftString:  "",
 	Indent:               2,
 }
 
@@ -42,9 +42,12 @@ type TreePrinter struct {
 	TopRightDownString   string
 	HorizontalString     string
 	VerticalString       string
-	RightDownLeftString  string
-	Indent               int
-	Writer               io.Writer
+	// RightDownLeftString replaces the last HorizontalString in front of nodes
+	// that have children (e.g. "┬" renders "├─┬ parent" instead of "├── parent").
+	// If empty, the connector consists of HorizontalString only.
+	RightDownLeftString string
+	Indent              int
+	Writer              io.Writer
 }
 
 // WithTreeStyle returns a new list with a specific tree style.
@@ -80,6 +83,12 @@ func (p TreePrinter) WithHorizontalString(s string) *TreePrinter {
 // WithVerticalString returns a new list with a specific VerticalString.
 func (p TreePrinter) WithVerticalString(s string) *TreePrinter {
 	p.VerticalString = s
+	return &p
+}
+
+// WithRightDownLeftString returns a new list with a specific RightDownLeftString.
+func (p TreePrinter) WithRightDownLeftString(s string) *TreePrinter {
+	p.RightDownLeftString = s
 	return &p
 }
 
@@ -157,8 +166,13 @@ func walkOverTree(list []TreeNode, p TreePrinter, prefix string) string {
 			childPrefix = prefix + strings.Repeat(" ", p.Indent+2)
 		}
 
+		branch := strings.Repeat(p.HorizontalString, p.Indent)
+		if len(item.Children) > 0 && p.RightDownLeftString != "" {
+			branch = strings.Repeat(p.HorizontalString, max(p.Indent-1, 0)) + p.RightDownLeftString
+		}
+
 		ret.WriteString(prefix)
-		ret.WriteString(p.TreeStyle.Sprint(connector + strings.Repeat(p.HorizontalString, p.Indent)))
+		ret.WriteString(p.TreeStyle.Sprint(connector + branch))
 		ret.WriteByte(' ')
 		ret.WriteString(p.TextStyle.Sprint(item.Text))
 		ret.WriteByte('\n')
