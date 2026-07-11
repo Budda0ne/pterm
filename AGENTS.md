@@ -124,15 +124,46 @@ committed snapshot.
   silently rewritten in CI.
 - `.snap` files are pinned to LF newlines via `.gitattributes`; keep it that way.
 
+## Examples — keep them in sync
+
+`_examples/` is the source of truth for user-facing documentation: the README
+example sections, the per-example READMEs, and the VHS animations are all
+generated from the `main.go` files in there (`scripts/`, `task animations`).
+Never hand-edit the generated `README.md` or `animation.gif` files inside
+`_examples/`.
+
+**Important changes must be reflected in the examples.** Concretely:
+
+- **New printer** → add a matching `_examples/<printer>/` directory with at
+  least a `demo` example (the `demo` example is what the docs feature first).
+- **New major feature or option on an existing printer** → add a small, focused
+  example for it (one folder per feature, e.g. `table/from-csv`). Not every
+  setting needs an example, but the main features of a printer should each
+  have one.
+- **Changed behavior or API** → update the affected examples so they still
+  compile and show the current best practice.
+
+Example conventions:
+
+- Layout: `_examples/<printer>/<example-name>/main.go`, package `main`.
+- Keep examples short and self-contained; use small, realistic demo data.
+- Comments should sound human-written and explain intent or PTerm behavior,
+  not narrate syntax. Do not use em-dashes in comments.
+- Interactive examples need CI automation so animations can be recorded:
+  either a `ci.go` that simulates key presses when `CI=true` (see
+  `interactive_confirm/demo/ci.go`) or a `keys.tape` file.
+- Each example must build on its own: `go build ./...` inside the example
+  folder (the underscore prefix keeps `_examples/` out of the root build).
+
 ## Conventions & gotchas
 
 - **Commit messages use Conventional Commits** (`feat:`, `fix:`, `chore:`,
   etc.) — see `conventionalcommit.json` / `CONTRIBUTING.md`.
 - Keep the four-family builder pattern intact; new printers should be copyable
   from the closest existing printer of the same family.
-- `_examples/` is not built by `go build ./...` (underscore prefix). If you add
-  or change an example, it feeds the README/animations pipeline (`scripts/`,
-  `task animations`) — you don't normally need to run VHS locally.
+- `_examples/` is not built by `go build ./...` (underscore prefix). Examples
+  feed the README/animations pipeline; see the "Examples" section above. You
+  don't normally need to run VHS locally.
 - `deprecated.go` holds deprecated aliases kept for backward compatibility;
   don't remove them, add new deprecations there.
 - The public API is widely depended upon — avoid breaking exported signatures.

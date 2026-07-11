@@ -2,6 +2,21 @@
 
 > This directory contains examples of using the PTerm library.
 
+Every example is a small, self-contained program that shows one printer or one
+feature. The folder layout is `<printer>/<example>` and every example folder
+has its own `main.go`, plus a generated `README.md` and animation.
+
+To try an example locally, run it directly from its folder:
+
+```bash
+cd table/demo
+go run main.go
+```
+
+The animations and README sections below are generated from the `main.go`
+files by the animation pipeline (`task animations`), so treat the source files
+as the single source of truth and don't edit the generated parts by hand.
+
 <!-- examples:start -->
 ### area/demo
 
